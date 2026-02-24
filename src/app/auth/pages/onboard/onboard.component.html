@@ -11,7 +11,8 @@
         <div class="planes-grid">
             <div *ngFor="let plan of planes" class="plan-card" [class.plan-destacado]="plan.destacado"
                 (click)="seleccionarPlan(plan.id)">
-                <div class="plan-badge" *ngIf="plan.destacado">⭐ Más popular</div>
+                <div class="plan-badge" *ngIf="plan.destacado"><mat-icon class="plan-badge-icon">star</mat-icon> Más
+                    popular</div>
                 <h3 class="plan-nombre">{{ plan.nombre }}</h3>
                 <div class="plan-precio">
                     <span class="precio-valor">{{ plan.precio }}</span>
@@ -19,7 +20,7 @@
                 </div>
                 <ul class="plan-features">
                     <li *ngFor="let feat of plan.features">
-                        <span class="feat-check">✓</span>
+                        <mat-icon class="feat-check">check</mat-icon>
                         {{ feat }}
                     </li>
                 </ul>
@@ -51,7 +52,8 @@
         <div class="form-card">
             <form [formGroup]="empresaForm" (ngSubmit)="crearEmpresa()" autocomplete="off">
 
-                <h4 class="form-section-title">📍 Datos del restaurante</h4>
+                <h4 class="form-section-title"><mat-icon class="section-title-icon">location_on</mat-icon> Datos del
+                    restaurante</h4>
 
                 <div class="form-grid">
                     <div class="login-field">
@@ -75,7 +77,8 @@
                     </div>
                 </div>
 
-                <h4 class="form-section-title" style="margin-top: 28px;">👤 Tu cuenta de administrador</h4>
+                <h4 class="form-section-title" style="margin-top: 28px;"><mat-icon
+                        class="section-title-icon">person</mat-icon> Tu cuenta de administrador</h4>
 
                 <div class="form-grid">
                     <div class="login-field">
