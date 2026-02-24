@@ -682,6 +682,34 @@
         background: rgba(239, 68, 68, 0.25);
     }
 
+    /* ── Page action button in mobile header ── */
+    .mobile-action-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        background: rgba(var(--brand-rgb), 0.15);
+        color: var(--brand-primary);
+    }
+
+    .mobile-action-btn:active {
+        background: rgba(var(--brand-rgb), 0.3);
+    }
+
+    .mobile-action-btn mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
+
     /* Adjust main content for mobile header + bottom nav */
     .app-main {
         margin-left: 0 !important;
@@ -689,8 +717,7 @@
     }
 
     .app-content {
-        padding-top: 60px !important;
-        padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 8px) !important;
+        padding: 60px 8px calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 8px) 8px !important;
     }
 
     /* Servicio mode — no mobile header / no bottom nav, full viewport */

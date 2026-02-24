@@ -72,21 +72,16 @@
 }
 
 /* ══════════════════════════════════════════════
-   MÉTRICAS INLINE (dentro del header)
+   MÉTRICAS ROW (standalone, like dashboard KPIs)
    ══════════════════════════════════════════════ */
-.facturacion-header {
-    flex-wrap: nowrap;
-    gap: 16px;
-}
-
 .metricas-inline {
     display: flex;
     gap: 12px;
-    flex: 1;
-    justify-content: center;
+    margin-bottom: 14px;
 }
 
 .metricas-inline .metrica-card {
+    flex: 1;
     padding: 10px 14px;
     gap: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -313,14 +308,14 @@
 
 @media (max-width: 768px) {
 
-    /* ── Metrics — horizontal scroll ── */
+    /* ── Metrics — horizontal scroll on mobile ── */
     .metricas-inline {
         gap: 8px;
+        margin-bottom: 10px;
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        padding-bottom: 4px;
     }
 
     .metricas-inline::-webkit-scrollbar {
@@ -328,17 +323,30 @@
     }
 
     .metricas-inline .metrica-card {
-        min-width: 140px;
+        min-width: 120px;
         flex-shrink: 0;
-        padding: 8px 12px;
+        padding: 8px 10px;
+        gap: 8px;
     }
 
     .metrica-valor {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .metrica-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
+    }
+
+    .metrica-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    .metrica-icon mat-icon {
+        font-size: 15px;
+        width: 15px;
+        height: 15px;
     }
 
     /* ── Payment methods — wrap + smaller ── */
@@ -359,12 +367,21 @@
 
     .periodo-btns,
     .estado-btns {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
         gap: 4px;
+    }
+
+    .periodo-btns::-webkit-scrollbar,
+    .estado-btns::-webkit-scrollbar {
+        display: none;
     }
 
     .periodo-btn,
     .estado-btn {
+        flex-shrink: 0;
         padding: 5px 10px;
         font-size: 0.78rem;
     }
@@ -400,9 +417,5 @@
 @media (max-width: 600px) {
     .metricas-grid {
         grid-template-columns: 1fr;
-    }
-
-    .facturacion-header {
-        flex-wrap: wrap;
     }
 }

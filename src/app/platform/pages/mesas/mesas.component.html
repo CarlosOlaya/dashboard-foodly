@@ -1,32 +1,26 @@
 <!-- ═══ Header ═══ -->
-<div class="mesas-header">
-    <div class="mesas-header-left">
-        <h1 class="mesas-title">
-            <mat-icon>table_bar</mat-icon>
-            Mesas
-        </h1>
+<div class="page-header mesas-header">
+    <h1 class="page-title">
+        <mat-icon>table_bar</mat-icon>
+        Mesas
+    </h1>
 
-        <!-- Filter Tabs (directly in header-left, like comandas) -->
-        <ng-container *ngIf="!loading">
-            <button class="view-tab" [class.active]="!filtroEstado" (click)="filtroEstado = ''; aplicarFiltro()">
-                Todas
-            </button>
-            <button class="view-tab" [class.active]="filtroEstado === 'libre'"
-                (click)="filtroEstado = 'libre'; aplicarFiltro()">
-                <mat-icon>check_circle</mat-icon>
-                <span>Libres ({{ mesasLibres }})</span>
-            </button>
-            <button class="view-tab" [class.active]="filtroEstado === 'ocupada'"
-                (click)="filtroEstado = 'ocupada'; aplicarFiltro()">
-                <mat-icon>restaurant</mat-icon>
-                <span>Ocupadas ({{ mesasOcupadas }})</span>
-            </button>
-        </ng-container>
+    <!-- Filter Tabs -->
+    <div class="mesas-tabs" *ngIf="!loading">
+        <button class="view-tab" [class.active]="!filtroEstado" (click)="filtroEstado = ''; aplicarFiltro()">
+            Todas
+        </button>
+        <button class="view-tab" [class.active]="filtroEstado === 'libre'"
+            (click)="filtroEstado = 'libre'; aplicarFiltro()">
+            <mat-icon>check_circle</mat-icon>
+            <span>Libres ({{ mesasLibres }})</span>
+        </button>
+        <button class="view-tab" [class.active]="filtroEstado === 'ocupada'"
+            (click)="filtroEstado = 'ocupada'; aplicarFiltro()">
+            <mat-icon>restaurant</mat-icon>
+            <span>Ocupadas ({{ mesasOcupadas }})</span>
+        </button>
     </div>
-    <button class="mesas-add-btn" routerLink="/home/agregar-mesa">
-        <mat-icon>add_circle</mat-icon>
-        Nueva Mesa
-    </button>
 </div>
 
 <!-- ═══ Turno Warning ═══ -->
@@ -65,7 +59,8 @@
                     <span class="card-zona">{{ mesa.ubicacion || 'Zona Principal' }}</span>
                 </div>
             </div>
-            <span class="card-estado-badge" [ngClass]="{
+            <!-- Badge de estado solo en desktop o cuando NO es libre -->
+            <span class="card-estado-badge desktop-only" [ngClass]="{
                     'badge-libre': mesa.estado === 'libre',
                     'badge-ocupada': mesa.estado === 'ocupada',
                     'badge-impresa': mesa.estado === 'impresa'
@@ -96,11 +91,14 @@
         </div>
 
         <!-- Card Actions -->
-        <div class="card-actions" *ngIf="mesa.estado === 'libre' || mesa.estado === 'impresa'">
+        <div class="card-actions">
             <button *ngIf="mesa.estado === 'libre'" class="action-btn action-primary"
                 (click)="abrirMesa(mesa); $event.stopPropagation()" [disabled]="!turnoActivo">
                 {{ turnoActivo ? 'Abrir mesa' : 'Sin turno' }}
             </button>
+            <span *ngIf="mesa.estado === 'ocupada'" class="action-status-badge badge-ocupada">
+                <mat-icon>restaurant</mat-icon> Ocupada
+            </span>
             <button *ngIf="mesa.estado === 'impresa'" class="action-btn action-purple"
                 (click)="irAServicio(mesa); $event.stopPropagation()">
                 Ver Cuenta

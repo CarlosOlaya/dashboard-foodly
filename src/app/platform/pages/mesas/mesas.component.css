@@ -10,78 +10,22 @@
     padding: 0 0 2rem;
 }
 
-/* ═══ Header ═══ */
-.mesas-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 14px;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
 
-.mesas-header-left {
+
+/* ═══ Tabs container — scrollable row ═══ */
+.mesas-tabs {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     flex: 1;
+    min-width: 0;
 }
 
-.mesas-title {
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.2;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-}
-
-.mesas-title mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-    color: var(--brand-primary);
-}
-
-.mesas-add-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.55rem 1.25rem;
-    background: var(--brand-primary);
-    color: var(--text-on-brand);
-    font-weight: 700;
-    font-size: 0.82rem;
-    border: none;
-    border-radius: var(--radius-xl);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.mesas-add-btn:hover {
-    transform: translateY(-2px) scale(1.03);
-}
-
-.mesas-add-btn:active {
-    transform: scale(0.97);
-}
-
-.mesas-add-btn mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+.mesas-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 /* ═══ Turno Warning ═══ */
@@ -153,27 +97,27 @@
 }
 
 /* ═══ View Tabs (matches comandas view-tab) ═══ */
-
 .view-tab {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    gap: 6px;
+    padding: 7px 14px;
     border: none;
     border-radius: 8px;
     background: transparent;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .view-tab mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .view-tab:hover {
@@ -209,7 +153,7 @@
 @media (max-width: 600px) {
     .mesas-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.6rem;
+        gap: 0.5rem;
     }
 }
 
@@ -263,18 +207,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px 10px;
+    padding: 12px 14px 8px;
 }
 
 .card-top-left {
     display: flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
 }
 
 .card-mesa-icon {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
@@ -304,7 +249,7 @@
 }
 
 .card-mesa-num {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 800;
     color: var(--text-primary);
     margin: 0;
@@ -312,22 +257,23 @@
 }
 
 .card-zona {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.12em;
 }
 
-/* ── Status Badge ── */
+/* ── Status Badge (desktop-only class hides on mobile) ── */
 .card-estado-badge {
-    padding: 0.2rem 0.65rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 9999px;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .badge-libre {
@@ -349,14 +295,14 @@
 .card-details {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 6px 16px 12px;
+    gap: 0.4rem;
+    padding: 4px 14px 10px;
 }
 
 .detail-row {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     color: var(--text-muted);
 }
 
@@ -367,7 +313,7 @@
 }
 
 .detail-text {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-secondary);
 }
@@ -378,50 +324,21 @@
     font-weight: 500;
 }
 
-.detail-muted {
-    font-weight: 500;
-    font-size: 0.75rem;
-}
-
 .detail-inline-edit {
     display: flex;
     align-items: center;
     gap: 0.35rem;
 }
 
-/* Status dot */
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.dot-libre {
-    background: var(--slate-300);
-}
-
-.dot-ocupada {
-    background: var(--brand-primary);
-    box-shadow: 0 0 0 var(--brand-tint-30);
-    animation: pulse-dot 2s infinite;
-}
-
-.dot-impresa {
-    background: var(--brand-secondary);
-    box-shadow: 0 0 0 rgba(var(--brand-sec-rgb), 0.4);
-    animation: pulse-dot 2s infinite;
-}
-
 /* ── Comensales input ── */
 .comensales-input {
-    width: 40px;
-    padding: 3px 6px;
+    width: 38px;
+    padding: 2px 4px;
     border: 1px solid var(--border-subtle);
     border-radius: 6px;
     background: var(--bg-input);
     color: var(--text-primary);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
     text-align: center;
     transition: all 0.2s;
@@ -444,18 +361,19 @@
 /* ── Card Actions ── */
 .card-actions {
     display: flex;
+    align-items: center;
     gap: 0.4rem;
     margin-top: auto;
-    padding: 8px 12px;
+    padding: 6px 10px;
     background: rgba(255, 255, 255, 0.03);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .action-btn {
     flex: 1;
-    padding: 0.55rem 0.75rem;
+    padding: 0.5rem 0.6rem;
     border-radius: var(--radius-xl);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     border: none;
     cursor: pointer;
@@ -479,31 +397,30 @@
     cursor: not-allowed;
 }
 
-.action-cyan {
-    background: var(--brand-primary);
-    color: var(--text-on-brand);
-}
-
 .action-purple {
     background: var(--brand-secondary);
     color: #fff;
 }
 
-.action-ghost {
-    flex: 0;
-    padding: 0.55rem;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-muted);
+/* ── Action Status Badge (replaces status badge on mobile for occupied) ── */
+.action-status-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    padding: 0.45rem 0.6rem;
+    border-radius: var(--radius-xl);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
 }
 
-.action-ghost:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.action-ghost mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+.action-status-badge mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
 }
 
 /* ═══ Loading State ═══ */
@@ -539,41 +456,87 @@
 
 /* ═══ Mobile ═══ */
 @media (max-width: 768px) {
-    .mesas-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
+
+    .view-tab {
+        padding: 5px 10px;
+        font-size: 12px;
+        gap: 4px;
     }
 
-    .mesas-header-left {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    .view-tab mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
     }
 
-    .mesas-title {
-        font-size: 1.15rem;
+    /* Hide the desktop-only badge in card-top */
+    .desktop-only {
+        display: none;
     }
 
-    .mesas-header-left {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .mesas-add-btn {
-        width: 100%;
-        justify-content: center;
+    /* Tighter card spacing */
+    .card-top {
+        padding: 8px 10px 6px;
     }
 
     .card-mesa-icon {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
 
     .card-mesa-icon mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .card-mesa-num {
+        font-size: 0.88rem;
+    }
+
+    .card-zona {
+        font-size: 0.58rem;
+    }
+
+    .card-details {
+        padding: 2px 10px 6px;
+        gap: 0.25rem;
+    }
+
+    .detail-row mat-icon {
+        font-size: 13px;
+        width: 13px;
+        height: 13px;
+    }
+
+    .detail-text {
+        font-size: 0.75rem;
+    }
+
+    .card-actions {
+        padding: 5px 8px;
+    }
+
+    .action-btn {
+        padding: 0.4rem 0.4rem;
+        font-size: 0.72rem;
+    }
+
+    .action-status-badge {
+        font-size: 0.68rem;
+        padding: 0.35rem 0.4rem;
+    }
+
+    .comensales-input {
+        width: 32px;
+        font-size: 0.75rem;
+        padding: 2px 3px;
+    }
+
+    .turno-warning {
+        flex-direction: column;
+        padding: 0.75rem 1rem;
+        gap: 0.5rem;
+        text-align: center;
     }
 }

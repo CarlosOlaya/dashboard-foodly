@@ -6,6 +6,24 @@
             <span class="mobile-brand-name">{{ currentPageTitle }}</span>
         </div>
         <div class="mobile-header-actions">
+            <!-- Page-specific action (add/edit) -->
+            <a class="mobile-action-btn" *ngIf="currentPageAction?.route" [routerLink]="currentPageAction!.route">
+                <mat-icon>{{ currentPageAction!.icon }}</mat-icon>
+                <span>{{ currentPageAction!.label }}</span>
+            </a>
+            <!-- Empresa: Editar/Cancelar -->
+            <ng-container *ngIf="isEmpresa && empresaComponent && isAdmin && empresaComponent.empresa">
+                <button class="mobile-action-btn" *ngIf="!empresaComponent.editando"
+                    (click)="empresaComponent.toggleEditar()">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar</span>
+                </button>
+                <button class="mobile-turno-btn turno-cerrar" *ngIf="empresaComponent.editando"
+                    (click)="empresaComponent.toggleEditar()">
+                    <mat-icon>close</mat-icon>
+                    <span>Cancelar</span>
+                </button>
+            </ng-container>
             <!-- Arqueo: Abrir/Cerrar Turno -->
             <ng-container *ngIf="isArqueo && arqueoComponent && !arqueoComponent.loading">
                 <button class="mobile-turno-btn turno-abrir" *ngIf="!arqueoComponent.turnoActivo"

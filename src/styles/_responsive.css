@@ -51,12 +51,21 @@
         padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 12px);
     }
 
-    /* ── Page Header — title moves to mobile header ── */
+    /* ── Page Header — hidden on mobile (content moved to mobile header bar) ── */
     .page-header {
+        display: none !important;
+    }
+
+    /* Show page-header for modules that have tabs/filters inside it */
+    .page-header.mesas-header,
+    .page-header.kds-header,
+    .page-header.arqueo-header {
+        display: flex !important;
         flex-direction: column;
-        align-items: flex-start;
         gap: 8px;
+        padding: 8px 10px;
         margin-bottom: 10px;
+        border-radius: 10px;
     }
 
     /* Title and subtitle hidden — shown in mobile header instead */
@@ -65,6 +74,13 @@
     }
 
     .page-subtitle {
+        display: none !important;
+    }
+
+    /* Action buttons hidden inside compound headers — moved to mobile header */
+    .page-header .btn-neon,
+    .page-header .btn-ghost,
+    .page-header .header-actions {
         display: none !important;
     }
 

@@ -14,22 +14,8 @@
     min-height: 100vh;
 }
 
-/* ═══ Header ═══ */
-.kds-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    flex-wrap: wrap;
-    gap: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+
+
 
 .header-left {
     display: flex;
@@ -38,25 +24,8 @@
     flex: 1;
 }
 
-.kds-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--text-primary);
-    margin: 0;
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    white-space: nowrap;
-}
 
-.kds-title mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-    color: var(--brand-primary);
-}
+
 
 /* ═══ Header Tabs ═══ */
 .header-tabs {
@@ -514,56 +483,64 @@
         min-height: auto;
     }
 
-    /* ── Header — stacked, compact ── */
+    /* ── Header — two rows: tabs on top, filter below ── */
     .kds-header {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: wrap;
+        justify-content: flex-start;
         gap: 8px;
-        padding: 10px 12px;
+        padding: 8px 10px;
         margin-bottom: 10px;
         border-radius: 10px;
     }
 
     .header-left {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex: none;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
 
-    /* Title hidden — shown in mobile header */
-    .kds-title {
+    .header-left::-webkit-scrollbar {
         display: none;
     }
 
-    .kds-title mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-    }
-
-    /* ── Tabs — horizontal, touch-friendly ── */
+    /* ── Tabs — inline, compact ── */
     .view-tab {
-        flex: 1;
-        justify-content: center;
-        padding: 8px 12px;
-        font-size: 13px;
-        gap: 5px;
+        flex-shrink: 0;
+        padding: 6px 10px;
+        font-size: 12px;
+        gap: 4px;
         border-radius: 8px;
-        background: rgba(0, 0, 0, 0.03);
     }
 
     .view-tab mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
     }
 
-    /* ── Area filter — scroll horizontal ── */
+    .tab-badge {
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        font-size: 10px;
+    }
+
+    /* ── Area filter — full width, scroll horizontal ── */
     .area-filter {
+        width: 100%;
+        justify-content: center;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 4px;
+        flex-shrink: 0;
     }
 
     .area-filter::-webkit-scrollbar {
@@ -575,27 +552,16 @@
     }
 
     .area-pill {
-        font-size: 12px;
-        padding: 5px 10px;
-        min-height: 30px;
+        font-size: 11px;
+        padding: 4px 8px;
+        min-height: 28px;
         flex-shrink: 0;
     }
 
-    .header-right {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-    }
-
-    .btn-refresh {
-        width: 32px;
-        height: 32px;
-    }
-
-    /* ── Grid — single column ── */
+    /* ── Grid — two columns like mesas ── */
     .kds-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
         padding-bottom: 12px;
     }
 
@@ -605,35 +571,71 @@
     }
 
     .card-header-compact {
-        padding: 8px 10px;
+        padding: 8px 8px;
     }
 
     .mesa-badge {
-        font-size: 15px;
+        font-size: 13px;
+        gap: 4px;
+    }
+
+    .mesa-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
     }
 
     .timer-badge {
-        font-size: 12px;
-        padding: 2px 6px;
+        font-size: 11px;
+        padding: 2px 5px;
+    }
+
+    .header-sub {
+        font-size: 11px;
+        gap: 4px;
     }
 
     .card-items {
-        max-height: 200px;
+        max-height: 180px;
+        padding: 0 8px 6px;
+    }
+
+    .items-header {
+        font-size: 10px;
+    }
+
+    .item-name {
+        font-size: 12px;
+    }
+
+    .item-qty {
+        font-size: 12px;
+        min-width: 22px;
+    }
+
+    .item-comment {
+        font-size: 11px;
     }
 
     .card-actions {
-        padding: 8px 10px;
+        padding: 6px 8px;
     }
 
     .btn-despachar {
-        height: 40px;
-        font-size: 14px;
+        height: 34px;
+        font-size: 12px;
         border-radius: 8px;
     }
 
     .btn-print-card {
-        width: 40px;
-        height: 40px;
+        width: 34px;
+        height: 34px;
+    }
+
+    .btn-print-card mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
     }
 
     /* ── Empty state — compact ── */

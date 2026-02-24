@@ -986,7 +986,6 @@
 @media (max-width: 768px) {
     .arqueo-header {
         flex-direction: column;
-        align-items: flex-start;
     }
 
     /* Turno buttons moved to mobile header */

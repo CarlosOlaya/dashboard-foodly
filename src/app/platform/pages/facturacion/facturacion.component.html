@@ -1,39 +1,40 @@
-<div class="page-header facturacion-header">
+<div class="page-header">
   <div>
     <h1 class="page-title"><mat-icon>receipt_long</mat-icon>Facturación</h1>
     <p class="page-subtitle">Historial y métricas de facturas</p>
   </div>
-
-  <div class="metricas-inline">
-    <div class="metrica-card">
-      <div class="metrica-icon ventas"><mat-icon>trending_up</mat-icon></div>
-      <div class="metrica-info">
-        <span class="metrica-label">Ventas</span>
-        <span class="metrica-valor">${{ totalVentas | number:'1.0-0' }}</span>
-      </div>
-    </div>
-    <div class="metrica-card">
-      <div class="metrica-icon facturas"><mat-icon>receipt_long</mat-icon></div>
-      <div class="metrica-info">
-        <span class="metrica-label">Facturas</span>
-        <span class="metrica-valor">{{ totalFacturas }}</span>
-      </div>
-    </div>
-
-    <div class="metrica-card">
-      <div class="metrica-icon anuladas"><mat-icon>block</mat-icon></div>
-      <div class="metrica-info">
-        <span class="metrica-label">Anuladas</span>
-        <span class="metrica-valor">{{ totalAnuladas }}</span>
-      </div>
-    </div>
-  </div>
-
   <div class="header-actions">
     <button class="btn-ghost" (click)="exportarCSV()" title="Exportar CSV">
       <mat-icon>download</mat-icon>
       Exportar
     </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- MÉTRICAS                              -->
+<!-- ══════════════════════════════════════ -->
+<div class="metricas-inline">
+  <div class="metrica-card">
+    <div class="metrica-icon ventas"><mat-icon>trending_up</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Ventas</span>
+      <span class="metrica-valor">${{ totalVentas | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="metrica-card">
+    <div class="metrica-icon facturas"><mat-icon>receipt_long</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Facturas</span>
+      <span class="metrica-valor">{{ totalFacturas }}</span>
+    </div>
+  </div>
+  <div class="metrica-card">
+    <div class="metrica-icon anuladas"><mat-icon>block</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Anuladas</span>
+      <span class="metrica-valor">{{ totalAnuladas }}</span>
+    </div>
   </div>
 </div>
 

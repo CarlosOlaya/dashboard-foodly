@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AlertService } from '../../services/alert.service';
 import { ArqueoComponent } from '../arqueo/arqueo.component';
+import { EmpresaComponent } from '../empresa/empresa.component';
 
 interface NavItem {
   label: string;
@@ -40,6 +41,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   get usuario() { return this.authService.usuario; }
+
+  get isEmpresa(): boolean {
+    return this.currentRoute.includes('/empresa');
+  }
+
+  get empresaComponent(): EmpresaComponent | null {
+    return this.activeChild instanceof EmpresaComponent ? this.activeChild : null;
+  }
 
   // ── Hero item (admin only) ──
   navDashboard: NavItem = { label: 'Dashboard', icon: 'analytics', route: './finanzas' };
@@ -162,6 +171,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.currentRoute.includes(key)) return title;
     }
     return 'Foodly';
+  }
+
+  /** Action button config for the mobile header, based on current route */
+  get currentPageAction(): { icon: string; label: string; route?: string } | null {
+    if (!this.isAdmin) return null;
+    const actionMap: Record<string, { icon: string; label: string; route?: string }> = {
+      '/carta': { icon: 'add', label: 'Nuevo', route: '/home/agregar-plato' },
+      '/empleados': { icon: 'add', label: 'Nuevo', route: '/home/agregar-empleado' },
+      '/proveedores': { icon: 'add', label: 'Nuevo', route: '/home/agregar-proveedor' },
+      '/clientes': { icon: 'add', label: 'Nuevo', route: '/home/agregar-cliente' },
+      '/productos': { icon: 'add', label: 'Nuevo', route: '/home/agregar-producto' },
+    };
+    for (const [key, action] of Object.entries(actionMap)) {
+      if (this.currentRoute.includes(key)) return action;
+    }
+    return null;
   }
 
   // ── Notification panel ──
