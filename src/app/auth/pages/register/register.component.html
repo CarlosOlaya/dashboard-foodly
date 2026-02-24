@@ -1,0 +1,93 @@
+<div class="login-page">
+    <!-- Animated background orbs -->
+    <div class="login-orb orb-1"></div>
+    <div class="login-orb orb-2"></div>
+    <div class="login-orb orb-3"></div>
+
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="/assets/favicon.svg" alt="Foodly Logo" class="logo-img" />
+            <h2 class="login-brand-name">Foodly</h2>
+            <p class="login-slogan">Fácil. Fluido. Foodly.</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+
+            <div class="login-field">
+                <label for="tenant_id">ID de tu restaurante</label>
+                <div class="input-wrapper">
+                    <mat-icon class="input-icon">store</mat-icon>
+                    <input id="tenant_id" type="text" class="input-glass has-icon" formControlName="tenant_id"
+                        placeholder="Solicítalo a tu administrador" autocomplete="organization" />
+                </div>
+            </div>
+
+            <div class="login-field">
+                <label for="rol">Tu rol en el equipo</label>
+                <div class="input-wrapper">
+                    <mat-icon class="input-icon">badge</mat-icon>
+                    <select id="rol" class="input-glass has-icon" formControlName="rol">
+                        <option *ngFor="let r of roles" [value]="r.codigo">
+                            {{ r.nombre }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="login-field">
+                <label for="reg-email">Correo electrónico</label>
+                <div class="input-wrapper">
+                    <mat-icon class="input-icon">email</mat-icon>
+                    <input id="reg-email" type="email" class="input-glass has-icon" formControlName="email"
+                        placeholder="tu-email@restaurante.com" autocomplete="email" />
+                </div>
+            </div>
+
+            <div class="register-row">
+                <div class="login-field">
+                    <label for="reg-password">Contraseña</label>
+                    <div class="input-wrapper">
+                        <mat-icon class="input-icon">lock</mat-icon>
+                        <input id="reg-password" type="password" class="input-glass has-icon" formControlName="password"
+                            placeholder="Min. 6 caracteres" autocomplete="new-password" />
+                    </div>
+                </div>
+
+                <div class="login-field">
+                    <label for="reg-confirm">Confirmar</label>
+                    <div class="input-wrapper">
+                        <mat-icon class="input-icon">lock_outline</mat-icon>
+                        <input id="reg-confirm" type="password" class="input-glass has-icon"
+                            formControlName="confirmPassword" placeholder="••••••••" autocomplete="new-password" />
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="passwordMismatch" class="error-msg">
+                Las contraseñas no coinciden
+            </div>
+
+            <div *ngIf="errorMsg" class="error-msg">
+                {{ errorMsg }}
+            </div>
+
+            <button type="submit" class="login-btn" [disabled]="registerForm.invalid || loading || passwordMismatch">
+                <span *ngIf="!loading">Crear mi cuenta</span>
+                <span *ngIf="loading" class="btn-loading">
+                    <mat-icon class="spin-icon">refresh</mat-icon>
+                    Registrando...
+                </span>
+            </button>
+
+            <div class="auth-switch">
+                ¿Ya tienes cuenta?
+                <a routerLink="/auth">Iniciar sesión</a>
+            </div>
+
+            <div class="auth-switch" style="margin-top: 12px;">
+                ¿Tu empresa no está con nosotros?
+                <a routerLink="/auth/onboard">Únete aquí</a>
+            </div>
+        </form>
+    </div>
+</div>

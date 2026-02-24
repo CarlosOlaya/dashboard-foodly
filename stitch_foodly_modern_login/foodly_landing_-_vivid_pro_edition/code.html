@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Foodly | The Future of Dining, Managed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06f9f9",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#060b14",
+                        "card-glass": "rgba(255, 255, 255, 0.03)",
+                        "border-glass": "rgba(6, 249, 249, 0.2)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background: radial-gradient(circle at 0% 0%, #0c1425 0%, #060b14 50%, #0a1120 100%);
+            min-height: 100vh;
+        }
+        .mesh-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(6, 249, 249, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(79, 70, 229, 0.1) 0%, transparent 40%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 249, 249, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(6, 249, 249, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(6, 249, 249, 0.1);
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(6, 249, 249, 0.3);
+        }
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(6, 249, 249, 0.4);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(6, 249, 249, 0.6);
+        }
+    </style>
+</head>
+<body class="font-display text-slate-100 selection:bg-primary selection:text-black">
+<div class="mesh-gradient"></div>
+<div class="relative flex flex-col min-h-screen">
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 px-6 py-4 flex justify-center">
+<header class="w-full max-w-7xl glass-panel rounded-full px-8 py-3 flex items-center justify-between border-border-glass">
+<div class="flex items-center gap-2">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark font-bold">restaurant</span>
+</div>
+<h2 class="text-white text-xl font-black tracking-tighter uppercase">Foodly</h2>
+</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-sm font-medium text-slate-300 hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-sm font-medium text-slate-300 hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-sm font-medium text-slate-300 hover:text-primary transition-colors" href="#">About Us</a>
+<a class="text-sm font-medium text-slate-300 hover:text-primary transition-colors" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:block text-sm font-bold text-slate-300 hover:text-white px-4">Login</button>
+<button class="btn-glow bg-primary text-background-dark text-sm font-bold h-10 px-6 rounded-full transition-all">
+                        Get Started
+                    </button>
+</div>
+</header>
+</nav>
+<!-- Hero Section -->
+<main class="flex-grow flex flex-col items-center px-6">
+<div class="w-full max-w-7xl pt-16 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-[10px] font-bold tracking-widest uppercase text-primary">v2.0 Now Live</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-black leading-[1.1] tracking-tight text-white text-glow">
+                        The Future of <span class="text-primary">Dining</span>, Managed.
+                    </h1>
+<p class="text-lg text-slate-400 leading-relaxed max-w-xl">
+                        Revolutionize your restaurant operations with Foodly's AI-driven SaaS platform. Experience high-tech management from the cloud to the kitchen.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+<button class="btn-glow bg-primary text-background-dark text-base font-bold h-14 px-8 rounded-xl flex items-center justify-center gap-2 transition-all group">
+                            Start Free Trial
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="glass-panel border-white/10 text-white text-base font-bold h-14 px-8 rounded-xl flex items-center justify-center gap-2 hover:bg-white/5 transition-all">
+                            Watch Demo
+                        </button>
+</div>
+<div class="flex items-center gap-6 mt-4">
+<div class="flex -space-x-3">
+<div class="size-10 rounded-full border-2 border-background-dark bg-slate-800" data-alt="User avatar 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUmOUpNo4jZGLm37Mxj4xBCJKw6mp_xXZ-ew5kXg7xOs3mtqGRlBZq6wwrLHBZq61S2GcdKTHCG43FniTHM-_75cANrZTQqapC1HHvdz5cD1S5ZlFlCAXJ8_tx4NaLYaVE7cC1O-tBwtcpvt4I-TjI2F9pnWAf3hHT3ZmM-l5L7p0A1QihIqnLvrf6f4gwIexWQ9y-ygA9GVevUzC4Sf1GWWbBAGMZItYTcMHYwTLei-Ufo55Z5-uuV9D_PgiQBxqxLZI-tyWIN4Q')"></div>
+<div class="size-10 rounded-full border-2 border-background-dark bg-slate-800" data-alt="User avatar 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDv4599ViAXjxYJJiES1PrwPrPUybAn5dNL7maxL_43bxX2z1BW3I1nFGaPA7AOjuRAKmOGNB4JLsWNMVPWlPrl2R5KzOmEnLLHpZRaG3OxU09PS-GUeMjuhZJXpRAg5oxqXVcJldb-KJC1sdjhKqqjKb07zIFwzeXYu0U0VZgAmpZZ-dT_ckqVkBnN-3AAaR8oZXIB-Y6Y9PrMIOHd0sP__pa0UFX7wOpEH1Nk0tv-3GjTdy0onms1WAmQ_1qfN2l-evd0klK1rpE')"></div>
+<div class="size-10 rounded-full border-2 border-background-dark bg-slate-800" data-alt="User avatar 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDpq40iDT1WBs-TtMJBxvekt4dvpDKDFA6max2pBm5fDKQFmLqofOyWUBY2qvx49nrNgX654d7Fe87ElK0k3ANtpwwrIPVK0TNR54AL2KtkIA8mzt2qOfHI8FE048BmiT6nmVTJfxzAqMsVgw9hvvLmyd9tS32yipKMMMPO22vbljEixctk51f-1ZR9eWITDMILiu1lUVI3OenCNFf5RHDz0rxNuurG7ECPnQw97HGfGRajlczvrKnVjfYuuHoTZozx2HOtW2VPXCE')"></div>
+</div>
+<p class="text-sm text-slate-500"><strong class="text-slate-200">500+</strong> Top-tier restaurants joined this month</p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary/30 to-purple-500/30 rounded-2xl blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+<div class="relative glass-panel rounded-2xl overflow-hidden aspect-square md:aspect-video lg:aspect-square flex items-center justify-center border-border-glass">
+<img alt="Restaurant Dashboard Mockup" class="w-full h-full object-cover opacity-60 mix-blend-overlay" data-alt="High-tech restaurant management dashboard interface mockup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8nADWaHUW7jEhPqlJUqwfKF19WeZht0HJDfdc-_FLkGcQWPs8od6KMQa_giWX8DARSu3KuH0f9rdxD_ESdA3_spREUNcjg2F8lfi9p7_CnBSLXaPOeYwpUxtEkb7Sy8aHqAaCUzJMDkDSxcdG0mffRA_95rE6hM4AHiQ7LT6PKrdPgjDeF_2bV1Wb8HzFjqtxxl2HYXTT0t-4lKcDmOn5cJ1xh88oVF8eoroghfKNAGxYT4rqMPLARAEaWKTmFUeMxs4PZphW6rk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8 p-6 glass-card rounded-xl">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-bold text-primary tracking-widest uppercase">Live Analytics</span>
+<span class="text-xs text-slate-400">Real-time sync</span>
+</div>
+<div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+<div class="mt-4 flex justify-between">
+<span class="text-2xl font-bold text-white">$24,942.00</span>
+<span class="text-primary text-sm font-bold">+12.5%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Features Section -->
+<section class="w-full max-w-7xl py-24">
+<div class="text-center mb-16 space-y-4">
+<h2 class="text-primary text-sm font-bold tracking-[0.2em] uppercase">Core Features</h2>
+<h3 class="text-3xl md:text-5xl font-black text-white">Futuristic Solutions for Modern Eateries</h3>
+<p class="text-slate-400 max-w-2xl mx-auto">Designed for high-performance hospitality environments, our tools empower your staff and delight your guests.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="glass-card p-8 rounded-2xl flex flex-col gap-6">
+<div class="size-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">table_restaurant</span>
+</div>
+<div class="space-y-3">
+<h4 class="text-xl font-bold text-white">Table Management</h4>
+<p class="text-slate-400 leading-relaxed">Visualize real-time floor plans with interactive glass interfaces and instant seating updates.</p>
+</div>
+<a class="text-primary text-sm font-bold flex items-center gap-2 mt-auto" href="#">Learn more <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+</div>
+<!-- Feature 2 -->
+<div class="glass-card p-8 rounded-2xl flex flex-col gap-6">
+<div class="size-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">qr_code_2</span>
+</div>
+<div class="space-y-3">
+<h4 class="text-xl font-bold text-white">Digital Menu</h4>
+<p class="text-slate-400 leading-relaxed">QR-code integration with dynamic updates, high-res imagery, and instant language syncing.</p>
+</div>
+<a class="text-primary text-sm font-bold flex items-center gap-2 mt-auto" href="#">Learn more <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+</div>
+<!-- Feature 3 -->
+<div class="glass-card p-8 rounded-2xl flex flex-col gap-6">
+<div class="size-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">account_balance_wallet</span>
+</div>
+<div class="space-y-3">
+<h4 class="text-xl font-bold text-white">Live Billing</h4>
+<p class="text-slate-400 leading-relaxed">Instant, cloud-synced financial tracking with predictive analytics and automated tax reporting.</p>
+</div>
+<a class="text-primary text-sm font-bold flex items-center gap-2 mt-auto" href="#">Learn more <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+</div>
+</div>
+</section>
+<!-- About Us Section -->
+<section class="w-full max-w-7xl py-24 mb-24 border-t border-white/5">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div class="relative">
+<div class="aspect-square glass-panel rounded-3xl overflow-hidden border-border-glass relative">
+<img alt="About Foodly team" class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" data-alt="Kitchen staff using high-tech tablets to manage orders" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClhBagXzdjK7IGAUI7LAHi1FBaVhBJyoSzrnqKntZISOHsbuv0QAR8gKmuggLs6tFzmuKcjLgUCUtsLJKJLr_k-PBCuGRYUhDBPh5jGUzWp0rt2f-VRGvTQ9PuZ9fWH0HlbYCmY5HFQo3wz6BoA8gFd5dVSlf_sL-WsYAPX01RTJOXpid2Ytc7Q1TdUl7rZev-fzEEnUoLdW1zASWN6D5k6IbzSXyyV2u1wNEDujfnxnimemNjBeYmWJJH-P62S3e895Rljgk-q38"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+</div>
+<div class="absolute -bottom-6 -right-6 glass-card p-6 rounded-2xl border-primary/30 max-w-xs">
+<p class="text-white font-medium italic">"Born from a passion for gastronomy and technology, Foodly bridges the gap between the kitchen and the cloud."</p>
+<p class="text-primary text-xs font-bold mt-4 tracking-widest uppercase">— Founder's Vision</p>
+</div>
+</div>
+<div class="flex flex-col gap-8">
+<h2 class="text-primary text-sm font-bold tracking-[0.2em] uppercase">Our Story</h2>
+<h3 class="text-4xl md:text-5xl font-black text-white leading-tight">Crafting the OS for Hospitality</h3>
+<p class="text-slate-400 text-lg leading-relaxed">
+                            Foodly started in a small bistro back in 2019. We saw firsthand how fragmented tools slowed down the magic of dining. Our mission became clear: build a unified, high-performance ecosystem that lets chefs focus on food and owners focus on growth.
+                        </p>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-2">
+<span class="text-4xl font-black text-white">200%</span>
+<p class="text-slate-500 text-sm">Efficiency increase reported by partners</p>
+</div>
+<div class="space-y-2">
+<span class="text-4xl font-black text-white">15+</span>
+<p class="text-slate-500 text-sm">Countries served globally</p>
+</div>
+</div>
+<button class="w-fit text-white font-bold flex items-center gap-3 group">
+                            Learn more about our mission 
+                            <span class="size-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background-dark transition-all">
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="w-full max-w-5xl py-24 px-6 mb-24">
+<div class="glass-panel p-12 md:p-20 rounded-3xl border-border-glass text-center relative overflow-hidden">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 size-96 bg-primary/10 blur-[100px] rounded-full"></div>
+<div class="relative z-10 space-y-8">
+<h2 class="text-4xl md:text-6xl font-black text-white tracking-tight">Ready to transcend the <span class="text-primary">ordinary?</span></h2>
+<p class="text-slate-400 text-lg max-w-xl mx-auto">Join the 10,000+ establishments already using Foodly to power their hospitality experience.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+<button class="btn-glow bg-primary text-background-dark text-base font-bold h-14 px-10 rounded-xl transition-all">
+                                Get Started Now
+                            </button>
+<button class="glass-panel border-white/10 text-white text-base font-bold h-14 px-10 rounded-xl hover:bg-white/5 transition-all">
+                                Contact Sales
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-black/50 border-t border-white/5 py-12 px-6">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-2 space-y-6">
+<div class="flex items-center gap-2">
+<div class="size-6 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark text-xs font-bold">restaurant</span>
+</div>
+<h2 class="text-white text-lg font-black tracking-tighter uppercase">Foodly</h2>
+</div>
+<p class="text-slate-500 max-w-sm text-sm">Empowering the world's best restaurants with tools that blend cutting-edge technology with human-centric design.</p>
+<div class="flex gap-4">
+<a class="size-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-background-dark text-sm">share</span>
+</a>
+<a class="size-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-background-dark text-sm">alternate_email</span>
+</a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-white text-sm font-bold uppercase tracking-widest">Platform</h4>
+<ul class="space-y-2 text-sm text-slate-500">
+<li><a class="hover:text-primary transition-colors" href="#">Digital Menus</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Point of Sale</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Inventory</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Analytics</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-white text-sm font-bold uppercase tracking-widest">Company</h4>
+<ul class="space-y-2 text-sm text-slate-500">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-12 mt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+<p>© 2024 Foodly Technologies Inc. All rights reserved.</p>
+<p>Designed with passion for the future of hospitality.</p>
+</div>
+</footer>
+</div>
+</body></html>

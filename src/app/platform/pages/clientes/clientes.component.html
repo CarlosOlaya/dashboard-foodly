@@ -1,0 +1,59 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title"><mat-icon>group</mat-icon>Clientes</h1>
+    <p class="page-subtitle">Gestiona la base de clientes del restaurante</p>
+  </div>
+  <button class="btn-neon" routerLink="/home/agregar-cliente">
+    <mat-icon>add</mat-icon>
+    Agregar cliente
+  </button>
+</div>
+
+<!-- Search -->
+<div class="search-box mb-24">
+  <mat-icon class="search-icon">search</mat-icon>
+  <input (keyup)="applyFilter($event)" placeholder="Buscar clientes..." #input />
+</div>
+
+<!-- Table -->
+<div class="card-glass">
+  <section tabindex="0">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let e">{{ e.nombre }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="apellido1">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+        <td mat-cell *matCellDef="let e">{{ e.apellido1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="documento">
+        <th mat-header-cell *matHeaderCellDef>Documento</th>
+        <td mat-cell *matCellDef="let e">{{ e.documento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let e">{{ e.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let e">{{ e.telefono }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clienteSel(row)"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="5" style="padding: 24px; text-align: center; color: var(--text-muted);">
+          No hay datos que coincidan con "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+  </section>
+</div>

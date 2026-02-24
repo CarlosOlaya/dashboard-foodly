@@ -1,0 +1,50 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* ── Detail Card ── */
+.card-header {
+    padding: 12px 20px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-img-top {
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+.list-group-item {
+    border: none;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.list-group-item strong {
+    display: inline-block;
+    width: 150px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 767.98px) {
+    .card-img-top {
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+}

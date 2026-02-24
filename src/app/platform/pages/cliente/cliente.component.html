@@ -1,0 +1,62 @@
+<div style="max-width: 720px; margin: 0 auto;">
+  <div class="page-header" *ngIf="cliente">
+    <div class="flex items-center gap-12">
+      <button class="btn-ghost" style="padding: 8px;" routerLink="/home/clientes">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1 class="page-title">Perfil de Cliente</h1>
+        <p class="page-subtitle">{{ cliente.nombre }} {{ cliente.apellido1 }}</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-12">
+      <button class="btn-neon" (click)="editar()">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button class="btn-danger" (click)="eliminar()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+    </div>
+  </div>
+
+  <div class="card-glass" *ngIf="cliente">
+    <div class="card-body-custom">
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Nombre</span>
+          <span class="detail-value">{{ cliente.nombre }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Apellido</span>
+          <span class="detail-value">{{ cliente.apellido1 }} {{ cliente.apellido2 }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Documento</span>
+          <span class="detail-value">{{ cliente.documento || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ cliente.email || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Teléfono</span>
+          <span class="detail-value">{{ cliente.telefono || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Género</span>
+          <span class="detail-value">{{ (cliente.genero || 'N/A') | titlecase }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Fecha de nacimiento</span>
+          <span class="detail-value">{{ (cliente.fecha_nacimiento | date) || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Notas</span>
+          <span class="detail-value">{{ cliente.notas || '—' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

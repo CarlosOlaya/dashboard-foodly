@@ -1,0 +1,415 @@
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE HEADER                          -->
+<!-- ══════════════════════════════════════ -->
+<div class="page-header arqueo-header">
+    <div>
+        <h1 class="page-title"><mat-icon>point_of_sale</mat-icon>Arqueo de Caja</h1>
+        <p class="page-subtitle">Gestión de turnos y cierres de caja</p>
+    </div>
+
+    <!-- Status inline (solo si hay turno activo) -->
+    <div class="status-inline" *ngIf="!loading && turnoActivo">
+        <span class="turno-badge estado-abierto">
+            <span class="pulse-dot"></span>
+            Abierto
+        </span>
+        <span class="meta-item">
+            <mat-icon>schedule</mat-icon>
+            {{ turnoActivo.hora_apertura | date:'HH:mm' }} · {{ tiempoActivo }}
+        </span>
+        <span class="meta-item" *ngIf="turnoActivo.empleado">
+            <mat-icon>person</mat-icon>
+            {{ turnoActivo.empleado.nombre }}
+        </span>
+    </div>
+
+    <!-- Tabs inline en header -->
+    <div class="tabs-inline">
+        <button class="tab-btn" [class.active]="vistaActual === 'activo'" (click)="vistaActual = 'activo'">
+            <mat-icon>point_of_sale</mat-icon>
+            Turno Actual
+        </button>
+        <button class="tab-btn" [class.active]="vistaActual === 'historial'" (click)="vistaActual = 'historial'">
+            <mat-icon>history</mat-icon>
+            Historial
+        </button>
+    </div>
+
+    <div class="header-actions" *ngIf="!loading">
+        <button class="btn-neon" (click)="abrirTurno()" *ngIf="!turnoActivo">
+            <mat-icon>add_circle</mat-icon>
+            Abrir Turno
+        </button>
+        <button class="btn-danger" (click)="cerrarTurno()" *ngIf="turnoActivo">
+            <mat-icon>lock</mat-icon>
+            Cerrar Turno
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- LOADING                               -->
+<!-- ══════════════════════════════════════ -->
+<div *ngIf="loading" class="loading-wrap">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando...</p>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- VISTA: TURNO ACTIVO                   -->
+<!-- ══════════════════════════════════════ -->
+<ng-container *ngIf="!loading && vistaActual === 'activo'">
+
+    <!-- ─── Sin turno abierto ─── -->
+    <div class="empty-state" *ngIf="!turnoActivo">
+        <div class="empty-icon-wrap">
+            <mat-icon>point_of_sale</mat-icon>
+        </div>
+        <h3>No hay turno abierto</h3>
+        <p>Abre un turno para comenzar a registrar ventas</p>
+        <button class="btn-neon" (click)="abrirTurno()">
+            <mat-icon>add_circle</mat-icon>
+            Abrir Turno
+        </button>
+    </div>
+
+    <!-- ─── Turno activo: Dashboard 3 columnas ─── -->
+    <div class="arqueo-dashboard" *ngIf="turnoActivo && resumen">
+
+        <!-- ═══ COL 1: Resumen General ═══ -->
+        <div class="card-glass dash-card">
+            <h3 class="card-title">
+                <mat-icon>dashboard</mat-icon>
+                Resumen del Turno
+            </h3>
+            <div class="dash-scroll">
+                <div class="caja-resumen resumen-ventas">
+                    <h4><mat-icon>trending_up</mat-icon> Ventas</h4>
+                    <div class="caja-row">
+                        <span>Total ventas</span>
+                        <span><b>${{ formatMoney(resumen.total_ventas) }}</b></span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Total propinas</span>
+                        <span><b>${{ formatMoney(resumen.total_propinas) }}</b></span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Descuentos</span>
+                        <span class="pay-negative">-${{ formatMoney(resumen.total_descuentos) }}</span>
+                    </div>
+                </div>
+                <div class="caja-resumen resumen-facturas">
+                    <h4><mat-icon>receipt_long</mat-icon> Facturas</h4>
+                    <div class="caja-row">
+                        <span>Cerradas</span>
+                        <span><b>{{ resumen.num_facturas_cerradas }}</b></span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Abiertas</span>
+                        <span><b>{{ resumen.num_facturas_abiertas }}</b></span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Anulaciones</span>
+                        <span class="pay-negative"><b>{{ resumen.num_anulaciones }}</b></span>
+                    </div>
+                </div>
+                <div class="caja-resumen resumen-mesas">
+                    <h4><mat-icon>table_bar</mat-icon> Mesas</h4>
+                    <div class="caja-row">
+                        <span>Ocupadas</span>
+                        <span><b>{{ resumen.mesas_ocupadas }}</b></span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Total mesas</span>
+                        <span><b>{{ resumen.mesas_totales }}</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ COL 2: Desglose por Método ═══ -->
+        <div class="card-glass dash-card">
+            <h3 class="card-title">
+                <mat-icon>pie_chart</mat-icon>
+                Desglose por Método de Pago
+            </h3>
+            <div class="dash-scroll">
+                <div class="caja-resumen resumen-efectivo">
+                    <h4><mat-icon>payments</mat-icon> Efectivo en caja</h4>
+                    <div class="caja-row">
+                        <span>Efectivo inicial</span>
+                        <span>${{ formatMoney(turnoActivo.efectivo_inicial) }}</span>
+                    </div>
+                    <div class="caja-row">
+                        <span>+ Venta</span>
+                        <span>${{ formatMoney(resumen.total_efectivo) }}</span>
+                    </div>
+                    <div class="caja-row">
+                        <span>+ Propina</span>
+                        <span>${{ formatMoney(resumen.propina_efectivo) }}</span>
+                    </div>
+                    <div class="caja-row caja-subtotal">
+                        <span><b>Total efectivo</b></span>
+                        <span><b>${{ formatMoney(resumen.total_efectivo + resumen.propina_efectivo) }}</b></span>
+                    </div>
+                    <div class="caja-row caja-total">
+                        <span><b>= Esperado en caja</b></span>
+                        <span class="caja-total-val">${{ formatMoney(resumen.efectivo_esperado) }}</span>
+                    </div>
+                </div>
+                <div class="caja-resumen resumen-tarjeta">
+                    <h4><mat-icon>credit_card</mat-icon> Tarjetas / Datáfono</h4>
+                    <div class="caja-row">
+                        <span>Venta</span>
+                        <span>${{ formatMoney(resumen.total_datafono) }}</span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Propina</span>
+                        <span>${{ formatMoney(resumen.propina_datafono) }}</span>
+                    </div>
+                    <div class="caja-row caja-total">
+                        <span><b>Total tarjeta</b></span>
+                        <span class="caja-total-val">${{ formatMoney(resumen.total_datafono + resumen.propina_datafono)
+                            }}</span>
+                    </div>
+                </div>
+                <div class="caja-resumen resumen-transferencia">
+                    <h4><mat-icon>account_balance</mat-icon> Transferencias</h4>
+                    <div class="caja-row">
+                        <span>Venta</span>
+                        <span>${{ formatMoney(resumen.total_transferencia) }}</span>
+                    </div>
+                    <div class="caja-row">
+                        <span>Propina</span>
+                        <span>${{ formatMoney(resumen.propina_transferencia) }}</span>
+                    </div>
+                    <div class="caja-row caja-total">
+                        <span><b>Total transferencias</b></span>
+                        <span class="caja-total-val">${{ formatMoney(resumen.total_transferencia +
+                            resumen.propina_transferencia) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ COL 3: Facturas del Turno ═══ -->
+        <div class="card-glass dash-card col-facturas">
+            <h3 class="card-title">
+                <mat-icon>receipt</mat-icon>
+                Facturas del Turno
+            </h3>
+            <div class="recientes-empty" *ngIf="!resumen.recientes || resumen.recientes.length === 0">
+                <mat-icon>receipt_long</mat-icon>
+                <p>Aún no hay facturas cerradas en este turno</p>
+            </div>
+            <div class="recientes-scroll" *ngIf="resumen.recientes && resumen.recientes.length > 0">
+                <div class="recientes-list">
+                    <div class="reciente-item" *ngFor="let f of resumen.recientes">
+                        <div class="reciente-left">
+                            <div class="reciente-icon-wrap">
+                                <mat-icon>{{ getMetodoIcon(f.metodo_pago) }}</mat-icon>
+                            </div>
+                            <div class="reciente-info">
+                                <span class="reciente-numero">
+                                    #{{ f.numero_factura }}
+                                    <small *ngIf="f.mesa_numero">· Mesa {{ f.mesa_numero }}</small>
+                                </span>
+                                <span class="reciente-meta">
+                                    {{ f.mesero }}
+                                    <ng-container *ngIf="f.fecha_cierre"> · {{ f.fecha_cierre | date:'HH:mm'
+                                        }}</ng-container>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="reciente-right">
+                            <span class="reciente-total">${{ formatMoney(f.total) }}</span>
+                            <span class="reciente-metodo">{{ f.metodo_pago }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-container>
+
+<!-- ══════════════════════════════════════ -->
+<!-- VISTA: HISTORIAL                      -->
+<!-- ══════════════════════════════════════ -->
+<ng-container *ngIf="!loading && vistaActual === 'historial'">
+
+    <div class="empty-state" *ngIf="historial.length === 0">
+        <div class="empty-icon-wrap">
+            <mat-icon>history</mat-icon>
+        </div>
+        <h3>Sin historial</h3>
+        <p>Los turnos cerrados aparecerán aquí</p>
+    </div>
+
+    <div class="historial-grid" *ngIf="historial.length > 0">
+        <div class="historial-card card-glass" *ngFor="let t of historial" (click)="verDetalle(t)">
+            <div class="historial-header">
+                <div>
+                    <span class="historial-fecha">{{ t.fecha | date:'dd/MM/yyyy' }}</span>
+                    <span class="historial-horas">
+                        {{ t.hora_apertura | date:'HH:mm' }}
+                        <ng-container *ngIf="t.hora_cierre"> — {{ t.hora_cierre | date:'HH:mm' }}</ng-container>
+                    </span>
+                </div>
+                <span class="turno-badge" [ngClass]="getEstadoClass(t)">
+                    {{ t.estado }}
+                </span>
+            </div>
+
+            <div class="historial-body">
+                <div class="historial-stat">
+                    <span class="stat-label">Ventas</span>
+                    <span class="stat-value">${{ formatMoney(t.total_ventas) }}</span>
+                </div>
+                <div class="historial-stat">
+                    <span class="stat-label">Facturas</span>
+                    <span class="stat-value">{{ t.num_facturas }}</span>
+                </div>
+                <div class="historial-stat" *ngIf="t.estado === 'cerrado'">
+                    <span class="stat-label">Diferencia</span>
+                    <span class="stat-value" [ngClass]="getDiferenciaClass(t)">
+                        ${{ formatMoney(t.diferencia) }}
+                        <small>{{ getDiferenciaLabel(t) }}</small>
+                    </span>
+                </div>
+            </div>
+
+            <div class="historial-empleado" *ngIf="t.empleado">
+                <mat-icon>person</mat-icon>
+                {{ t.empleado.nombre }} {{ t.empleado.apellido1 || '' }}
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<!-- ══════════════════════════════════════ -->
+<!-- MODAL DETALLE                         -->
+<!-- ══════════════════════════════════════ -->
+<div class="detalle-overlay" *ngIf="showDetalle && turnoDetalle" (click)="cerrarDetalle()">
+    <div class="detalle-modal card-glass" (click)="$event.stopPropagation()">
+        <div class="detalle-header">
+            <h2>Detalle del Turno</h2>
+            <button class="btn-ghost btn-sm" (click)="cerrarDetalle()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+        <div class="detalle-body">
+            <!-- Info general -->
+            <div class="detalle-section">
+                <h3>Información General</h3>
+                <div class="detalle-grid">
+                    <div class="detalle-item">
+                        <span class="d-label">Fecha</span>
+                        <span class="d-value">{{ turnoDetalle.fecha | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Apertura</span>
+                        <span class="d-value">{{ turnoDetalle.hora_apertura | date:'HH:mm:ss' }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Cierre</span>
+                        <span class="d-value">{{ turnoDetalle.hora_cierre ? (turnoDetalle.hora_cierre | date:'HH:mm:ss')
+                            : '—' }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Empleado</span>
+                        <span class="d-value">{{ turnoDetalle.empleado ? turnoDetalle.empleado.nombre + ' ' +
+                            (turnoDetalle.empleado.apellido1 || '') : '—' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ventas por método -->
+            <div class="detalle-section">
+                <h3>Desglose de Ventas</h3>
+                <div class="desglose-list">
+                    <div class="desglose-row">
+                        <span><mat-icon>payments</mat-icon> Efectivo</span>
+                        <span class="desglose-val">${{ formatMoney(turnoDetalle.total_efectivo) }}</span>
+                    </div>
+                    <div class="desglose-row">
+                        <span><mat-icon>credit_card</mat-icon> Datáfono</span>
+                        <span class="desglose-val">${{ formatMoney(turnoDetalle.total_datafono) }}</span>
+                    </div>
+                    <div class="desglose-row">
+                        <span><mat-icon>account_balance</mat-icon> Transferencia</span>
+                        <span class="desglose-val">${{ formatMoney(turnoDetalle.total_transferencia) }}</span>
+                    </div>
+                    <div class="desglose-row">
+                        <span><mat-icon>schedule</mat-icon> Crédito</span>
+                        <span class="desglose-val">${{ formatMoney(turnoDetalle.total_credito) }}</span>
+                    </div>
+                    <div class="desglose-row desglose-total">
+                        <span><b>Total Ventas</b></span>
+                        <span class="desglose-val"><b>${{ formatMoney(turnoDetalle.total_ventas) }}</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extras -->
+            <div class="detalle-section">
+                <h3>Otros</h3>
+                <div class="detalle-grid cols-3">
+                    <div class="detalle-item">
+                        <span class="d-label">Propinas</span>
+                        <span class="d-value">${{ formatMoney(turnoDetalle.total_propinas) }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Descuentos</span>
+                        <span class="d-value">${{ formatMoney(turnoDetalle.total_descuentos) }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Facturas</span>
+                        <span class="d-value">{{ turnoDetalle.num_facturas }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="d-label">Anulaciones</span>
+                        <span class="d-value">{{ turnoDetalle.num_anulaciones }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arqueo -->
+            <div class="detalle-section" *ngIf="turnoDetalle.estado === 'cerrado'">
+                <h3>Arqueo de Efectivo</h3>
+                <div class="arqueo-resumen">
+                    <div class="arqueo-row">
+                        <span>Efectivo inicial</span>
+                        <span>${{ formatMoney(turnoDetalle.efectivo_inicial) }}</span>
+                    </div>
+                    <div class="arqueo-row">
+                        <span>+ Ventas en efectivo</span>
+                        <span>${{ formatMoney(turnoDetalle.total_efectivo) }}</span>
+                    </div>
+                    <div class="arqueo-row arqueo-expected">
+                        <span><b>= Efectivo esperado</b></span>
+                        <span><b>${{ formatMoney(turnoDetalle.efectivo_esperado) }}</b></span>
+                    </div>
+                    <div class="arqueo-row">
+                        <span>Efectivo contado</span>
+                        <span>${{ formatMoney(turnoDetalle.efectivo_contado) }}</span>
+                    </div>
+                    <div class="arqueo-row arqueo-diff" [ngClass]="getDiferenciaClass(turnoDetalle)">
+                        <span><b>Diferencia</b></span>
+                        <span>
+                            <b>${{ formatMoney(turnoDetalle.diferencia) }}</b>
+                            <small class="diff-label">{{ getDiferenciaLabel(turnoDetalle) }}</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="detalle-section" *ngIf="turnoDetalle.observaciones">
+                <h3>Observaciones</h3>
+                <p class="observaciones-text">{{ turnoDetalle.observaciones }}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="dialog-container">
+    <div class="dialog-header">
+        <h2>
+            <mat-icon>category</mat-icon>
+            Categorías
+        </h2>
+        <button class="btn-ghost" style="padding: 6px;" (click)="cerrar()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Add new -->
+    <div class="dialog-add-row">
+        <input class="input-glass" type="text" [(ngModel)]="nuevaCat" placeholder="Nueva categoría..."
+            (keyup.enter)="agregar()" [disabled]="loading" />
+        <button class="btn-neon" (click)="agregar()" [disabled]="!nuevaCat.trim() || loading"
+            style="white-space: nowrap;">
+            <mat-icon>add</mat-icon>
+            Agregar
+        </button>
+    </div>
+
+    <!-- Category list -->
+    <div class="dialog-list">
+        <div *ngIf="categorias.length === 0" class="dialog-empty">
+            <mat-icon>inbox</mat-icon>
+            <p>No hay categorías creadas</p>
+        </div>
+
+        <div *ngFor="let cat of categorias" class="dialog-cat-item" [class.selected]="selectedId === cat.id"
+            [class.editing]="editingId === cat.id" (click)="seleccionar(cat)">
+
+            <!-- Normal mode -->
+            <ng-container *ngIf="editingId !== cat.id">
+                <div class="cat-info">
+                    <mat-icon class="cat-icon">label</mat-icon>
+                    <span>{{ cat.nombre | titlecase }}</span>
+                </div>
+                <div class="cat-actions">
+                    <button class="icon-btn icon-btn-edit" (click)="startEdit(cat, $event)" title="Renombrar">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="icon-btn icon-btn-delete" (click)="deleteCat(cat, $event)" title="Eliminar">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-icon *ngIf="selectedId === cat.id" class="check-icon">check_circle</mat-icon>
+                </div>
+            </ng-container>
+
+            <!-- Edit mode -->
+            <ng-container *ngIf="editingId === cat.id">
+                <input class="input-glass edit-input" type="text" [(ngModel)]="editingNombre"
+                    (keyup.enter)="saveEdit(cat)" (keyup.escape)="cancelEdit()" autofocus />
+                <div class="cat-actions">
+                    <button class="icon-btn icon-btn-save" (click)="saveEdit(cat)" title="Guardar">
+                        <mat-icon>check</mat-icon>
+                    </button>
+                    <button class="icon-btn" (click)="cancelEdit()" title="Cancelar">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="dialog-actions">
+        <button class="btn-ghost" (click)="cerrar()">Cancelar</button>
+        <button class="btn-neon" (click)="confirmar()" [disabled]="!selectedId">
+            <mat-icon>check</mat-icon>
+            Seleccionar
+        </button>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+/* ============================================================
+   ANGULAR MATERIAL OVERRIDES
+   ============================================================ */
+.mat-mdc-form-field {
+    --mdc-filled-text-field-container-color: var(--bg-input);
+    --mdc-outlined-text-field-outline-color: var(--border-subtle);
+    --mdc-outlined-text-field-hover-outline-color: var(--border-glow);
+    --mdc-outlined-text-field-focus-outline-color: var(--brand-primary);
+    --mdc-outlined-text-field-label-text-color: var(--text-muted);
+    --mdc-outlined-text-field-input-text-color: var(--text-primary);
+    --mdc-outlined-text-field-focus-label-text-color: var(--brand-primary);
+}
+
+/* ── Mat-Select text colors ── */
+.mat-mdc-select-value-text {
+    color: var(--text-primary) !important;
+}
+
+.mat-mdc-select-placeholder {
+    color: var(--text-muted) !important;
+}
+
+.mat-mdc-select-arrow {
+    color: var(--text-secondary) !important;
+}
+
+.mat-mdc-select-min-line {
+    color: var(--text-primary) !important;
+}
+
+.mat-toolbar {
+    background: var(--bg-toolbar) !important;
+    color: var(--text-primary) !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+.mat-toolbar .mat-icon {
+    color: var(--text-secondary) !important;
+}
+
+.mat-sidenav {
+    background: var(--bg-sidebar) !important;
+    color: var(--text-primary) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+}
+
+.mat-mdc-table {
+    background: transparent !important;
+}
+
+.mat-mdc-header-cell {
+    background: var(--brand-tint-04) !important;
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+.mat-mdc-cell {
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background: var(--brand-tint-04) !important;
+}
+
+.mat-mdc-paginator {
+    background: transparent !important;
+    color: var(--text-secondary) !important;
+}
+
+.mat-mdc-menu-panel {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.mat-mdc-menu-item {
+    color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.mat-mdc-option:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+    background: var(--brand-primary) !important;
+    color: var(--text-on-brand) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 20px rgba(6, 249, 249, 0.3) !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+    background: var(--danger) !important;
+}
+
+.mat-mdc-icon-button {
+    color: var(--slate-400) !important;
+}
+
+.mat-mdc-icon-button:hover {
+    color: var(--brand-primary) !important;
+}
+
+/* ── ngx-charts Global Tooltip Dark Theme ── */
+.ngx-charts-tooltip-content {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+}
+
+.ngx-charts-tooltip-content .tooltip-caret {
+    border-top-color: rgba(15, 23, 42, 0.95) !important;
+}
+
+.tooltip-label {
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+}
+
+.tooltip-val {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+.chart-tooltip-item {
+    color: var(--text-primary) !important;
+}
+
+.tooltip-item .tooltip-item-color {
+    border-radius: 2px;
+}
+
+/* ── ngx-charts global text fix (dark theme) ── */
+.ngx-charts text {
+    fill: var(--text-muted) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.ngx-charts .tick text {
+    fill: var(--text-muted) !important;
+}
+
+.ngx-charts .gridline-path {
+    stroke: var(--border-subtle) !important;
+}
+
+.ngx-charts .label-text {
+    fill: var(--text-secondary) !important;
+}
+
+.ngx-charts .legend-label-text {
+    color: var(--text-secondary) !important;
+}
+
+.ngx-charts .arc-label-text {
+    fill: var(--text-secondary) !important;
+}

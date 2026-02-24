@@ -1,0 +1,15 @@
+/* ============================================================
+   FOODLY APP — Design System
+   Main entry point — imports all thematic partials
+   ============================================================ */
+
+@import 'styles/_variables.css';
+@import 'styles/_reset.css';
+@import 'styles/_layout.css';
+@import 'styles/_components.css';
+@import 'styles/_auth.css';
+@import 'styles/_material.css';
+@import 'styles/_utilities.css';
+@import 'styles/_sweetalert.css';
+@import 'styles/_overlays.css';
+@import 'styles/_responsive.css';

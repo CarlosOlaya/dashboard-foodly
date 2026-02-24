@@ -1,0 +1,193 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.factura-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 0 24px 24px;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+/* Estado badge */
+.estado-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.badge-cerrada {
+    background: rgba(34, 197, 94, 0.12);
+    color: var(--success);
+}
+
+.badge-anulada {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--danger);
+}
+
+.badge-abierta {
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--info);
+}
+
+/* Info grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.dividido-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--indigo);
+    margin-left: 4px;
+}
+
+/* Totales */
+.totales-section {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 12px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.total-row.descuento {
+    color: var(--danger);
+}
+
+.total-row.grand {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 2px solid var(--brand-primary);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+/* Anulación info */
+.anulacion-info {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    margin-top: 16px;
+    background: rgba(239, 68, 68, 0.06);
+    border-left: 3px solid var(--danger);
+    border-radius: 6px;
+}
+
+.anulacion-info mat-icon {
+    color: var(--danger);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.anulacion-info strong {
+    font-size: 12px;
+    color: var(--danger);
+}
+
+.anulacion-info p {
+    font-size: 13px;
+    color: var(--text-primary);
+    margin: 4px 0 0;
+}
+
+/* Danger button */
+.btn-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-danger:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* Warning button (Reabrir) */
+.btn-warning {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-warning:hover {
+    background: var(--warning);
+    color: #fff;
+}
+
+/* Actions row */
+.factura-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.factura-actions button {
+    flex: 1;
+}

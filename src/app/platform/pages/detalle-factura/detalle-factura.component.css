@@ -1,0 +1,38 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* ── Scrollable table ── */
+.table-container {
+  overflow-x: auto;
+  max-height: 418px;
+  min-height: 418px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
+
+tr,
+th,
+td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 40px;
+  line-height: 40px;
+}
+
+td {
+  font-size: 12px;
+}

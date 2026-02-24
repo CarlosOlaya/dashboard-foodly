@@ -1,0 +1,120 @@
+<div class="kds-container">
+
+    <!-- ═══ Header ═══ -->
+    <div class="kds-header">
+        <div class="header-left">
+            <h1 class="kds-title">
+                <mat-icon>restaurant</mat-icon>
+                Comandas
+            </h1>
+
+            <button class="view-tab" [class.active]="vistaActual === 'pendientes'" (click)="cambiarVista('pendientes')">
+                <mat-icon>pending_actions</mat-icon>
+                <span>Pendientes</span>
+                <span class="tab-badge badge-pendiente" *ngIf="contadorPendientes + contadorEnPreparacion > 0">
+                    {{ contadorPendientes + contadorEnPreparacion }}
+                </span>
+            </button>
+            <button class="view-tab" [class.active]="vistaActual === 'completadas'"
+                (click)="cambiarVista('completadas')">
+                <mat-icon>check_circle</mat-icon>
+                <span>Completadas</span>
+                <span class="tab-badge badge-completada" *ngIf="contadorCompletadas > 0">
+                    {{ contadorCompletadas }}
+                </span>
+            </button>
+        </div>
+
+        <!-- ═══ Filtro por Área (inline) ═══ -->
+        <div class="area-filter">
+            <span class="area-divider"></span>
+            <button class="area-pill" [class.active]="!filtroArea" (click)="cambiarArea('')">
+                Todas
+            </button>
+            <button class="area-pill" *ngFor="let area of areasConfig" [class.active]="filtroArea === area.codigo"
+                (click)="cambiarArea(area.codigo)">
+                <mat-icon>{{ area.icono }}</mat-icon> {{ area.nombre }}
+            </button>
+        </div>
+
+        <div class="header-right">
+            <button class="btn-refresh" (click)="cargar()">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ Empty ═══ -->
+    <div *ngIf="!loading && comandasVisibles.length === 0" class="empty-state">
+        <mat-icon>{{ vistaActual === 'pendientes' ? 'check_circle' : 'history' }}</mat-icon>
+        <h2>{{ vistaActual === 'pendientes' ? 'Sin pedidos pendientes' : 'Sin comandas completadas hoy' }}</h2>
+        <p>{{ vistaActual === 'pendientes' ? 'Las nuevas comandas aparecerán aquí automáticamente' : 'Las comandas
+            completadas aparecerán en esta sección' }}</p>
+    </div>
+
+    <!-- ═══ Grid de cards ═══ -->
+    <div *ngIf="!loading && comandasVisibles.length > 0" class="kds-grid">
+        <div *ngFor="let comanda of comandasVisibles" class="kds-card" [class.card-anulacion]="esAnulacion(comanda)"
+            [class.card-impresa]="comanda.estado === 'impresa'" [class.card-lista]="comanda.estado === 'lista'"
+            [class.card-entregada]="comanda.estado === 'entregada'">
+
+            <!-- Compact Header -->
+            <div class="card-header-compact">
+                <div class="header-top">
+                    <span class="mesa-badge">
+                        <mat-icon class="mesa-icon" [class.icon-anulacion]="esAnulacion(comanda)">table_bar</mat-icon>
+                        Mesa {{ comanda.numero_mesa }}
+                    </span>
+
+                    <div class="timer-badge"
+                        [ngClass]="vistaActual === 'pendientes' ? getTimerClass(comanda.created_at) : 'timer-green'">
+                        <mat-icon>{{ vistaActual === 'pendientes' ? 'schedule' : 'check_circle' }}</mat-icon>
+                        {{ vistaActual === 'pendientes' ? getTimerLabel(comanda.created_at) :
+                        getEstadoLabel(comanda.estado) }}
+                    </div>
+                </div>
+
+                <div class="header-sub">
+                    <span class="cmd-id">#{{ comanda.numero_comanda }}</span>
+                    <span class="separator">•</span>
+                    <span class="waiter-name">{{ comanda.nombre_mesero }}</span>
+                    <span *ngIf="comanda.area_destino" class="separator">•</span>
+                    <span *ngIf="comanda.area_destino" class="area-name">{{ comanda.area_destino }}</span>
+                </div>
+            </div>
+
+            <!-- Items -->
+            <div class="card-items">
+                <div class="items-header">
+                    <span>Item</span>
+                    <span>Cant.</span>
+                </div>
+                <div *ngFor="let item of comanda.items" class="item-block">
+                    <div class="item-row">
+                        <span class="item-name">{{ item.nombre_producto }}</span>
+                        <span class="item-qty" [class.qty-anulacion]="esAnulacion(comanda)">{{ esAnulacion(comanda) ?
+                            '-' : '' }}{{ item.cantidad }}</span>
+                    </div>
+                    <div *ngIf="item.comentario" class="item-comment">
+                        <mat-icon>chat_bubble_outline</mat-icon>
+                        {{ item.comentario }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card-actions">
+                <button class="btn-print-card" (click)="imprimirComanda(comanda.id, $event)" title="Reimprimir">
+                    <mat-icon>print</mat-icon>
+                </button>
+
+                <button *ngIf="vistaActual === 'pendientes'" class="btn-despachar"
+                    [class.btn-anulacion-ack]="esAnulacion(comanda)" (click)="marcarEntregada(comanda)">
+                    <mat-icon>{{ esAnulacion(comanda) ? 'done' : 'check_circle' }}</mat-icon>
+                    {{ esAnulacion(comanda) ? 'ENTERADO' : 'COMPLETAR' }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

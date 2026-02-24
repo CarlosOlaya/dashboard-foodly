@@ -1,0 +1,596 @@
+/* ═══════════════════════════════════════════════════════
+   Estilos del Panel de Cobro
+   ViewEncapsulation.None — se aplican globalmente
+   ═══════════════════════════════════════════════════════ */
+
+:host {
+    display: contents;
+}
+
+.cobro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.cobro-panel {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+.cobro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.cobro-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.cobro-header h2 mat-icon {
+    color: var(--brand-primary);
+}
+
+.cobro-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.cobro-close:hover {
+    background: var(--bg-surface);
+}
+
+.cobro-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px;
+}
+
+.cobro-section {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.cobro-section:last-child {
+    border-bottom: none;
+}
+
+.cobro-section h3 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+    margin: 0 0 8px 0;
+}
+
+/* Items list */
+.cobro-items-list {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.cobro-item-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.cobro-item-name {
+    flex: 1;
+}
+
+.cobro-item-qty {
+    color: var(--text-secondary);
+    min-width: 30px;
+}
+
+.cobro-item-price {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.cobro-subtotal-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0 0;
+    margin-top: 8px;
+    border-top: 1px dashed var(--border-subtle);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Descuento chips */
+.cobro-desc-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.desc-chip {
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.15s ease;
+}
+
+.desc-chip:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+}
+
+.desc-chip.active {
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+    border-color: var(--brand-primary);
+}
+
+.desc-custom {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.desc-custom input {
+    width: 50px;
+    padding: 5px 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.desc-custom span {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.cobro-desc-result {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--danger);
+}
+
+/* Propina */
+.cobro-propina-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.propina-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.propina-toggle mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--text-tertiary);
+}
+
+.propina-toggle.active mat-icon {
+    color: var(--brand-primary);
+}
+
+.propina-amount {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-primary);
+}
+
+/* Métodos de pago */
+.cobro-metodos {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.metodo-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 6px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.metodo-btn:hover {
+    border-color: var(--brand-primary);
+}
+
+.metodo-btn.active {
+    background: var(--brand-tint-08);
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+    font-weight: 600;
+}
+
+.metodo-btn mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.cobro-dividir-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.cobro-dividir-toggle mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+/* Pago dividido */
+.cobro-pagos-divide {
+    margin-top: 10px;
+}
+
+.pago-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.pago-select {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface);
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.pago-monto {
+    width: 100px;
+    padding: 8px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.pago-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    cursor: pointer;
+}
+
+.pago-remove mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.pago-add {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: var(--brand-primary);
+    cursor: pointer;
+}
+
+.pago-add mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.pago-balance {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.pago-balance.pago-ok {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+
+.pago-balance.pago-error {
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--danger);
+}
+
+/* Botón asignar propina */
+.pago-propina-wrap {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.pago-propina-input {
+    width: 65px;
+    padding: 8px 6px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--warning-darker);
+    outline: none;
+}
+
+.pago-propina-input:focus {
+    border-color: var(--warning);
+}
+
+.pago-propina-fill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pago-propina-fill:hover {
+    background: rgba(245, 158, 11, 0.2);
+}
+
+.pago-propina-fill mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* Header de columnas pago dividido */
+.pago-row-header {
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--border-subtle);
+}
+
+.pago-col-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+}
+
+/* Footer */
+.cobro-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+}
+
+.cobro-total-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cobro-total-display span:first-child {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+}
+
+.cobro-total-amount {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.cobro-confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--success-light), var(--success));
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.cobro-confirm-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+}
+
+.cobro-confirm-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cobro-confirm-btn mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+}
+
+/* Servicio mode tabs */
+.servicio-options {
+    margin-top: 8px;
+}
+
+.servicio-mode-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.mode-tab {
+    flex: 1;
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.mode-tab.active {
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+    font-weight: 600;
+}
+
+.servicio-result {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--success);
+}
+
+/* Breakdown in footer */
+.cobro-total-breakdown {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-subtle);
+}
+
+.cobro-footer .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cobro-item-desc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+    margin-left: 4px;
+    white-space: nowrap;
+}
+
+.cobro-descuentos-summary {
+    padding: 6px 0;
+    border-top: 1px dashed rgba(239, 68, 68, 0.2);
+    margin-top: 4px;
+}
+
+.cobro-descuentos-summary .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    font-size: 12px;
+}
+
+.cobro-descuentos-summary .text-red {
+    color: var(--danger) !important;
+}
+
+.cobro-footer-actions {
+    margin-top: 0;
+}

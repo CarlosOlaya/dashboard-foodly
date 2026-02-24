@@ -1,0 +1,284 @@
+<!-- Contenedor principal: viewport fijo sin scroll de página -->
+<div class="servicio-page">
+
+  <!-- ═══ Header fijo ═══ -->
+  <div class="servicio-header">
+    <button class="btn-ghost" style="padding: 8px;" [routerLink]="'/home/mesas'">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="page-title" style="margin:0; font-size: 16px;">Mesa {{ mesaNumero || mesaId.slice(0,6) }}</h1>
+      <p class="page-subtitle" *ngIf="mesero" style="margin:0; font-size: 12px;">{{ mesero }}</p>
+    </div>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+      <button *ngIf="itemsFactura.length === 0" class="action-bar-btn action-bar-btn-void" (click)="liberarMesa()">
+        <mat-icon>lock_open</mat-icon>
+        <span>Liberar mesa</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-precuenta" [disabled]="itemsFactura.length === 0"
+        (click)="verificarCuenta()">
+        <mat-icon>receipt</mat-icon>
+        <span>Precuenta</span>
+      </button>
+      <span class="badge-total">Total Mesa: ${{ totalGeneral | number:'1.0-0' }}</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MOBILE TAB SWITCHER (hidden on desktop)
+       ═══════════════════════════════════════════════════════ -->
+  <div class="mobile-tabs">
+    <button class="mobile-tab" [class.active]="mobileActiveTab === 'carta'" (click)="mobileActiveTab = 'carta'">
+      <mat-icon>restaurant_menu</mat-icon>
+      <span>Carta</span>
+    </button>
+    <button class="mobile-tab" [class.active]="mobileActiveTab === 'pedido'" (click)="mobileActiveTab = 'pedido'">
+      <mat-icon>add_shopping_cart</mat-icon>
+      <span>Pedido</span>
+      <span class="mobile-tab-badge" *ngIf="seleccionados.length > 0">{{ totalItemsNuevos }}</span>
+    </button>
+    <button class="mobile-tab" [class.active]="mobileActiveTab === 'cuenta'" (click)="mobileActiveTab = 'cuenta'">
+      <mat-icon>receipt_long</mat-icon>
+      <span>Cuenta</span>
+      <span class="mobile-tab-badge badge-violet" *ngIf="itemsFactura.length > 0">{{ itemsFactura.length }}</span>
+    </button>
+  </div>
+
+  <!-- ═══ 3 Columnas fijas al viewport (DESKTOP) + Tab content (MOBILE) ═══ -->
+  <div class="servicio-columns" *ngIf="!loading">
+
+    <!-- ═══ COL 1: Carta ═══ -->
+    <div class="servicio-col" [class.mobile-hidden]="mobileActiveTab !== 'carta'">
+      <div class="col-card">
+        <div class="col-header desktop-only">
+          <mat-icon>restaurant_menu</mat-icon>
+          <span>Carta</span>
+        </div>
+
+        <div class="col-filters">
+          <div class="search-box">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input (keyup)="filtrarPlatos($event)" placeholder="Buscar platos..." />
+          </div>
+
+          <div class="cat-chips">
+            <button class="cat-chip" [class.active]="!categoriaActiva" (click)="mostrarTodos()">Todos</button>
+            <button *ngFor="let cat of categoriasVisibles" class="cat-chip"
+              [class.active]="categoriaActiva === cat.nombre" (click)="filtrarPorCategoria(cat)">
+              {{ cat.nombre }}
+            </button>
+
+            <!-- Hamburger for overflow -->
+            <div class="chips-more-wrap" *ngIf="categoriasOverflow.length > 0">
+              <button class="cat-chip chips-more-btn" [class.active-menu]="showMoreCats"
+                (click)="toggleMoreCats($event)">
+                <mat-icon>menu</mat-icon>
+              </button>
+              <div class="chips-dropdown" *ngIf="showMoreCats">
+                <button *ngFor="let cat of categoriasOverflow" class="dropdown-chip"
+                  [class.active]="categoriaActiva === cat.nombre"
+                  (click)="filtrarPorCategoria(cat); showMoreCats = false">
+                  {{ cat.nombre }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid scrollable de productos -->
+        <div class="col-scroll">
+          <div class="producto-grid">
+            <div class="producto-card" *ngFor="let producto of productosFiltrados"
+              (click)="seleccionarProducto(producto)">
+              <div class="producto-img-wrap">
+                <img *ngIf="producto.imagen_url" [src]="producto.imagen_url" [alt]="producto.nombre"
+                  class="producto-img" />
+                <div *ngIf="!producto.imagen_url" class="producto-img-placeholder">
+                  <mat-icon>lunch_dining</mat-icon>
+                </div>
+                <div class="producto-overlay"></div>
+                <span class="producto-badge-precio">${{ producto.precio_venta | number:'1.0-0' }}</span>
+                <div class="producto-add-btn">
+                  <mat-icon>add</mat-icon>
+                </div>
+              </div>
+              <div class="producto-card-body">
+                <span class="producto-card-nombre">{{ producto.nombre }}</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="productosFiltrados.length === 0" class="empty-state" style="padding: 24px 0;">
+            <p class="empty-state-text">No se encontraron platos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COL 2: Nuevo pedido ═══ -->
+    <div class="servicio-col" [class.mobile-hidden]="mobileActiveTab !== 'pedido'">
+      <div class="col-card">
+        <div class="col-header desktop-only">
+          <mat-icon>add_shopping_cart</mat-icon>
+          <span>Nuevo pedido</span>
+        </div>
+
+        <!-- Lista scrollable -->
+        <div class="col-scroll">
+          <div *ngIf="seleccionados.length > 0" class="cuenta-items">
+            <div class="cuenta-row" *ngFor="let item of seleccionados">
+              <div class="cuenta-item-info">
+                <span class="cuenta-item-nombre">{{ item.plato_nombre }}</span>
+                <span class="cuenta-item-comentario" *ngIf="item.comentario">📝 {{ item.comentario }}</span>
+              </div>
+              <div class="cuenta-item-controls">
+                <button class="qty-btn" (click)="quitarUno(item); $event.stopPropagation()">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="qty-value">{{ item.cantidad }}</span>
+                <button class="qty-btn" (click)="agregarUno(item); $event.stopPropagation()">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <div class="cuenta-item-subtotal">
+                ${{ item.precio * item.cantidad | number:'1.0-0' }}
+              </div>
+              <button class="btn-icon-sm" (click)="comentario(item); $event.stopPropagation()" title="Comentario">
+                <mat-icon>chat_bubble_outline</mat-icon>
+              </button>
+              <button class="btn-icon-sm delete" (click)="eliminarSeleccionado(item); $event.stopPropagation()"
+                title="Eliminar">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="seleccionados.length === 0" class="empty-state" style="padding: 40px 0;">
+            <mat-icon class="empty-state-icon" style="font-size: 36px;">touch_app</mat-icon>
+            <p class="empty-state-text">Selecciona platos de la carta</p>
+          </div>
+        </div>
+
+        <!-- Footer fijo: total + botón -->
+        <div class="col-footer">
+          <div class="total-row total-compact" *ngIf="seleccionados.length > 0">
+            <span>Total</span>
+            <span class="text-neon">${{ subtotalNuevo | number:'1.0-0' }}</span>
+          </div>
+          <button class="btn-neon w-full" (click)="comandar()" [disabled]="seleccionados.length === 0">
+            <mat-icon>send</mat-icon>
+            Enviar Comanda ({{ seleccionados.length }})
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COL 3: Cuenta ═══ -->
+    <div class="servicio-col" [class.mobile-hidden]="mobileActiveTab !== 'cuenta'">
+      <div class="col-card">
+        <div class="col-header desktop-only">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Cuenta</span>
+        </div>
+
+        <!-- Lista scrollable -->
+        <div class="col-scroll">
+          <div *ngIf="itemsFactura.length > 0" class="cuenta-items">
+            <div class="cuenta-row" *ngFor="let item of itemsFactura"
+              [class.cuenta-row-selected]="itemSeleccionado?.id === item.id"
+              [class.cuenta-row-cortesia]="(item.descuento_porcentaje || 0) >= 100"
+              (click)="seleccionarItemCuenta(item)">
+              <div class="cuenta-item-info">
+                <span class="cuenta-item-nombre">{{ item.plato_nombre }}</span>
+                <span *ngIf="(item.descuento_porcentaje || 0) >= 100" class="cuenta-cortesia-tag"><mat-icon
+                    class="cuenta-tag-icon">card_giftcard</mat-icon> Cortesía</span>
+                <span *ngIf="(item.descuento_porcentaje || 0) > 0 && (item.descuento_porcentaje || 0) < 100"
+                  class="cuenta-desc-tag">-{{ item.descuento_porcentaje }}%</span>
+              </div>
+              <span class="qty-badge">x{{ item.cantidad }}</span>
+              <div class="cuenta-item-subtotal" *ngIf="!item.descuento_monto || item.descuento_monto === 0">
+                ${{ item.precio * item.cantidad | number:'1.0-0' }}
+              </div>
+              <div class="cuenta-item-subtotal" *ngIf="(item.descuento_monto || 0) > 0">
+                <span style="text-decoration:line-through; font-size:11px; color:#aaa; margin-right:4px;">${{
+                  item.precio * item.cantidad | number:'1.0-0' }}</span>
+                <span style="color:#16a34a; font-weight:700;">${{ (item.precio * item.cantidad) - (item.descuento_monto
+                  || 0) | number:'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="itemsFactura.length === 0" class="empty-state" style="padding: 40px 0;">
+            <mat-icon class="empty-state-icon" style="font-size: 36px;">receipt_long</mat-icon>
+            <p class="empty-state-text">Sin items aún</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PANEL DE ACCIONES (barra inferior fija) ═══ -->
+  <div class="action-bar" *ngIf="!loading">
+    <div class="action-bar-left">
+      <span class="action-bar-label" *ngIf="!itemSeleccionado">Toca un item de la cuenta para gestionarlo</span>
+      <span class="action-bar-label" *ngIf="itemSeleccionado">
+        <strong>{{ itemSeleccionado.plato_nombre }}</strong> &middot; x{{ itemSeleccionado.cantidad }}
+      </span>
+    </div>
+    <div class="action-bar-buttons">
+      <button class="action-bar-btn action-bar-btn-edit"
+        [disabled]="!itemSeleccionado || itemSeleccionado.cantidad <= 1" (click)="ajustarCantidad(itemSeleccionado!)">
+        <mat-icon>edit</mat-icon>
+        <span>Ajustar Cant.</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-transfer" [disabled]="!itemSeleccionado"
+        (click)="transferirItem(itemSeleccionado!)">
+        <mat-icon>swap_horiz</mat-icon>
+        <span>Transferir</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-void" [disabled]="!itemSeleccionado"
+        (click)="anularItem(itemSeleccionado!)">
+        <mat-icon>block</mat-icon>
+        <span>Anular</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-desc-item" [disabled]="!itemSeleccionado" (click)="descuentoItem()">
+        <mat-icon>sell</mat-icon>
+        <span>Desc. Item</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-desc-mesa" [disabled]="itemsFactura.length === 0"
+        (click)="descuentoMesa()">
+        <mat-icon>discount</mat-icon>
+        <span>Desc. Mesa</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-cortesia" [disabled]="itemsFactura.length === 0"
+        (click)="abrirCortesia()">
+        <mat-icon>card_giftcard</mat-icon>
+        <span>Cortesía</span>
+      </button>
+      <button class="action-bar-btn action-bar-btn-cobrar" *ngIf="canCobrar" [disabled]="itemsFactura.length === 0"
+        (click)="abrirCobro()">
+        <mat-icon>payments</mat-icon>
+        <span>Cobrar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ MOBILE FLOATING ACTION (for Carta tab) ═══ -->
+  <div class="mobile-fab" *ngIf="mobileActiveTab === 'carta' && seleccionados.length > 0"
+    (click)="mobileActiveTab = 'pedido'">
+    <mat-icon>shopping_cart</mat-icon>
+    <span class="mobile-fab-count">{{ totalItemsNuevos }}</span>
+  </div>
+
+  <!-- ═══ PANEL DE COBRO (componente hijo) ═══ -->
+  <app-cobro-panel *ngIf="mostrarCobro" [itemsFactura]="itemsFactura" [facturaId]="facturaId" [mesaNumero]="mesaNumero"
+    [totalDescuentosItems]="totalDescuentosItems" [facturaDescuento]="facturaDescuento" (cerrado)="cerrarCobro()"
+    (cobroExitoso)="onCobroExitoso()">
+  </app-cobro-panel>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="flex items-center" style="justify-content: center; padding: 64px 0;">
+    <mat-icon class="spin" style="font-size: 32px; color: var(--brand-primary);">sync</mat-icon>
+  </div>
+</div>

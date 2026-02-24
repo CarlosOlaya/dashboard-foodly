@@ -1,0 +1,68 @@
+<div class="form-layout">
+    <div class="form-top-bar">
+        <button class="btn-back" routerLink="/home/empleados">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="form-top-title">{{ isEditing ? 'Editar' : 'Nuevo' }} Empleado</span>
+    </div>
+    <div class="card-glass card-body-custom">
+        <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="guardar()">
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Nombre *</label>
+                    <input class="input-glass" type="text" formControlName="nombre" placeholder="Nombre" />
+                </div>
+
+                <div class="form-field">
+                    <label>Primer Apellido *</label>
+                    <input class="input-glass" type="text" formControlName="apellido1" placeholder="Primer apellido" />
+                </div>
+
+                <div class="form-field">
+                    <label>Segundo Apellido</label>
+                    <input class="input-glass" type="text" formControlName="apellido2" placeholder="Segundo apellido" />
+                </div>
+
+                <div class="form-field">
+                    <label>Documento</label>
+                    <input class="input-glass" type="text" formControlName="documento" placeholder="Cédula / NIT" />
+                </div>
+
+                <div class="form-field">
+                    <label>Email</label>
+                    <input class="input-glass" type="email" formControlName="email" placeholder="correo@email.com" />
+                </div>
+
+                <div class="form-field">
+                    <label>Teléfono</label>
+                    <input class="input-glass" type="text" formControlName="telefono" placeholder="Teléfono" />
+                </div>
+
+                <div class="form-field">
+                    <label>Cargo *</label>
+                    <mat-select class="input-glass" formControlName="cargo" placeholder="Seleccione un cargo">
+                        <mat-option *ngFor="let r of roles" [value]="r.codigo">{{ r.nombre }}</mat-option>
+                    </mat-select>
+                </div>
+
+                <div class="form-field">
+                    <label>Salario</label>
+                    <input class="input-glass" type="number" formControlName="salario" min="0" />
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
+                <button class="btn-neon" type="submit" [disabled]="formulario.invalid" style="min-width: 160px;">
+                    <mat-icon>save</mat-icon>
+                    {{ isEditing ? 'Actualizar' : 'Crear' }}
+                </button>
+                <button *ngIf="isEditing" class="btn-danger" type="button" (click)="eliminar()"
+                    style="min-width: 160px;">
+                    <mat-icon>delete</mat-icon>
+                    Eliminar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

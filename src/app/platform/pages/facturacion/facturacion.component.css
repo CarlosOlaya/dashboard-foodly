@@ -1,0 +1,408 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* ══════════════════════════════════════════════
+   FILTROS BAR
+   ══════════════════════════════════════════════ */
+.filtros-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.periodo-btns,
+.estado-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.periodo-btn,
+.estado-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.periodo-btn:hover,
+.estado-btn:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+}
+
+.periodo-btn.active,
+.estado-btn.active {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #fff;
+}
+
+.fechas-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fecha-sep {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.input-sm {
+    padding: 6px 12px !important;
+    font-size: 0.82rem !important;
+    height: auto !important;
+}
+
+.btn-sm {
+    padding: 6px 16px !important;
+    font-size: 0.82rem !important;
+    min-height: unset !important;
+}
+
+/* ══════════════════════════════════════════════
+   MÉTRICAS INLINE (dentro del header)
+   ══════════════════════════════════════════════ */
+.facturacion-header {
+    flex-wrap: nowrap;
+    gap: 16px;
+}
+
+.metricas-inline {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+    justify-content: center;
+}
+
+.metricas-inline .metrica-card {
+    padding: 10px 14px;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.metrica-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metrica-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--brand-tint-08);
+}
+
+.metrica-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.metrica-icon mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.metrica-icon.ventas {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--teal);
+}
+
+.metrica-icon.facturas {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--info);
+}
+
+.metrica-icon.ticket {
+    background: rgba(168, 85, 247, 0.1);
+    color: var(--purple-light);
+}
+
+.metrica-icon.anuladas {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.metrica-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.metrica-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.metrica-valor {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+/* ══════════════════════════════════════════════
+   MÉTODOS DE PAGO BAR
+   ══════════════════════════════════════════════ */
+.metodos-pago-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.metodo-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    font-size: 0.82rem;
+}
+
+.metodo-chip mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--brand-primary);
+}
+
+.metodo-nombre {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.metodo-total {
+    font-weight: 700;
+    color: var(--brand-primary);
+}
+
+.metodo-count {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+/* ══════════════════════════════════════════════
+   TABLA
+   ══════════════════════════════════════════════ */
+.metodo-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: var(--brand-tint-08);
+    color: var(--brand-primary);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.btn-icon-print {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: var(--brand-tint-06);
+    color: var(--brand-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-icon-print:hover {
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+}
+
+.btn-icon-print mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.mat-column-acciones {
+    width: 50px;
+    text-align: center;
+}
+
+/* Header actions */
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+/* ══════════════════════════════════════════════
+   LOADING BAR
+   ══════════════════════════════════════════════ */
+.loading-bar {
+    height: 3px;
+    background: var(--border-subtle);
+    overflow: hidden;
+}
+
+.loading-bar-inner {
+    height: 100%;
+    width: 40%;
+    background: var(--brand-primary);
+    animation: loadSlide 1.2s ease-in-out infinite;
+}
+
+@keyframes loadSlide {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(350%);
+    }
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .metricas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filtros-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .metricas-inline {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* ── Metrics — horizontal scroll ── */
+    .metricas-inline {
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+    }
+
+    .metricas-inline::-webkit-scrollbar {
+        display: none;
+    }
+
+    .metricas-inline .metrica-card {
+        min-width: 140px;
+        flex-shrink: 0;
+        padding: 8px 12px;
+    }
+
+    .metrica-valor {
+        font-size: 1.1rem;
+    }
+
+    .metrica-label {
+        font-size: 0.72rem;
+    }
+
+    /* ── Payment methods — wrap + smaller ── */
+    .metodos-pago-bar {
+        gap: 6px;
+    }
+
+    .metodo-chip {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    /* ── Filters — compact ── */
+    .filtros-bar {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+
+    .periodo-btns,
+    .estado-btns {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .periodo-btn,
+    .estado-btn {
+        padding: 5px 10px;
+        font-size: 0.78rem;
+    }
+
+    .fechas-custom {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* ── Table — card-list mode on mobile ── */
+    .card-glass {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    /* Hide less important columns on mobile */
+    .mat-column-metodo_pago,
+    .mat-column-empleado {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .metricas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .facturacion-header {
+        flex-wrap: wrap;
+    }
+}

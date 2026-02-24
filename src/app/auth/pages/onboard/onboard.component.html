@@ -1,0 +1,123 @@
+<div class="onboard-page">
+
+    <!-- ═══════════════════ STEP 1: PLANES ═══════════════════ -->
+    <div class="onboard-container" *ngIf="step === 'planes'">
+        <div class="onboard-header">
+            <img src="/assets/favicon.svg" alt="Foodly" class="onboard-logo">
+            <h1 class="onboard-title">Foodly</h1>
+            <p class="onboard-subtitle">Fácil. Fluido. Foodly.</p>
+        </div>
+
+        <div class="planes-grid">
+            <div *ngFor="let plan of planes" class="plan-card" [class.plan-destacado]="plan.destacado"
+                (click)="seleccionarPlan(plan.id)">
+                <div class="plan-badge" *ngIf="plan.destacado">⭐ Más popular</div>
+                <h3 class="plan-nombre">{{ plan.nombre }}</h3>
+                <div class="plan-precio">
+                    <span class="precio-valor">{{ plan.precio }}</span>
+                    <span class="precio-periodo">{{ plan.periodo }}</span>
+                </div>
+                <ul class="plan-features">
+                    <li *ngFor="let feat of plan.features">
+                        <span class="feat-check">✓</span>
+                        {{ feat }}
+                    </li>
+                </ul>
+                <button class="plan-btn" [class.plan-btn-destacado]="plan.destacado">
+                    Comenzar
+                </button>
+            </div>
+        </div>
+
+        <div class="auth-switch" style="margin-top: 10px; margin-bottom: -5px;">
+            <p class="onboard-desc">Elige el plan que mejor se adapte a tu negocio</p>
+
+            ¿Ya tienes cuenta?
+            <a routerLink="/auth">Iniciar sesión</a>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ STEP 2: FORMULARIO ═══════════════════ -->
+    <div class="onboard-container" *ngIf="step === 'formulario'">
+        <div class="onboard-header">
+            <h1 class="onboard-title">Crear tu restaurante</h1>
+            <p class="onboard-subtitle">Fácil. Fluido. Foodly.</p>
+            <p class="onboard-desc">
+                Plan <strong>{{ selectedPlan | titlecase }}</strong> seleccionado
+                <button class="btn-link" (click)="volverAPlanes()">Cambiar</button>
+            </p>
+        </div>
+
+        <div class="form-card">
+            <form [formGroup]="empresaForm" (ngSubmit)="crearEmpresa()" autocomplete="off">
+
+                <h4 class="form-section-title">📍 Datos del restaurante</h4>
+
+                <div class="form-grid">
+                    <div class="login-field">
+                        <label>Nombre del restaurante *</label>
+                        <input class="input-glass" type="text" formControlName="nombre_restaurante"
+                            placeholder="Mi Restaurante" />
+                    </div>
+                    <div class="login-field">
+                        <label>NIT / RUT</label>
+                        <input class="input-glass" type="text" formControlName="nit" placeholder="900.123.456-7" />
+                    </div>
+                    <div class="login-field">
+                        <label>Dirección</label>
+                        <input class="input-glass" type="text" formControlName="direccion"
+                            placeholder="Calle 123 #45-67" />
+                    </div>
+                    <div class="login-field">
+                        <label>Teléfono</label>
+                        <input class="input-glass" type="text" formControlName="telefono"
+                            placeholder="+57 300 123 4567" />
+                    </div>
+                </div>
+
+                <h4 class="form-section-title" style="margin-top: 28px;">👤 Tu cuenta de administrador</h4>
+
+                <div class="form-grid">
+                    <div class="login-field">
+                        <label>Nombre *</label>
+                        <input class="input-glass" type="text" formControlName="nombre_admin" placeholder="Juan" />
+                    </div>
+                    <div class="login-field">
+                        <label>Apellido *</label>
+                        <input class="input-glass" type="text" formControlName="apellido_admin" placeholder="Pérez" />
+                    </div>
+                    <div class="login-field" style="grid-column: 1 / -1;">
+                        <label>Correo electrónico *</label>
+                        <input class="input-glass" type="email" formControlName="email"
+                            placeholder="admin@mi-restaurante.com" autocomplete="email" />
+                    </div>
+                    <div class="login-field">
+                        <label>Contraseña *</label>
+                        <input class="input-glass" type="password" formControlName="password"
+                            placeholder="Min. 6 caracteres" autocomplete="new-password" />
+                    </div>
+                    <div class="login-field">
+                        <label>Confirmar *</label>
+                        <input class="input-glass" type="password" formControlName="confirmPassword"
+                            placeholder="••••••••" autocomplete="new-password" />
+                    </div>
+                </div>
+
+                <div *ngIf="passwordMismatch" class="error-msg">
+                    Las contraseñas no coinciden
+                </div>
+
+                <div *ngIf="errorMsg" class="error-msg">
+                    {{ errorMsg }}
+                </div>
+
+                <button type="submit" class="login-btn" [disabled]="empresaForm.invalid || loading || passwordMismatch"
+                    style="margin-top: 24px;">
+                    {{ loading ? 'Creando empresa...' : 'Crear mi restaurante' }}
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+</div>

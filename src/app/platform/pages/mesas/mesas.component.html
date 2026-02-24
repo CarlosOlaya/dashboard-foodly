@@ -1,0 +1,118 @@
+<!-- ═══ Header ═══ -->
+<div class="mesas-header">
+    <div class="mesas-header-left">
+        <h1 class="mesas-title">
+            <mat-icon>table_bar</mat-icon>
+            Mesas
+        </h1>
+
+        <!-- Filter Tabs (directly in header-left, like comandas) -->
+        <ng-container *ngIf="!loading">
+            <button class="view-tab" [class.active]="!filtroEstado" (click)="filtroEstado = ''; aplicarFiltro()">
+                Todas
+            </button>
+            <button class="view-tab" [class.active]="filtroEstado === 'libre'"
+                (click)="filtroEstado = 'libre'; aplicarFiltro()">
+                <mat-icon>check_circle</mat-icon>
+                <span>Libres ({{ mesasLibres }})</span>
+            </button>
+            <button class="view-tab" [class.active]="filtroEstado === 'ocupada'"
+                (click)="filtroEstado = 'ocupada'; aplicarFiltro()">
+                <mat-icon>restaurant</mat-icon>
+                <span>Ocupadas ({{ mesasOcupadas }})</span>
+            </button>
+        </ng-container>
+    </div>
+    <button class="mesas-add-btn" routerLink="/home/agregar-mesa">
+        <mat-icon>add_circle</mat-icon>
+        Nueva Mesa
+    </button>
+</div>
+
+<!-- ═══ Turno Warning ═══ -->
+<div class="turno-warning" *ngIf="!loading && !turnoActivo">
+    <mat-icon>warning</mat-icon>
+    <div class="turno-warning-text">
+        <strong>No hay turno de caja abierto</strong>
+        <span>Debes abrir un turno antes de poder usar las mesas</span>
+    </div>
+    <button class="turno-warning-btn" (click)="irAAbrirTurno()">
+        Abrir Turno
+    </button>
+</div>
+
+<!-- ═══ Grid de Mesas ═══ -->
+<div class="mesas-grid" *ngIf="!loading; else loadingTpl">
+    <div *ngFor="let mesa of mesasFiltradas" class="mesa-card-new" [ngClass]="{
+            'card-libre': mesa.estado === 'libre',
+            'card-ocupada': mesa.estado === 'ocupada',
+            'card-impresa': mesa.estado === 'impresa',
+            'card-blocked': mesa.estado === 'libre' && !turnoActivo
+        }" (click)="irAServicio(mesa)">
+
+        <!-- Card Header -->
+        <div class="card-top">
+            <div class="card-top-left">
+                <div class="card-mesa-icon" [ngClass]="{
+                    'icon-libre': mesa.estado === 'libre',
+                    'icon-ocupada': mesa.estado === 'ocupada',
+                    'icon-impresa': mesa.estado === 'impresa'
+                }">
+                    <mat-icon>table_bar</mat-icon>
+                </div>
+                <div>
+                    <h3 class="card-mesa-num">Mesa {{ mesa.numero }}</h3>
+                    <span class="card-zona">{{ mesa.ubicacion || 'Zona Principal' }}</span>
+                </div>
+            </div>
+            <span class="card-estado-badge" [ngClass]="{
+                    'badge-libre': mesa.estado === 'libre',
+                    'badge-ocupada': mesa.estado === 'ocupada',
+                    'badge-impresa': mesa.estado === 'impresa'
+                }">
+                {{ mesa.estado | titlecase }}
+            </span>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-details">
+            <div class="detail-row">
+                <mat-icon>group</mat-icon>
+                <span *ngIf="mesa.estado === 'libre'" class="detail-inline-edit">
+                    <input type="number" class="comensales-input" placeholder="#" min="1"
+                        (click)="$event.stopPropagation()" (change)="onComensalesChange(mesa, $event)"
+                        [disabled]="!turnoActivo" [value]="comensalesMap[mesa.id] || 1" />
+                    <span class="detail-text">pax</span>
+                </span>
+                <span *ngIf="mesa.estado !== 'libre'" class="detail-text">{{ comensalesMap[mesa.id] || 1 }} pax</span>
+            </div>
+
+            <div class="detail-row">
+                <mat-icon>{{ mesa.empleado ? 'person' : 'person_off' }}</mat-icon>
+                <span class="detail-text" [class.empty-detail]="!mesa.empleado">
+                    {{ mesa.empleado ? mesa.empleado.nombre : 'Disponible' }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Actions -->
+        <div class="card-actions" *ngIf="mesa.estado === 'libre' || mesa.estado === 'impresa'">
+            <button *ngIf="mesa.estado === 'libre'" class="action-btn action-primary"
+                (click)="abrirMesa(mesa); $event.stopPropagation()" [disabled]="!turnoActivo">
+                {{ turnoActivo ? 'Abrir mesa' : 'Sin turno' }}
+            </button>
+            <button *ngIf="mesa.estado === 'impresa'" class="action-btn action-purple"
+                (click)="irAServicio(mesa); $event.stopPropagation()">
+                Ver Cuenta
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ Loading ═══ -->
+<ng-template #loadingTpl>
+    <div class="mesas-loading">
+        <div class="loading-spinner"></div>
+        <p>Cargando mesas...</p>
+    </div>
+</ng-template>

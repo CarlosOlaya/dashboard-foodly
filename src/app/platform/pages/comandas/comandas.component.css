@@ -1,0 +1,643 @@
+/* ═══════════════════════════════════════════════════════════
+   KDS — Kitchen Display System  ·  Foodly Design
+   Fondo claro, acentos teal, glassmorphism, tipografía Inter
+   ═══════════════════════════════════════════════════════════ */
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* ═══ Layout ═══ */
+.kds-container {
+    padding: 0px;
+    min-height: 100vh;
+}
+
+/* ═══ Header ═══ */
+.kds-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.kds-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.kds-title mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: var(--brand-primary);
+}
+
+/* ═══ Header Tabs ═══ */
+.header-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-surface);
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.view-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-tab mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.view-tab:hover {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.view-tab.active {
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+    font-weight: 700;
+}
+
+/* Tab badge */
+.tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.badge-pendiente {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+}
+
+.view-tab.active .badge-pendiente {
+    background: transparent;
+    color: var(--text-on-brand);
+}
+
+.badge-completada {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+}
+
+.view-tab.active .badge-completada {
+    background: transparent;
+    color: var(--text-on-brand);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ═══ Area Filter (inline in header) ═══ */
+.area-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.area-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-subtle);
+    margin-right: 4px;
+}
+
+.area-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.area-pill mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.area-pill:hover {
+    background: var(--brand-tint-06);
+    border-color: var(--brand-tint-30);
+    color: var(--text-primary);
+}
+
+.area-pill.active {
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+    font-weight: 700;
+    border-color: var(--brand-primary);
+}
+
+.btn-refresh {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+/* ═══ Grid ═══ */
+.kds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+/* ═══ Card ═══ */
+.kds-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    height: 100%;
+}
+
+.kds-card:hover {
+    box-shadow: 0 8px 24px var(--brand-tint-10);
+    transform: translateY(-2px);
+}
+
+.kds-card.card-impresa {
+    border-left: 4px solid var(--info);
+}
+
+.kds-card.card-anulacion {
+    border-left: 4px solid var(--danger);
+}
+
+.kds-card.card-lista {
+    border-left: 4px solid var(--success-light);
+}
+
+.kds-card.card-entregada {
+    border-left: 4px solid var(--success-light);
+}
+
+/* ═══ Compact Header ═══ */
+.card-header-compact {
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.mesa-badge {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mesa-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--brand-primary);
+}
+
+.timer-badge {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.timer-badge mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+.header-sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.separator {
+    color: var(--slate-300);
+}
+
+/* Timer Colors */
+.timer-green {
+    background: var(--bg-success-tint);
+    color: var(--success);
+}
+
+.timer-yellow {
+    background: var(--bg-warning-tint);
+    color: var(--warning-dark);
+}
+
+.timer-red {
+    background: var(--bg-danger-tint);
+    color: var(--danger-dark);
+}
+
+.timer-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+}
+
+/* ═══ Anulación styles ═══ */
+.anulacion-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--danger-dark);
+    background: var(--bg-danger-tint);
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+}
+
+.icon-anulacion {
+    color: var(--danger-dark) !important;
+}
+
+.qty-anulacion {
+    background: var(--bg-danger-tint) !important;
+    color: var(--danger-dark) !important;
+}
+
+/* ═══ Items ═══ */
+.card-items {
+    padding: 0 12px 8px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.items-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--slate-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 2px;
+}
+
+.item-block {
+    padding: 5px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.item-block:last-child {
+    border-bottom: none;
+}
+
+.item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+    flex: 1;
+}
+
+.item-qty {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 28px;
+    text-align: center;
+}
+
+.item-comment {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--warning-dark);
+    font-style: italic;
+    margin-top: 2px;
+    padding-left: 4px;
+}
+
+.item-comment mat-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+}
+
+/* ═══ Actions ═══ */
+.card-actions {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-print-card {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-print-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+
+.btn-print-card mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.btn-despachar {
+    flex: 1;
+    height: 34px;
+    border: none;
+    border-radius: var(--radius-xl);
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-despachar:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-despachar mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.btn-anulacion-ack {
+    background: var(--danger-dark) !important;
+}
+
+.btn-anulacion-ack:hover {
+    background: var(--danger-darker) !important;
+}
+
+/* Empty / Loading */
+.loading-state,
+.empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--slate-400);
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 768px) {
+    .kds-container {
+        min-height: auto;
+    }
+
+    /* ── Header — stacked, compact ── */
+    .kds-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    /* Title hidden — shown in mobile header */
+    .kds-title {
+        display: none;
+    }
+
+    .kds-title mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ── Tabs — horizontal, touch-friendly ── */
+    .view-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 13px;
+        gap: 5px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    .view-tab mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
+    /* ── Area filter — scroll horizontal ── */
+    .area-filter {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 4px;
+    }
+
+    .area-filter::-webkit-scrollbar {
+        display: none;
+    }
+
+    .area-divider {
+        display: none;
+    }
+
+    .area-pill {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-height: 30px;
+        flex-shrink: 0;
+    }
+
+    .header-right {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+
+    .btn-refresh {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* ── Grid — single column ── */
+    .kds-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    /* ── Cards — touch-friendly ── */
+    .kds-card:hover {
+        transform: none;
+    }
+
+    .card-header-compact {
+        padding: 8px 10px;
+    }
+
+    .mesa-badge {
+        font-size: 15px;
+    }
+
+    .timer-badge {
+        font-size: 12px;
+        padding: 2px 6px;
+    }
+
+    .card-items {
+        max-height: 200px;
+    }
+
+    .card-actions {
+        padding: 8px 10px;
+    }
+
+    .btn-despachar {
+        height: 40px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .btn-print-card {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* ── Empty state — compact ── */
+    .empty-state {
+        padding: 40px 16px;
+    }
+}

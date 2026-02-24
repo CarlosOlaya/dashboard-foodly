@@ -1,0 +1,121 @@
+<div class="dash-container" *ngIf="!loading; else loadingTpl">
+
+    <!-- ═══ KPI Cards ═══ -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-icon kpi-icon--ventas">
+                <mat-icon>point_of_sale</mat-icon>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Ventas hoy</span>
+                <span class="kpi-value">{{ formatCurrency(ventasHoy) }}</span>
+                <span class="kpi-sub">{{ facturasHoy }} facturas</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon kpi-icon--mes">
+                <mat-icon>calendar_month</mat-icon>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Ventas del mes</span>
+                <span class="kpi-value">{{ formatCurrency(ventasMes) }}</span>
+                <span class="kpi-sub">{{ facturasMes }} facturas</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon kpi-icon--ticket">
+                <mat-icon>receipt</mat-icon>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Ticket promedio</span>
+                <span class="kpi-value">{{ formatCurrency(ticketPromedio) }}</span>
+                <span class="kpi-sub">por factura</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon kpi-icon--propinas">
+                <mat-icon>volunteer_activism</mat-icon>
+            </div>
+            <div class="kpi-info">
+                <span class="kpi-label">Propinas del mes</span>
+                <span class="kpi-value">{{ formatCurrency(propinasMes) }}</span>
+                <span class="kpi-sub">acumulado</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Charts Row ═══ -->
+    <div class="charts-row">
+
+        <!-- Ventas diarias -->
+        <div class="chart-card chart-card--wide">
+            <h3 class="chart-title">
+                <mat-icon>trending_up</mat-icon>
+                Ventas diarias (últimos 30 días)
+            </h3>
+            <div class="chart-wrapper" *ngIf="ventasDiarias[0]?.series?.length > 0; else sinVentas">
+                <ngx-charts-line-chart [results]="ventasDiarias" [scheme]="colorScheme" [xAxis]="true" [yAxis]="true"
+                    [showXAxisLabel]="false" [showYAxisLabel]="false" [yAxisTickFormatting]="axisFormatCurrency"
+                    [autoScale]="true" [gradient]="true" [animations]="true" [roundDomains]="true">
+                </ngx-charts-line-chart>
+            </div>
+            <ng-template #sinVentas>
+                <div class="chart-empty">
+                    <mat-icon>show_chart</mat-icon>
+                    <span>Sin datos de ventas aún</span>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- Top platos -->
+        <div class="chart-card">
+            <h3 class="chart-title">
+                <mat-icon>restaurant</mat-icon>
+                Top 5 platos del mes
+            </h3>
+            <div class="chart-wrapper" *ngIf="topPlatos.length > 0; else sinPlatos">
+                <ngx-charts-bar-horizontal [results]="topPlatos" [scheme]="barColorScheme" [xAxis]="true" [yAxis]="true"
+                    [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true" [animations]="true"
+                    [roundDomains]="true" [roundEdges]="true">
+                </ngx-charts-bar-horizontal>
+            </div>
+            <ng-template #sinPlatos>
+                <div class="chart-empty">
+                    <mat-icon>restaurant</mat-icon>
+                    <span>Sin platos vendidos aún</span>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- Método de pago -->
+        <div class="chart-card">
+            <h3 class="chart-title">
+                <mat-icon>payments</mat-icon>
+                Métodos de pago
+            </h3>
+            <div class="chart-wrapper chart-wrapper--pie" *ngIf="porMetodoPago.length > 0; else sinPagos">
+                <ngx-charts-pie-chart [results]="porMetodoPago" [scheme]="pieColorScheme" [labels]="true"
+                    [doughnut]="true" [arcWidth]="0.4" [animations]="true" [gradient]="true">
+                </ngx-charts-pie-chart>
+            </div>
+            <ng-template #sinPagos>
+                <div class="chart-empty">
+                    <mat-icon>payments</mat-icon>
+                    <span>Sin datos de pagos aún</span>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</div>
+
+<!-- Loading -->
+<ng-template #loadingTpl>
+    <div class="dash-loading">
+        <mat-icon class="spin">sync</mat-icon>
+        <span>Cargando dashboard...</span>
+    </div>
+</ng-template>

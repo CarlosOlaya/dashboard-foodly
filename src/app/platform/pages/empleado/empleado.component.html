@@ -1,0 +1,67 @@
+<div style="max-width: 720px; margin: 0 auto;">
+  <div class="page-header" *ngIf="empleado">
+    <div class="flex items-center gap-12">
+      <button class="btn-ghost" style="padding: 8px;" routerLink="/home/empleados">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1 class="page-title">Perfil de Empleado</h1>
+        <p class="page-subtitle">{{ empleado.nombre }} {{ empleado.apellido1 }}</p>
+      </div>
+    </div>
+    <div *ngIf="isAdmin" class="flex items-center gap-12">
+      <button class="btn-neon" (click)="editar()">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button class="btn-danger" (click)="eliminar()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+    </div>
+  </div>
+
+  <div class="card-glass" *ngIf="empleado">
+    <div class="card-body-custom">
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Nombre</span>
+          <span class="detail-value">{{ empleado.nombre }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Apellido</span>
+          <span class="detail-value">{{ empleado.apellido1 }} {{ empleado.apellido2 }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Documento</span>
+          <span class="detail-value">{{ empleado.documento || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ empleado.email || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Teléfono</span>
+          <span class="detail-value">{{ empleado.telefono || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Cargo</span>
+          <span class="detail-value">{{ empleado.cargo || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Salario</span>
+          <span class="detail-value text-neon">{{ empleado.salario | currency }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Estado</span>
+          <span class="detail-value">
+            <span class="status-badge" [class.status-activo]="empleado.activo"
+              [class.status-inactivo]="!empleado.activo">
+              {{ empleado.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

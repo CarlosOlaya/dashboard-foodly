@@ -1,0 +1,8 @@
+<!-- Splash overlay — covers everything while first navigation resolves -->
+<div class="app-splash" [class.splash-hidden]="!checking">
+    <img src="/assets/favicon.svg" alt="Foodly" class="splash-logo" />
+    <div class="splash-spinner"></div>
+</div>
+
+<!-- Router always exists so Angular can resolve routes behind the splash -->
+<router-outlet></router-outlet>

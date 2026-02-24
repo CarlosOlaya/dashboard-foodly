@@ -1,0 +1,363 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Configuración de Empresa</h1>
+        <p class="page-subtitle">Datos y configuración de tu restaurante</p>
+    </div>
+    <div class="flex items-center gap-12" *ngIf="isAdmin && empresa">
+        <button *ngIf="!editando" class="btn-neon" (click)="toggleEditar()">
+            <mat-icon>edit</mat-icon>
+            Editar
+        </button>
+        <button *ngIf="editando" class="btn-ghost" (click)="toggleEditar()">
+            <mat-icon>close</mat-icon>
+            Cancelar
+        </button>
+    </div>
+</div>
+
+<!-- Tenant ID Card -->
+<div class="card-glass tenant-id-card" *ngIf="empresa">
+    <div class="tenant-id-row">
+        <div>
+            <span class="detail-label">Tenant ID</span>
+            <span class="tenant-id-value">{{ empresa.id }}</span>
+        </div>
+        <button class="btn-ghost btn-sm" (click)="copiarId()" title="Copiar ID">
+            <mat-icon>content_copy</mat-icon>
+        </button>
+    </div>
+    <div class="tenant-meta">
+        <span class="plan-badge">{{ empresa.plan | titlecase }}</span>
+        <span class="detail-label">Creado: {{ empresa.created_at | date:'dd/MM/yyyy' }}</span>
+    </div>
+</div>
+
+<!-- Plan Section -->
+<div class="card-glass section-card" *ngIf="empresa && isAdmin">
+    <div class="card-body-custom">
+        <h2 class="section-title">
+            <mat-icon>workspace_premium</mat-icon>
+            Tu Plan
+        </h2>
+        <div class="plans-grid">
+            <div class="plan-card" *ngFor="let plan of [
+                { id: 'basico', nombre: 'Básico', precio: '$49.900', mesas: 5, features: ['Hasta 5 mesas', '1 usuario admin', 'Facturación básica', 'Carta digital'] },
+                { id: 'profesional', nombre: 'Profesional', precio: '$99.900', mesas: 20, features: ['Hasta 20 mesas', 'Usuarios ilimitados', 'Facturación electrónica', 'Reportes y analytics'] },
+                { id: 'empresarial', nombre: 'Empresarial', precio: '$199.900', mesas: 30, features: ['Mesas ilimitadas', 'Usuarios ilimitados', 'Multi-sede', 'Soporte 24/7 dedicado'] }
+            ]" [class.active]="empresa.plan === plan.id">
+                <div class="plan-badge-current" *ngIf="empresa.plan === plan.id">Plan actual</div>
+                <h3>{{ plan.nombre }}</h3>
+                <div class="plan-price">{{ plan.precio }}<span>/mes</span></div>
+                <ul class="plan-features">
+                    <li *ngFor="let f of plan.features">
+                        <mat-icon>check</mat-icon> {{ f }}
+                    </li>
+                </ul>
+                <button class="btn-neon" *ngIf="empresa.plan !== plan.id" (click)="cambiarPlan(plan.id)"
+                    style="width: 100%; margin-top: auto;">
+                    Cambiar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LOGO UPLOAD                                -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="card-glass section-card" *ngIf="empresa && isAdmin">
+    <div class="card-body-custom">
+        <h2 class="section-title">
+            <mat-icon>image</mat-icon>
+            Logo del Restaurante
+        </h2>
+        <div class="logo-upload-area">
+            <!-- Logo actual o preview -->
+            <div class="logo-preview-box" *ngIf="empresa.logo_url || logoPreview; else noLogo">
+                <img [src]="logoPreview || empresa.logo_url" alt="Logo" class="logo-img" />
+                <div class="logo-overlay" (click)="logoInput.click()">
+                    <mat-icon>photo_camera</mat-icon>
+                    <span>Cambiar</span>
+                </div>
+            </div>
+            <ng-template #noLogo>
+                <div class="logo-dropzone" (click)="logoInput.click()">
+                    <mat-icon>cloud_upload</mat-icon>
+                    <p>Haz clic para subir tu logo</p>
+                    <span class="logo-hint">PNG, JPG o WebP · Máx 5MB</span>
+                </div>
+            </ng-template>
+
+            <input #logoInput type="file" accept="image/png,image/jpeg,image/webp" hidden
+                (change)="onLogoFileSelected($event)" />
+
+            <!-- Spinner -->
+            <div class="logo-uploading" *ngIf="subiendoLogo">
+                <mat-spinner diameter="30"></mat-spinner>
+                <span>Subiendo...</span>
+            </div>
+
+            <!-- Botón eliminar -->
+            <button class="btn-ghost btn-sm" *ngIf="empresa.logo_url && !subiendoLogo" (click)="eliminarLogo()">
+                <mat-icon>delete</mat-icon>
+                Eliminar logo
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- VIEW MODE                                  -->
+<!-- ═══════════════════════════════════════════ -->
+<ng-container *ngIf="empresa && !editando">
+
+    <!-- Información General -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>store</mat-icon>
+                Información General
+            </h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Nombre del Restaurante</span>
+                    <span class="detail-value">{{ empresa.nombre }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">NIT</span>
+                    <span class="detail-value">{{ empresa.nit || 'No registrado' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Dirección</span>
+                    <span class="detail-value">{{ empresa.direccion || 'No registrada' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Teléfono</span>
+                    <span class="detail-value">{{ empresa.telefono || 'No registrado' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">{{ empresa.email || 'No registrado' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personalización -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>palette</mat-icon>
+                Personalización
+            </h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Color Primario</span>
+                    <span class="detail-value color-swatch-row">
+                        <span class="color-swatch" [style.background]="empresa.color_primario"></span>
+                        {{ empresa.color_primario }}
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Color Secundario</span>
+                    <span class="detail-value color-swatch-row">
+                        <span class="color-swatch" [style.background]="empresa.color_secundario"></span>
+                        {{ empresa.color_secundario }}
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Color Acento</span>
+                    <span class="detail-value color-swatch-row">
+                        <span class="color-swatch" [style.background]="empresa.color_acento"></span>
+                        {{ empresa.color_acento }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Facturación -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>receipt_long</mat-icon>
+                Facturación
+            </h2>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Moneda</span>
+                    <span class="detail-value">{{ empresa.moneda }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">IVA</span>
+                    <span class="detail-value">{{ empresa.porcentaje_iva }}%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Servicio</span>
+                    <span class="detail-value">{{ empresa.porcentaje_servicio }}%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Prefijo Factura</span>
+                    <span class="detail-value">{{ empresa.prefijo_factura }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Siguiente # Factura</span>
+                    <span class="detail-value text-neon">{{ empresa.siguiente_num_factura }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Resolución DIAN</span>
+                    <span class="detail-value">{{ empresa.resolucion_dian || 'No registrada' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Rango Factura</span>
+                    <span class="detail-value">
+                        {{ empresa.rango_factura_inicio || '-' }} — {{ empresa.rango_factura_fin || '-' }}
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Zona Horaria</span>
+                    <span class="detail-value">{{ empresa.zona_horaria }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-container>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- EDIT MODE                                  -->
+<!-- ═══════════════════════════════════════════ -->
+<form *ngIf="empresa && editando" autocomplete="off" [formGroup]="formulario" (ngSubmit)="guardar()">
+
+    <!-- Información General -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>store</mat-icon>
+                Información General
+            </h2>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Nombre del Restaurante *</label>
+                    <input class="input-glass" type="text" formControlName="nombre" />
+                </div>
+                <div class="form-field">
+                    <label>NIT</label>
+                    <input class="input-glass" type="text" formControlName="nit" />
+                </div>
+                <div class="form-field">
+                    <label>Dirección</label>
+                    <input class="input-glass" type="text" formControlName="direccion" />
+                </div>
+                <div class="form-field">
+                    <label>Teléfono</label>
+                    <input class="input-glass" type="text" formControlName="telefono" />
+                </div>
+                <div class="form-field">
+                    <label>Email</label>
+                    <input class="input-glass" type="email" formControlName="email" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personalización -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>palette</mat-icon>
+                Personalización
+            </h2>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Color Primario</label>
+                    <div class="color-input-row">
+                        <input type="color" formControlName="color_primario" class="color-picker" />
+                        <input class="input-glass" type="text" formControlName="color_primario" style="flex:1;" />
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Color Secundario</label>
+                    <div class="color-input-row">
+                        <input type="color" formControlName="color_secundario" class="color-picker" />
+                        <input class="input-glass" type="text" formControlName="color_secundario" style="flex:1;" />
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Color Acento</label>
+                    <div class="color-input-row">
+                        <input type="color" formControlName="color_acento" class="color-picker" />
+                        <input class="input-glass" type="text" formControlName="color_acento" style="flex:1;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Facturación -->
+    <div class="card-glass section-card">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>receipt_long</mat-icon>
+                Facturación
+            </h2>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Moneda</label>
+                    <mat-select class="input-glass" formControlName="moneda">
+                        <mat-option value="COP">COP - Peso Colombiano</mat-option>
+                        <mat-option value="USD">USD - Dólar</mat-option>
+                        <mat-option value="EUR">EUR - Euro</mat-option>
+                        <mat-option value="MXN">MXN - Peso Mexicano</mat-option>
+                    </mat-select>
+                </div>
+                <div class="form-field">
+                    <label>% IVA</label>
+                    <input class="input-glass" type="number" formControlName="porcentaje_iva" min="0" max="100"
+                        step="0.01" />
+                </div>
+                <div class="form-field">
+                    <label>% Servicio</label>
+                    <input class="input-glass" type="number" formControlName="porcentaje_servicio" min="0" max="100"
+                        step="0.01" />
+                </div>
+                <div class="form-field">
+                    <label>Prefijo Factura</label>
+                    <input class="input-glass" type="text" formControlName="prefijo_factura" />
+                </div>
+                <div class="form-field">
+                    <label>Resolución DIAN</label>
+                    <input class="input-glass" type="text" formControlName="resolucion_dian" />
+                </div>
+                <div class="form-field">
+                    <label>Rango Inicio</label>
+                    <input class="input-glass" type="number" formControlName="rango_factura_inicio" />
+                </div>
+                <div class="form-field">
+                    <label>Rango Fin</label>
+                    <input class="input-glass" type="number" formControlName="rango_factura_fin" />
+                </div>
+                <div class="form-field">
+                    <label>Zona Horaria</label>
+                    <mat-select class="input-glass" formControlName="zona_horaria">
+                        <mat-option value="America/Bogota">America/Bogota</mat-option>
+                        <mat-option value="America/Mexico_City">America/Mexico_City</mat-option>
+                        <mat-option value="America/Lima">America/Lima</mat-option>
+                        <mat-option value="America/Santiago">America/Santiago</mat-option>
+                        <mat-option value="America/Buenos_Aires">America/Buenos_Aires</mat-option>
+                        <mat-option value="America/New_York">America/New_York</mat-option>
+                        <mat-option value="Europe/Madrid">Europe/Madrid</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Button -->
+    <div style="display: flex; gap: 12px; margin-top: 8px; max-width: 900px;">
+        <button class="btn-neon" type="submit" [disabled]="formulario.invalid" style="flex:1;">
+            <mat-icon>save</mat-icon>
+            Guardar Cambios
+        </button>
+    </div>
+</form>

@@ -1,0 +1,280 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title"><mat-icon>inventory_2</mat-icon>Inventario</h1>
+        <p class="page-subtitle">Control de insumos, stock y movimientos</p>
+    </div>
+    <div class="header-actions">
+        <div class="print-dropdown" (click)="showPrintMenu = !showPrintMenu" (clickOutside)="showPrintMenu = false">
+            <button class="btn-ghost" title="Imprimir inventario">
+                <mat-icon>print</mat-icon>
+            </button>
+            <div class="print-menu" *ngIf="showPrintMenu">
+                <button class="print-menu-item" (click)="imprimirTicket('cocina')">
+                    <mat-icon>restaurant</mat-icon>
+                    Ticket Cocina
+                </button>
+                <button class="print-menu-item" (click)="imprimirTicket('bar')">
+                    <mat-icon>local_bar</mat-icon>
+                    Ticket Bar
+                </button>
+                <div class="print-menu-divider"></div>
+                <button class="print-menu-item" (click)="imprimirTicket('todos')">
+                    <mat-icon>inventory_2</mat-icon>
+                    Todo el inventario
+                </button>
+            </div>
+        </div>
+        <button class="btn-neon" (click)="nuevoProducto()">
+            <mat-icon>add</mat-icon>
+            Nuevo insumo
+        </button>
+    </div>
+</div>
+
+<!-- ═══ Stats Cards ═══ -->
+<div class="stats-row">
+    <div class="stat-card card-glass">
+        <mat-icon class="stat-icon stat-icon-primary">inventory_2</mat-icon>
+        <div class="stat-info">
+            <div class="stat-value">{{ resumen.total_productos }}</div>
+            <div class="stat-label">Insumos</div>
+        </div>
+    </div>
+    <div class="stat-card card-glass" [class.stat-warning]="resumen.stock_bajo > 0">
+        <mat-icon class="stat-icon stat-icon-warning">warning_amber</mat-icon>
+        <div class="stat-info">
+            <div class="stat-value">{{ resumen.stock_bajo }}</div>
+            <div class="stat-label">Stock bajo</div>
+        </div>
+    </div>
+    <div class="stat-card card-glass" [class.stat-danger]="resumen.agotados > 0">
+        <mat-icon class="stat-icon stat-icon-danger">error</mat-icon>
+        <div class="stat-info">
+            <div class="stat-value">{{ resumen.agotados }}</div>
+            <div class="stat-label">Agotados</div>
+        </div>
+    </div>
+    <div class="stat-card card-glass">
+        <mat-icon class="stat-icon stat-icon-info">swap_vert</mat-icon>
+        <div class="stat-info">
+            <div class="stat-value">{{ resumen.movimientos_hoy }}</div>
+            <div class="stat-label">Mov. hoy</div>
+        </div>
+    </div>
+</div>
+
+<!-- Tab navigation -->
+<div class="inv-tabs">
+    <button class="inv-tab" [class.active]="vista === 'productos'" (click)="cambiarVista('productos')">
+        <mat-icon>inventory_2</mat-icon>
+        Insumos
+    </button>
+    <button class="inv-tab" [class.active]="vista === 'stock-bajo'" (click)="cambiarVista('stock-bajo')">
+        <mat-icon>warning_amber</mat-icon>
+        Alertas
+        <span class="tab-badge" *ngIf="stockBajo.length">{{ stockBajo.length }}</span>
+    </button>
+    <button class="inv-tab" [class.active]="vista === 'movimientos'" (click)="cambiarVista('movimientos')">
+        <mat-icon>swap_vert</mat-icon>
+        Movimientos
+    </button>
+    <button class="inv-tab" [class.active]="vista === 'toma'" (click)="cambiarVista('toma')">
+        <mat-icon>fact_check</mat-icon>
+        Toma
+    </button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- VISTA: Productos                       -->
+<!-- ═══════════════════════════════════════ -->
+<ng-container *ngIf="vista === 'productos'">
+    <div class="search-box mb-16">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input (keyup)="onSearch($event)" placeholder="Buscar insumos..." />
+    </div>
+
+    <div class="inv-grid" *ngIf="!loading; else loadingTpl">
+        <div *ngFor="let p of productosFiltrados" class="inv-card card-glass">
+            <div class="inv-card-header">
+                <div class="inv-card-name">{{ p.nombre }}</div>
+                <span class="inv-stock-badge" [ngClass]="getStockClass(p)">{{ getStockLabel(p) }}</span>
+            </div>
+
+            <div class="inv-card-cat" *ngIf="p.categoria">{{ p.categoria.nombre }}</div>
+
+            <div class="inv-card-stock">
+                <div class="inv-stock-number">{{ p.stock }}</div>
+                <div class="inv-stock-unit">{{ p.tipo_stock || 'und' }}</div>
+            </div>
+
+            <div class="inv-card-meta">
+                <div class="inv-meta-row" *ngIf="p.stock_minimo">
+                    <span class="inv-meta-label">Mín:</span>
+                    <span>{{ p.stock_minimo }}</span>
+                </div>
+                <div class="inv-meta-row" *ngIf="p.ubicacion_almacen">
+                    <mat-icon class="inv-meta-icon">place</mat-icon>
+                    <span>{{ p.ubicacion_almacen }}</span>
+                </div>
+            </div>
+
+            <div class="inv-card-actions">
+                <button class="btn-ghost btn-sm" (click)="registrarMovimiento(p)" title="Registrar movimiento">
+                    <mat-icon>swap_vert</mat-icon>
+                </button>
+                <button class="btn-ghost btn-sm" (click)="cargarMovimientos(p.id); cambiarVista('movimientos')"
+                    title="Ver historial">
+                    <mat-icon>history</mat-icon>
+                </button>
+                <button class="btn-ghost btn-sm" (click)="editarProducto(p)" title="Editar">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button class="btn-ghost btn-sm btn-danger-ghost" (click)="eliminarProducto(p)" title="Eliminar">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && productosFiltrados.length === 0" class="empty-state">
+        <mat-icon class="empty-state-icon">inventory_2</mat-icon>
+        <h3 class="empty-state-title">Sin insumos</h3>
+        <p class="empty-state-text">Crea tu primer insumo para empezar a controlar el inventario</p>
+    </div>
+</ng-container>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- VISTA: Stock Bajo (Alertas)            -->
+<!-- ═══════════════════════════════════════ -->
+<ng-container *ngIf="vista === 'stock-bajo'">
+    <div class="alert-list" *ngIf="stockBajo.length > 0; else noAlertas">
+        <div *ngFor="let p of stockBajo" class="alert-card card-glass" [class.alert-agotado]="Number(p.stock) <= 0"
+            [class.alert-bajo]="Number(p.stock) > 0">
+            <div class="alert-icon-col">
+                <mat-icon *ngIf="Number(p.stock) <= 0" class="alert-icon-danger">error</mat-icon>
+                <mat-icon *ngIf="Number(p.stock) > 0" class="alert-icon-warning">warning_amber</mat-icon>
+            </div>
+            <div class="alert-info">
+                <div class="alert-name">{{ p.nombre }}</div>
+                <div class="alert-detail">
+                    Stock: <strong>{{ p.stock }}</strong> / Mínimo: <strong>{{ p.stock_minimo }}</strong>
+                    {{ p.tipo_stock || 'und' }}
+                </div>
+                <div class="alert-cat" *ngIf="p.categoria">{{ p.categoria.nombre }}</div>
+            </div>
+            <button class="btn-neon btn-sm" (click)="registrarMovimiento(p)">
+                <mat-icon>add</mat-icon>
+                Reabastecer
+            </button>
+        </div>
+    </div>
+
+    <ng-template #noAlertas>
+        <div class="empty-state">
+            <mat-icon class="empty-state-icon" style="color: var(--brand-primary);">check_circle</mat-icon>
+            <h3 class="empty-state-title">Todo en orden</h3>
+            <p class="empty-state-text">No hay insumos con stock bajo</p>
+        </div>
+    </ng-template>
+</ng-container>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- VISTA: Movimientos                     -->
+<!-- ═══════════════════════════════════════ -->
+<ng-container *ngIf="vista === 'movimientos'">
+    <div class="mov-filter-row">
+        <select class="input-glass mov-select" (change)="cargarMovimientos($any($event.target).value)">
+            <option value="">Todos los insumos</option>
+            <option *ngFor="let p of productos" [value]="p.id" [selected]="p.id === productoSelId">{{ p.nombre }}
+            </option>
+        </select>
+    </div>
+
+    <div class="mov-list" *ngIf="movimientos.length > 0; else noMovimientos">
+        <div *ngFor="let m of movimientos" class="mov-row card-glass">
+            <div class="mov-tipo">
+                <span class="mov-badge" [ngClass]="getTipoBadgeClass(m.tipo)">{{ getTipoLabel(m.tipo) }}</span>
+            </div>
+            <div class="mov-info">
+                <div class="mov-producto">{{ m.producto?.nombre || '—' }}</div>
+                <div class="mov-motivo" *ngIf="m.motivo">{{ m.motivo }}</div>
+            </div>
+            <div class="mov-datos">
+                <div class="mov-cantidad" [class.positivo]="getTipoBadgeClass(m.tipo) === 'mov-entrada'"
+                    [class.negativo]="getTipoBadgeClass(m.tipo) === 'mov-salida'">
+                    {{ getTipoBadgeClass(m.tipo) === 'mov-entrada' ? '+' : '-' }}{{ m.cantidad }}
+                </div>
+                <div class="mov-stock-change">{{ m.stock_anterior }} → {{ m.stock_nuevo }}</div>
+            </div>
+            <div class="mov-fecha">
+                {{ m.created_at | date:'dd/MM HH:mm' }}
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noMovimientos>
+        <div class="empty-state">
+            <mat-icon class="empty-state-icon">swap_vert</mat-icon>
+            <h3 class="empty-state-title">Sin movimientos</h3>
+            <p class="empty-state-text">Los movimientos de inventario aparecerán aquí</p>
+        </div>
+    </ng-template>
+</ng-container>
+
+<ng-template #loadingTpl>
+    <div class="empty-state">
+        <mat-icon class="empty-state-icon spin">refresh</mat-icon>
+        <p class="empty-state-text">Cargando inventario...</p>
+    </div>
+</ng-template>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- VISTA: Toma de Inventario              -->
+<!-- ═══════════════════════════════════════ -->
+<ng-container *ngIf="vista === 'toma'">
+    <div class="toma-header">
+        <div>
+            <h2 class="toma-title">
+                <mat-icon style="color: var(--brand-primary)">fact_check</mat-icon>
+                Toma de inventario
+            </h2>
+            <p class="toma-subtitle">Ingresa el conteo físico de cada insumo. Los ajustes se registrarán
+                automáticamente.</p>
+        </div>
+        <button class="btn-neon" (click)="confirmarToma()" [disabled]="guardandoToma">
+            <mat-icon>{{ guardandoToma ? 'sync' : 'save' }}</mat-icon>
+            {{ guardandoToma ? 'Guardando...' : 'Registrar Toma' }}
+        </button>
+    </div>
+
+    <div class="toma-table card-glass">
+        <div class="toma-row toma-row-header">
+            <div class="toma-col-name">Insumo</div>
+            <div class="toma-col-sistema">Sistema</div>
+            <div class="toma-col-conteo">Conteo físico</div>
+            <div class="toma-col-diff">Diferencia</div>
+        </div>
+        <div *ngFor="let item of tomaItems; let i = index" class="toma-row"
+            [class.toma-diff-pos]="item.conteo !== null && item.conteo - Number(item.producto.stock) > 0"
+            [class.toma-diff-neg]="item.conteo !== null && item.conteo - Number(item.producto.stock) < 0">
+            <div class="toma-col-name">
+                <span class="toma-prod-nombre">{{ item.producto.nombre }}</span>
+                <span class="toma-prod-tipo">{{ item.producto.tipo_stock || 'und' }}</span>
+            </div>
+            <div class="toma-col-sistema">{{ item.producto.stock }}</div>
+            <div class="toma-col-conteo">
+                <input type="number" class="input-glass toma-input" [(ngModel)]="item.conteo"
+                    [placeholder]="'' + item.producto.stock" min="0" step="0.01">
+            </div>
+            <div class="toma-col-diff">
+                <span *ngIf="item.conteo !== null && item.conteo !== undefined"
+                    [class.positivo]="item.conteo - Number(item.producto.stock) > 0"
+                    [class.negativo]="item.conteo - Number(item.producto.stock) < 0">
+                    {{ item.conteo - Number(item.producto.stock) > 0 ? '+' : '' }}{{ (item.conteo -
+                    Number(item.producto.stock)) | number:'1.0-2' }}
+                </span>
+                <span *ngIf="item.conteo === null || item.conteo === undefined" class="toma-no-diff">—</span>
+            </div>
+        </div>
+    </div>
+</ng-container>

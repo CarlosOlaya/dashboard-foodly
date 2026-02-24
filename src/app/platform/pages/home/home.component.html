@@ -1,0 +1,298 @@
+<div class="layout">
+    <!-- ── MOBILE HEADER (hidden in servicio) ── -->
+    <header class="mobile-header" *ngIf="!isServicio">
+        <div class="mobile-header-brand">
+            <img src="/assets/favicon.svg" alt="Foodly" class="mobile-brand-logo">
+            <span class="mobile-brand-name">{{ currentPageTitle }}</span>
+        </div>
+        <div class="mobile-header-actions">
+            <!-- Arqueo: Abrir/Cerrar Turno -->
+            <ng-container *ngIf="isArqueo && arqueoComponent && !arqueoComponent.loading">
+                <button class="mobile-turno-btn turno-abrir" *ngIf="!arqueoComponent.turnoActivo"
+                    (click)="arqueoComponent.abrirTurno()">
+                    <mat-icon>add_circle</mat-icon>
+                    <span>Abrir</span>
+                </button>
+                <button class="mobile-turno-btn turno-cerrar" *ngIf="arqueoComponent.turnoActivo"
+                    (click)="arqueoComponent.cerrarTurno()">
+                    <mat-icon>lock</mat-icon>
+                    <span>Cerrar</span>
+                </button>
+            </ng-container>
+            <!-- Notification Bell (admin only) -->
+            <button class="mobile-notif-btn" *ngIf="isAdmin" (click)="toggleNotifPanel()" title="Notificaciones">
+                <mat-icon>notifications</mat-icon>
+                <span class="notif-bell-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ── SIDEBAR FIJO (desktop only) ── -->
+    <aside class="app-sidebar" [style.display]="isServicio ? 'none' : ''">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <img src="/assets/favicon.svg" alt="Foodly" class="brand-logo">
+            <h1>Foodly</h1>
+            <!-- Notification Bell -->
+            <div class="notif-wrapper" *ngIf="isAdmin">
+                <button class="notif-bell" (click)="toggleNotifPanel()" title="Notificaciones">
+                    <mat-icon>notifications</mat-icon>
+                    <span class="notif-bell-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+                </button>
+
+                <!-- Notification Panel -->
+                <div class="notif-panel" *ngIf="showNotifPanel">
+                    <div class="notif-panel-header">
+                        <span class="notif-panel-title">Alertas de Stock</span>
+                        <button class="notif-clear" (click)="notifService.clearAll()" *ngIf="notifications.length">
+                            Limpiar
+                        </button>
+                    </div>
+                    <div class="notif-panel-body">
+                        <div *ngIf="!notifications.length" class="notif-empty">
+                            <mat-icon>check_circle</mat-icon>
+                            <p>Sin alertas activas</p>
+                        </div>
+                        <div *ngFor="let n of notifications" class="notif-item"
+                            [class.notif-agotado]="n.tipo === 'agotado'">
+                            <mat-icon class="notif-item-icon">{{ n.tipo === 'agotado' ? 'error' : 'warning'
+                                }}</mat-icon>
+                            <div class="notif-item-text">
+                                <span class="notif-item-msg">{{ n.mensaje }}</span>
+                                <span class="notif-item-time">{{ n.timestamp | date:'shortTime' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <!-- Dashboard (admin only) -->
+            <a *ngIf="isAdmin" [routerLink]="navDashboard.route" class="nav-item"
+                [class.active]="isActive(navDashboard.route)">
+                <mat-icon class="nav-icon">{{ navDashboard.icon }}</mat-icon>
+                <span>{{ navDashboard.label }}</span>
+            </a>
+
+            <!-- Operaciones — todos los roles -->
+            <div class="nav-section-title">Operaciones</div>
+            <a *ngFor="let item of navOperaciones" [routerLink]="item.route" class="nav-item"
+                [class.active]="isActive(item.route)">
+                <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+                <span>{{ item.label }}</span>
+            </a>
+
+            <!-- Finanzas — cajero + admin -->
+            <ng-container *ngIf="canSeeFinanzas">
+                <div class="nav-section-title">Finanzas</div>
+                <a *ngFor="let item of navFinanzas" [routerLink]="item.route" class="nav-item"
+                    [class.active]="isActive(item.route)">
+                    <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                </a>
+            </ng-container>
+
+            <!-- Gestión — solo admin -->
+            <ng-container *ngIf="isAdmin">
+                <div class="nav-section-title">Gestión</div>
+                <a *ngFor="let item of navGestion" [routerLink]="item.route" class="nav-item"
+                    [class.active]="isActive(item.route)">
+                    <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                    <span class="nav-badge" *ngIf="item.badge">{{ item.badge }}</span>
+                </a>
+            </ng-container>
+
+            <!-- Configuración — solo admin -->
+            <ng-container *ngIf="isAdmin">
+                <div class="nav-section-title">Configuración</div>
+                <a *ngFor="let item of navConfig" [routerLink]="item.route" class="nav-item"
+                    [class.active]="isActive(item.route)">
+                    <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                </a>
+            </ng-container>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar-placeholder">
+                    <mat-icon>person</mat-icon>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">{{ usuario.name }} {{ usuario.apellido }}</div>
+                    <div class="sidebar-user-role">{{ usuario.rol }}</div>
+                </div>
+                <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="app-main" [class.servicio-mode]="isServicio">
+        <div class="app-content" [class.servicio-content]="isServicio">
+            <router-outlet (activate)="activeChild = $event"></router-outlet>
+        </div>
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════════
+         BOTTOM NAVIGATION BAR (mobile only)
+         ══════════════════════════════════════════════════════════ -->
+    <nav class="bottom-nav" *ngIf="!isServicio">
+        <!-- Mesas -->
+        <a class="bottom-nav-item" routerLink="./mesas" [class.active]="isActive('./mesas')">
+            <mat-icon>table_bar</mat-icon>
+            <span>Mesas</span>
+        </a>
+
+        <!-- Comandas -->
+        <a class="bottom-nav-item" routerLink="./comandas" [class.active]="isActive('./comandas')">
+            <mat-icon>restaurant</mat-icon>
+            <span>Comandas</span>
+        </a>
+
+        <!-- Más (center button) -->
+        <button class="bottom-nav-item bottom-nav-more" (click)="toggleMoreMenu()" [class.active]="showMoreMenu">
+            <div class="bottom-nav-more-btn">
+                <mat-icon>{{ showMoreMenu ? 'close' : 'apps' }}</mat-icon>
+            </div>
+            <span>Más</span>
+        </button>
+
+        <!-- Arqueo (cajero + admin) -->
+        <a class="bottom-nav-item" routerLink="./arqueo" [class.active]="isActive('./arqueo')" *ngIf="canSeeFinanzas">
+            <mat-icon>point_of_sale</mat-icon>
+            <span>Arqueo</span>
+        </a>
+        <!-- Carta (if not cajero/admin, show Carta instead) -->
+        <a class="bottom-nav-item" routerLink="./carta" [class.active]="isActive('./carta')" *ngIf="!canSeeFinanzas">
+            <mat-icon>menu_book</mat-icon>
+            <span>Carta</span>
+        </a>
+
+        <!-- Perfil -->
+        <button class="bottom-nav-item" (click)="toggleProfileMenu()" [class.active]="showProfileMenu">
+            <mat-icon>person</mat-icon>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <!-- ══════════════════════════════════════════════════════════
+         "MORE" BOTTOM SHEET (mobile only)
+         ══════════════════════════════════════════════════════════ -->
+    <div class="more-sheet-backdrop" *ngIf="showMoreMenu" (click)="showMoreMenu = false"></div>
+    <div class="more-sheet" [class.more-sheet--open]="showMoreMenu">
+        <div class="more-sheet-handle"></div>
+        <div class="more-sheet-title">Menú</div>
+
+        <div class="more-sheet-grid">
+            <!-- Dashboard (admin) -->
+            <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./finanzas" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: rgba(34,211,238,0.12);">
+                    <mat-icon style="color: var(--brand-primary);">analytics</mat-icon>
+                </div>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Carta -->
+            <a class="more-sheet-item" routerLink="./carta" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: rgba(245,158,11,0.12);">
+                    <mat-icon style="color: #f59e0b;">menu_book</mat-icon>
+                </div>
+                <span>Carta</span>
+            </a>
+
+            <!-- Cobros / Facturación (cajero + admin) -->
+            <a *ngIf="canSeeFinanzas" class="more-sheet-item" routerLink="./facturacion" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: rgba(93,85,250,0.12);">
+                    <mat-icon style="color: var(--brand-secondary);">receipt_long</mat-icon>
+                </div>
+                <span>Cobros</span>
+            </a>
+
+            <!-- Admin items -->
+            <ng-container *ngIf="isAdmin">
+                <a class="more-sheet-item" routerLink="./clientes" (click)="showMoreMenu = false">
+                    <div class="more-sheet-icon" style="background: rgba(34,197,94,0.12);">
+                        <mat-icon style="color: #16a34a;">groups</mat-icon>
+                    </div>
+                    <span>Clientes</span>
+                </a>
+
+                <a class="more-sheet-item" routerLink="./proveedores" (click)="showMoreMenu = false">
+                    <div class="more-sheet-icon" style="background: rgba(14,165,233,0.12);">
+                        <mat-icon style="color: #0ea5e9;">local_shipping</mat-icon>
+                    </div>
+                    <span>Proveedores</span>
+                </a>
+
+                <a class="more-sheet-item" routerLink="./empleados" (click)="showMoreMenu = false">
+                    <div class="more-sheet-icon" style="background: rgba(168,85,247,0.12);">
+                        <mat-icon style="color: #a855f7;">badge</mat-icon>
+                    </div>
+                    <span>Empleados</span>
+                </a>
+
+                <a class="more-sheet-item" routerLink="./productos" (click)="showMoreMenu = false">
+                    <div class="more-sheet-icon" style="background: rgba(239,68,68,0.12);">
+                        <mat-icon style="color: #ef4444;">inventory_2</mat-icon>
+                    </div>
+                    <span>Inventario</span>
+                </a>
+
+                <a class="more-sheet-item" routerLink="./empresa" (click)="showMoreMenu = false">
+                    <div class="more-sheet-icon" style="background: rgba(100,116,139,0.12);">
+                        <mat-icon style="color: #64748b;">business</mat-icon>
+                    </div>
+                    <span>Empresa</span>
+                </a>
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PROFILE BOTTOM SHEET (mobile only)
+         ══════════════════════════════════════════════════════════ -->
+    <div class="more-sheet-backdrop" *ngIf="showProfileMenu" (click)="showProfileMenu = false"></div>
+    <div class="more-sheet profile-sheet" [class.more-sheet--open]="showProfileMenu">
+        <div class="more-sheet-handle"></div>
+
+        <div class="profile-sheet-user">
+            <div class="user-avatar-placeholder">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div class="profile-sheet-info">
+                <div class="profile-sheet-name">{{ usuario.name }} {{ usuario.apellido }}</div>
+                <div class="profile-sheet-role">{{ usuario.rol }}</div>
+            </div>
+        </div>
+
+        <button class="profile-sheet-logout" (click)="logout(); showProfileMenu = false">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar sesión</span>
+        </button>
+    </div>
+</div>
+
+<!-- ── Toast Notifications ── -->
+<div class="toast-container">
+    <div *ngFor="let toast of toasts" class="toast-notification" [class.toast-agotado]="toast.tipo === 'agotado'"
+        [class.toast-stock-bajo]="toast.tipo === 'stock_bajo'">
+        <div class="toast-icon">
+            <mat-icon>{{ toast.tipo === 'agotado' ? 'error' : 'warning' }}</mat-icon>
+        </div>
+        <div class="toast-content">
+            <span class="toast-title">{{ toast.tipo === 'agotado' ? 'Producto Agotado' : 'Stock Bajo' }}</span>
+            <span class="toast-msg">{{ toast.mensaje }}</span>
+        </div>
+        <button class="toast-close" (click)="dismissToast(toast.id)">
+            <mat-icon>close</mat-icon>
+        </button>
+        <div class="toast-progress"></div>
+    </div>
+</div>

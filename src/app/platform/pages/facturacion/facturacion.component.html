@@ -1,0 +1,161 @@
+<div class="page-header facturacion-header">
+  <div>
+    <h1 class="page-title"><mat-icon>receipt_long</mat-icon>Facturación</h1>
+    <p class="page-subtitle">Historial y métricas de facturas</p>
+  </div>
+
+  <div class="metricas-inline">
+    <div class="metrica-card">
+      <div class="metrica-icon ventas"><mat-icon>trending_up</mat-icon></div>
+      <div class="metrica-info">
+        <span class="metrica-label">Ventas</span>
+        <span class="metrica-valor">${{ totalVentas | number:'1.0-0' }}</span>
+      </div>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-icon facturas"><mat-icon>receipt_long</mat-icon></div>
+      <div class="metrica-info">
+        <span class="metrica-label">Facturas</span>
+        <span class="metrica-valor">{{ totalFacturas }}</span>
+      </div>
+    </div>
+
+    <div class="metrica-card">
+      <div class="metrica-icon anuladas"><mat-icon>block</mat-icon></div>
+      <div class="metrica-info">
+        <span class="metrica-label">Anuladas</span>
+        <span class="metrica-valor">{{ totalAnuladas }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn-ghost" (click)="exportarCSV()" title="Exportar CSV">
+      <mat-icon>download</mat-icon>
+      Exportar
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- FILTROS DE PERIODO                    -->
+<!-- ══════════════════════════════════════ -->
+<div class="filtros-bar card-glass">
+  <div class="periodo-btns">
+    <button class="periodo-btn" [class.active]="periodoActual === 'hoy'" (click)="setPeriodo('hoy')">Hoy</button>
+    <button class="periodo-btn" [class.active]="periodoActual === 'semana'"
+      (click)="setPeriodo('semana')">Semana</button>
+    <button class="periodo-btn" [class.active]="periodoActual === 'mes'" (click)="setPeriodo('mes')">Mes</button>
+    <button class="periodo-btn" [class.active]="periodoActual === 'personalizado'"
+      (click)="periodoActual = 'personalizado'">Personalizado</button>
+  </div>
+
+  <div class="fechas-custom" *ngIf="periodoActual === 'personalizado'">
+    <input type="date" class="input-glass input-sm" [(ngModel)]="fechaDesde" />
+    <span class="fecha-sep">—</span>
+    <input type="date" class="input-glass input-sm" [(ngModel)]="fechaHasta" />
+    <button class="btn-neon btn-sm" (click)="aplicarFechasPersonalizadas()">Aplicar</button>
+  </div>
+
+  <div class="estado-btns">
+    <button class="estado-btn" [class.active]="filtroEstado === ''" (click)="setFiltroEstado('')">Todas</button>
+    <button class="estado-btn" [class.active]="filtroEstado === 'cerrada'"
+      (click)="setFiltroEstado('cerrada')">Cerradas</button>
+    <button class="estado-btn" [class.active]="filtroEstado === 'abierta'"
+      (click)="setFiltroEstado('abierta')">Abiertas</button>
+    <button class="estado-btn" [class.active]="filtroEstado === 'anulada'"
+      (click)="setFiltroEstado('anulada')">Anuladas</button>
+  </div>
+</div>
+<!-- ══════════════════════════════════════ -->
+<!-- BÚSQUEDA                              -->
+<!-- ══════════════════════════════════════ -->
+<div class="search-box mb-16">
+  <mat-icon class="search-icon">search</mat-icon>
+  <input (keyup)="applyFilter($event)" placeholder="Buscar por # factura, mesa, mesero..." #input />
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- TABLA                                 -->
+<!-- ══════════════════════════════════════ -->
+<div class="card-glass">
+  <div *ngIf="loading" class="loading-bar">
+    <div class="loading-bar-inner"></div>
+  </div>
+
+  <section tabindex="0">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="numero_factura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header># Factura</th>
+        <td mat-cell *matCellDef="let f">{{ f.numero_factura || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mesa">
+        <th mat-header-cell *matHeaderCellDef>Mesa</th>
+        <td mat-cell *matCellDef="let f">{{ f.mesa?.numero || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mesero">
+        <th mat-header-cell *matHeaderCellDef>Mesero</th>
+        <td mat-cell *matCellDef="let f">{{ f.empleado ? f.empleado.nombre + ' ' + (f.empleado.apellido1 || '') : '—'
+          }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+        <td mat-cell *matCellDef="let f" class="text-neon">
+          {{ (f.total > 0 ? f.total : f.subtotal) | currency:'COP':'$ ':'1.0-0' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="metodo_pago">
+        <th mat-header-cell *matHeaderCellDef>Pago</th>
+        <td mat-cell *matCellDef="let f">
+          <span class="metodo-badge" *ngIf="f.estado === 'cerrada'">
+            {{ getMetodoLabel(f.metodo_pago) }}
+          </span>
+          <span *ngIf="f.estado !== 'cerrada'">—</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+        <td mat-cell *matCellDef="let f">
+          <span class="status-badge" [ngClass]="{
+                  'status-abierta': f.estado === 'abierta',
+                  'status-cerrada': f.estado === 'cerrada',
+                  'status-anulada': f.estado === 'anulada'
+                }">
+            {{ f.estado }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha_apertura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+        <td mat-cell *matCellDef="let f">{{ f.fecha_apertura | date:'dd/MM HH:mm' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let f">
+          <button *ngIf="f.estado === 'cerrada'" class="btn-icon-print" title="Imprimir copia"
+            (click)="imprimirFactura(f.id, $event)">
+            <mat-icon>print</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="facturaSel(row)"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="8" style="padding: 24px; text-align: center; color: var(--text-muted);">
+          No hay facturas para el periodo seleccionado
+        </td>
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+  </section>
+</div>

@@ -1,0 +1,56 @@
+/* ── Splash Screen Overlay ── */
+.app-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    background: linear-gradient(135deg, var(--bg-body) 0%, var(--slate-900) 100%);
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.app-splash.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-logo {
+    width: 72px;
+    height: 72px;
+    animation: splashPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes splashPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 0.7;
+    }
+}
+
+.splash-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--brand-tint-15);
+    border-top-color: var(--brand-primary);
+    border-radius: 50%;
+    animation: splashSpin 0.7s linear infinite;
+}
+
+@keyframes splashSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

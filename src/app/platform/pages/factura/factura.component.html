@@ -1,0 +1,139 @@
+<div class="page-header" *ngIf="factura">
+    <div class="flex items-center gap-12">
+        <button class="btn-ghost" style="padding: 8px;" routerLink="/home/facturacion">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+            <h1 class="page-title">Factura {{ factura.numero_factura || 'Sin número' }}</h1>
+            <p class="page-subtitle">Mesa {{ factura.mesa?.numero || '' }}</p>
+        </div>
+        <span class="estado-badge" [ngClass]="{
+            'badge-cerrada': factura.estado === 'cerrada',
+            'badge-anulada': factura.estado === 'anulada',
+            'badge-abierta': factura.estado === 'abierta'
+        }">{{ factura.estado | uppercase }}</span>
+    </div>
+</div>
+
+<div class="factura-layout" *ngIf="factura">
+
+    <!-- Detalles de items -->
+    <div class="card-glass card-body-custom">
+        <h3 class="section-title">Items del Pedido</h3>
+
+        <table mat-table [dataSource]="dataSourceFactura" *ngIf="dataSourceFactura.data.length > 0">
+            <ng-container matColumnDef="plato">
+                <th mat-header-cell *matHeaderCellDef>Plato</th>
+                <td mat-cell *matCellDef="let e">{{ e.plato?.nombre || '' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef>Precio</th>
+                <td mat-cell *matCellDef="let e">{{ e.precio_unitario | currency }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef>Cant.</th>
+                <td mat-cell *matCellDef="let e">{{ e.cantidad }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef>Total</th>
+                <td mat-cell *matCellDef="let e" style="font-weight: 600;">{{ e.precio_unitario * e.cantidad | currency
+                    }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsFactura"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsFactura;"></tr>
+        </table>
+
+        <div *ngIf="dataSourceFactura.data.length === 0" class="empty-state" style="padding: 24px 0;">
+            <mat-icon class="empty-state-icon" style="font-size: 36px;">receipt_long</mat-icon>
+            <p class="empty-state-text">Sin detalles</p>
+        </div>
+    </div>
+
+    <!-- Info de factura (solo lectura) -->
+    <div class="card-glass card-body-custom">
+        <h3 class="section-title">Datos de Factura</h3>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Mesero</span>
+                <span class="info-value">{{ meseroNombre }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Cliente</span>
+                <span class="info-value">{{ clienteNombre }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Método de Pago</span>
+                <span class="info-value">
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px; vertical-align: middle;">
+                        {{ factura.metodo_pago === 'efectivo' ? 'payments' : factura.metodo_pago === 'tarjeta' ?
+                        'credit_card' : 'account_balance' }}
+                    </mat-icon>
+                    {{ factura.metodo_pago | titlecase }}
+                    <span *ngIf="factura.es_pago_dividido" class="dividido-tag">Dividido</span>
+                </span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Apertura</span>
+                <span class="info-value">{{ factura.fecha_apertura | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="info-item" *ngIf="factura.fecha_cierre">
+                <span class="info-label">Cierre</span>
+                <span class="info-value">{{ factura.fecha_cierre | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+        </div>
+
+        <!-- Totales -->
+        <div class="totales-section">
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>{{ factura.subtotal | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+            <div class="total-row" *ngIf="(factura.monto_servicio || 0) > 0">
+                <span>Servicio ({{ factura.porcentaje_servicio }}%)</span>
+                <span>{{ factura.monto_servicio | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+            <div class="total-row" *ngIf="(factura.monto_iva || 0) > 0">
+                <span>IVA ({{ factura.porcentaje_iva }}%)</span>
+                <span>{{ factura.monto_iva | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+            <div class="total-row descuento" *ngIf="(factura.descuento_monto || 0) > 0">
+                <span>Descuento ({{ factura.descuento_porcentaje }}%)</span>
+                <span>-{{ factura.descuento_monto | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+            <div class="total-row" *ngIf="(factura.propina || 0) > 0">
+                <span>Propina</span>
+                <span>{{ factura.propina | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+            <div class="total-row grand">
+                <span>TOTAL</span>
+                <span>{{ (factura.total > 0 ? factura.total : factura.subtotal) | currency:'COP':'$ ':'1.0-0' }}</span>
+            </div>
+        </div>
+
+        <!-- Motivo anulación -->
+        <div *ngIf="factura.estado === 'anulada' && factura.motivo_anulacion" class="anulacion-info">
+            <mat-icon>warning</mat-icon>
+            <div>
+                <strong>Motivo de anulación:</strong>
+                <p>{{ factura.motivo_anulacion }}</p>
+            </div>
+        </div>
+
+        <!-- Acciones sobre factura cerrada -->
+        <div *ngIf="factura.estado === 'cerrada'" class="factura-actions">
+            <button class="btn-warning" (click)="reabrirFactura()">
+                <mat-icon>replay</mat-icon>
+                Reabrir Cuenta
+            </button>
+            <button class="btn-danger" (click)="anularFactura()">
+                <mat-icon>cancel</mat-icon>
+                Anular Factura
+            </button>
+        </div>
+    </div>
+</div>

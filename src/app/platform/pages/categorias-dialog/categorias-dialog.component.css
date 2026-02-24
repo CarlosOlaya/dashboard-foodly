@@ -1,0 +1,189 @@
+.dialog-container {
+    min-width: 400px;
+    max-width: 500px;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 12px;
+}
+
+.dialog-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.dialog-header h2 mat-icon {
+    color: var(--brand-primary);
+}
+
+.dialog-add-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 24px 16px;
+}
+
+.dialog-add-row input {
+    flex: 1;
+}
+
+.dialog-list {
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0 24px 12px;
+}
+
+.dialog-empty {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-muted);
+}
+
+.dialog-empty mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    opacity: 0.4;
+}
+
+.dialog-empty p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* ── Category item ── */
+.dialog-cat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+    margin-bottom: 4px;
+    min-height: 42px;
+}
+
+.dialog-cat-item:hover {
+    background: var(--brand-tint-04);
+    border-color: var(--border-subtle);
+}
+
+.dialog-cat-item.selected {
+    background: var(--brand-tint-06);
+    border-color: var(--brand-primary);
+}
+
+.dialog-cat-item.editing {
+    background: var(--brand-tint-04);
+    border-color: var(--brand-primary);
+    cursor: default;
+}
+
+.cat-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+    min-width: 0;
+}
+
+.cat-info span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.dialog-cat-item.selected .cat-icon {
+    color: var(--brand-primary);
+}
+
+/* ── Actions row ── */
+.cat-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+}
+
+.icon-btn mat-icon {
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+}
+
+.icon-btn-edit:hover {
+    background: var(--brand-tint-08);
+    color: var(--brand-primary);
+}
+
+.icon-btn-delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.icon-btn-save:hover {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success-light);
+}
+
+.check-icon {
+    color: var(--brand-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin-left: 2px;
+}
+
+/* ── Edit inline input ── */
+.edit-input {
+    flex: 1;
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+    min-width: 0;
+    margin-right: 8px;
+}
+
+/* ── Footer buttons ── */
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 24px 20px;
+    border-top: 1px solid var(--border-subtle);
+}

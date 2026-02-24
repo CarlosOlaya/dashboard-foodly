@@ -1,0 +1,58 @@
+<div class="page-header" *ngIf="plato">
+  <div class="flex items-center gap-12">
+    <button class="btn-ghost" style="padding: 8px;" routerLink="/home/carta">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1 class="page-title">{{ plato.nombre }}</h1>
+      <p class="page-subtitle">{{ plato.categoria?.nombre || 'Sin categoría' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="card-glass" *ngIf="plato" style="max-width: 600px;">
+  <div *ngIf="plato.imagen_url" style="text-align: center; padding: 24px;">
+    <img [src]="plato.imagen_url" [alt]="plato.nombre"
+      style="max-height: 240px; border-radius: var(--radius-lg); object-fit: cover;" />
+  </div>
+  <div class="card-body-custom">
+    <div class="detail-grid">
+      <div class="detail-item">
+        <span class="detail-label">Nombre</span>
+        <span class="detail-value">{{ plato.nombre }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Área</span>
+        <span class="detail-value">{{ (plato.area || 'N/A') | titlecase }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Precio</span>
+        <span class="detail-value text-neon">{{ plato.precio_venta | currency }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Estado</span>
+        <span class="detail-value">
+          <span class="status-badge" [class.status-activo]="plato.disponibilidad"
+            [class.status-inactivo]="!plato.disponibilidad">
+            {{ plato.disponibilidad ? 'Disponible' : 'No disponible' }}
+          </span>
+        </span>
+      </div>
+      <div class="detail-item" style="grid-column: 1 / -1;" *ngIf="plato.descripcion">
+        <span class="detail-label">Descripción</span>
+        <span class="detail-value">{{ plato.descripcion }}</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <button class="btn-neon" [routerLink]="['/home/editar-plato', plato.id]">
+        <mat-icon>edit</mat-icon>
+        Editar Plato
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!plato" style="display: flex; justify-content: center; padding: 64px;">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>

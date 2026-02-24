@@ -1,0 +1,320 @@
+/* ── Host scroll ── */
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* ── Tenant ID Card ── */
+.tenant-id-card {
+    max-width: 900px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+}
+
+/* ── Section Cards ── */
+.section-card {
+    max-width: 900px;
+    margin-bottom: 20px;
+}
+
+.tenant-id-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.tenant-id-value {
+    display: block;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    color: var(--brand-primary);
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    word-break: break-all;
+}
+
+.tenant-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.plan-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(0, 242, 255, 0.1);
+    color: var(--brand-primary);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.btn-sm {
+    padding: 6px 10px !important;
+    font-size: 13px;
+}
+
+/* ── Section Title ── */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.section-title mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--brand-primary);
+}
+
+/* ── Color Swatch ── */
+.color-swatch-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-swatch {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+}
+
+/* ── Color Picker Input ── */
+.color-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-picker {
+    width: 44px;
+    height: 40px;
+    padding: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+/* ── Plan Cards ── */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.plan-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    transition: all 0.2s ease;
+}
+
+.plan-card:hover {
+    border-color: var(--brand-tint-20);
+}
+
+.plan-card.active {
+    border-color: var(--brand-primary);
+    background: var(--brand-tint-04);
+}
+
+.plan-badge-current {
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--brand-primary);
+    color: var(--text-on-brand);
+}
+
+.plan-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.plan-price {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.plan-price span {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    flex: 1;
+}
+
+.plan-features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+}
+
+.plan-features li mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--brand-primary);
+}
+
+@media (max-width: 768px) {
+    .plans-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   LOGO UPLOAD
+   ══════════════════════════════════════════════ */
+.logo-upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.logo-preview-box {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid var(--border-subtle);
+    cursor: pointer;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: rgba(15, 23, 42, 0.95);
+}
+
+.logo-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.logo-overlay mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+}
+
+.logo-overlay span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.logo-preview-box:hover .logo-overlay {
+    opacity: 1;
+}
+
+.logo-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 200px;
+    height: 160px;
+    border: 2px dashed var(--border-subtle);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(var(--brand-rgb), 0.02);
+}
+
+.logo-dropzone:hover {
+    border-color: var(--brand-primary);
+    background: var(--brand-tint-06);
+}
+
+.logo-dropzone mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    color: var(--brand-primary);
+}
+
+.logo-dropzone p {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.logo-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.logo-uploading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}

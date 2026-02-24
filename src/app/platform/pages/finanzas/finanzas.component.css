@@ -1,0 +1,402 @@
+/* ── Dashboard Container ── */
+:host {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.dash-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 8px;
+}
+
+/* ── KPI Row ── */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 16px;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease;
+}
+
+.kpi-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 4px 16px var(--brand-tint-06);
+    transform: translateY(-2px);
+}
+
+.kpi-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.kpi-icon mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+}
+
+.kpi-icon--ventas {
+    background: var(--brand-tint-10);
+    color: var(--brand-primary);
+}
+
+.kpi-icon--mes {
+    background: rgba(20, 184, 166, 0.12);
+    color: var(--teal);
+}
+
+.kpi-icon--ticket {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+}
+
+.kpi-icon--propinas {
+    background: rgba(139, 92, 246, 0.12);
+    color: var(--purple);
+}
+
+.kpi-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+/* ── Charts Row ── */
+.charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.chart-card {
+    padding: 18px;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card--wide {
+    grid-column: 1 / -1;
+}
+
+.chart-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 14px 0;
+}
+
+.chart-title mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--brand-primary);
+}
+
+.chart-wrapper {
+    flex: 1;
+    min-height: 220px;
+}
+
+.chart-wrapper--pie {
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.chart-empty mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    opacity: 0.3;
+}
+
+/* ── Loading ── */
+.dash-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 60vh;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.dash-loading mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: var(--brand-primary);
+}
+
+/* ── ngx-charts overrides (dark theme) ── */
+:host ::ng-deep .ngx-charts {
+    text {
+        fill: var(--text-muted) !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 11px !important;
+    }
+
+    .line-series .line {
+        stroke-width: 2.5px;
+    }
+
+    .area {
+        opacity: 0.15;
+    }
+
+    .gridline-path {
+        stroke: var(--border-subtle) !important;
+        stroke-dasharray: 4 4;
+    }
+
+    .refline-path {
+        stroke: var(--border-subtle) !important;
+    }
+
+    .tooltip-anchor {
+        fill: var(--brand-primary);
+    }
+
+    /* Axis lines & ticks */
+    .domain {
+        stroke: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .tick line {
+        stroke: rgba(255, 255, 255, 0.06) !important;
+    }
+
+    /* Legend labels */
+    .legend-labels {
+        background: transparent !important;
+    }
+
+    .legend-label-text {
+        color: var(--text-secondary) !important;
+    }
+
+    /* Pie chart labels */
+    .label-text {
+        fill: var(--text-secondary) !important;
+    }
+
+    .arc path {
+        stroke: rgba(2, 6, 23, 0.6) !important;
+    }
+}
+
+/* ── ngx-charts tooltip (global overlay) ── */
+:host ::ng-deep .ngx-charts-tooltip-content {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+}
+
+:host ::ng-deep .ngx-charts-tooltip-content .tooltip-caret {
+    border-top-color: rgba(15, 23, 42, 0.95) !important;
+}
+
+:host ::ng-deep .tooltip-label {
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+}
+
+:host ::ng-deep .tooltip-val {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+:host ::ng-deep .ngx-charts-outer {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+:host ::ng-deep ngx-charts-line-chart,
+:host ::ng-deep ngx-charts-bar-horizontal,
+:host ::ng-deep ngx-charts-pie-chart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-row {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card--wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .dash-container {
+        padding: 0;
+    }
+
+    /* ── KPIs — horizontal scroll ── */
+    .kpi-row {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+        margin-bottom: 14px;
+    }
+
+    .kpi-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kpi-card {
+        min-width: 150px;
+        flex-shrink: 0;
+        padding: 12px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+
+    .kpi-card:hover {
+        transform: none;
+    }
+
+    .kpi-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .kpi-icon mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .kpi-label {
+        font-size: 10px;
+    }
+
+    .kpi-value {
+        font-size: 17px;
+    }
+
+    .kpi-sub {
+        font-size: 10px;
+    }
+
+    /* ── Charts — stack + compact ── */
+    .charts-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .chart-card {
+        padding: 14px;
+        min-height: 240px;
+        border-radius: 12px;
+    }
+
+    .chart-card--wide {
+        grid-column: auto;
+    }
+
+    .chart-title {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .chart-wrapper {
+        min-height: 180px;
+    }
+
+    .chart-wrapper--pie {
+        min-height: 200px;
+    }
+
+    /* ── Loading — compact ── */
+    .dash-loading {
+        height: 40vh;
+    }
+}
+
+@media (max-width: 520px) {
+    .kpi-card {
+        min-width: 130px;
+    }
+
+    .kpi-value {
+        font-size: 16px;
+    }
+}

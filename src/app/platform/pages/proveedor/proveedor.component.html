@@ -1,0 +1,62 @@
+<div style="max-width: 720px; margin: 0 auto;">
+  <div class="page-header" *ngIf="proveedor">
+    <div class="flex items-center gap-12">
+      <button class="btn-ghost" style="padding: 8px;" routerLink="/home/proveedores">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1 class="page-title">Perfil de Proveedor</h1>
+        <p class="page-subtitle">{{ proveedor.nombre }}</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-12">
+      <button class="btn-neon" (click)="editar()">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button class="btn-danger" (click)="eliminar()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+    </div>
+  </div>
+
+  <div class="card-glass" *ngIf="proveedor">
+    <div class="card-body-custom">
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Nombre</span>
+          <span class="detail-value">{{ proveedor.nombre }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">NIT</span>
+          <span class="detail-value">{{ proveedor.nit || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Teléfono</span>
+          <span class="detail-value">{{ proveedor.telefono || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ proveedor.email || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Asesor</span>
+          <span class="detail-value">{{ proveedor.nombre_asesor || 'N/A' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Día de entrega</span>
+          <span class="detail-value">{{ (proveedor.dia_entrega || 'N/A') | titlecase }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Día de pedido</span>
+          <span class="detail-value">{{ (proveedor.dia_pedido || 'N/A') | titlecase }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Notas</span>
+          <span class="detail-value">{{ proveedor.notas || '—' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

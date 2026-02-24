@@ -1,0 +1,116 @@
+<!-- ═══ Header ═══ -->
+<div class="carta-header">
+  <div class="carta-header-left">
+    <h1 class="carta-title"><mat-icon>menu_book</mat-icon>Gestión de Menú Digital</h1>
+  </div>
+  <button class="btn-neon" routerLink="/home/agregar-plato">
+    <mat-icon>add</mat-icon>
+    Nuevo Plato
+  </button>
+</div>
+
+<!-- ═══ Filters ═══ -->
+<div class="carta-filters">
+  <div class="carta-search">
+    <mat-icon class="search-icon">search</mat-icon>
+    <input (keyup)="filtrarPlatos($event)" placeholder="Buscar platillos, ingredientes, categorías..." />
+  </div>
+
+  <div class="carta-chips">
+    <button class="carta-chip" [class.active]="!categoriaActiva" (click)="mostrarTodos()">
+      Todos
+    </button>
+    <button *ngFor="let cat of categoriasVisibles" class="carta-chip"
+      [class.active]="categoriaActiva?.nombre === cat.nombre" (click)="filtrarPorCategoria(cat)">
+      {{ cat.nombre }}
+    </button>
+
+    <!-- Hamburger for overflow categories -->
+    <div class="chips-more-wrap" *ngIf="categoriasOverflow.length > 0">
+      <button class="carta-chip chips-more-btn" [class.active-menu]="showMoreCats" (click)="toggleMoreCats($event)">
+        <mat-icon>menu</mat-icon>
+        <span>Más</span>
+      </button>
+
+      <!-- Dropdown -->
+      <div class="chips-dropdown" *ngIf="showMoreCats">
+        <button *ngFor="let cat of categoriasOverflow" class="dropdown-chip"
+          [class.active]="categoriaActiva?.nombre === cat.nombre"
+          (click)="filtrarPorCategoria(cat); showMoreCats = false">
+          {{ cat.nombre }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Grid ═══ -->
+<div class="carta-grid" *ngIf="!loading; else loadingTpl">
+
+  <!-- Dish Card -->
+  <div *ngFor="let plato of productosFiltrados" class="dish-card" [class.agotado]="!plato.disponibilidad">
+    <div class="dish-img-wrap">
+      <img *ngIf="plato.imagen_url" [src]="plato.imagen_url" [alt]="plato.nombre" class="dish-img" />
+      <div *ngIf="!plato.imagen_url" class="dish-img-placeholder">
+        <mat-icon>restaurant</mat-icon>
+      </div>
+
+      <!-- Price badge -->
+      <span class="dish-price-badge" [class.agotado-price]="!plato.disponibilidad">
+        {{ plato.precio_venta | currency }}
+      </span>
+
+      <!-- Category label -->
+      <span *ngIf="plato.categoria" class="dish-cat-label">
+        {{ plato.categoria.nombre }}
+      </span>
+
+      <!-- Stock icon -->
+      <span *ngIf="plato.controla_stock" class="dish-stock-icon" title="Controla stock">
+        <mat-icon>inventory_2</mat-icon>
+      </span>
+
+      <!-- Agotado overlay -->
+      <div *ngIf="!plato.disponibilidad" class="dish-agotado-overlay">
+        <span class="dish-agotado-label">Agotado</span>
+      </div>
+    </div>
+
+    <div class="dish-body">
+      <div class="dish-info">
+        <h3 class="dish-name">{{ plato.nombre | titlecase }}</h3>
+        <p *ngIf="plato.descripcion" class="dish-desc">{{ plato.descripcion }}</p>
+      </div>
+
+      <div class="dish-footer">
+        <div class="dish-toggle" (click)="disponibilidad(plato)">
+          <span class="toggle-label">{{ plato.disponibilidad ? 'Disponible' : 'Agotado' }}</span>
+          <div class="toggle-track" [class.on]="plato.disponibilidad">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+        <button class="dish-edit-btn" [routerLink]="['/home/editar-plato', plato.id]">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New Placeholder Card -->
+  <div class="dish-card-add" routerLink="/home/agregar-plato">
+    <div class="add-icon-wrap">
+      <mat-icon>add_circle</mat-icon>
+    </div>
+    <p class="add-title">Añadir Nuevo Plato</p>
+    <p class="add-sub">Configura variantes, precios y fotos</p>
+  </div>
+
+</div>
+
+<!-- ═══ Loading State ═══ -->
+<ng-template #loadingTpl>
+  <div class="carta-loading">
+    <div class="loading-spinner"></div>
+    <p>Cargando carta...</p>
+  </div>
+</ng-template>

@@ -1,0 +1,77 @@
+<div class="form-layout">
+    <div class="form-top-bar">
+        <button class="btn-back" routerLink="/home/clientes">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="form-top-title">{{ isEditing ? 'Editar' : 'Nuevo' }} Cliente</span>
+    </div>
+    <div class="card-glass card-body-custom">
+        <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="guardar()">
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Nombre *</label>
+                    <input class="input-glass" type="text" formControlName="nombre" placeholder="Nombre" />
+                </div>
+
+                <div class="form-field">
+                    <label>Primer Apellido</label>
+                    <input class="input-glass" type="text" formControlName="apellido1" placeholder="Primer apellido" />
+                </div>
+
+                <div class="form-field">
+                    <label>Segundo Apellido</label>
+                    <input class="input-glass" type="text" formControlName="apellido2" placeholder="Segundo apellido" />
+                </div>
+
+                <div class="form-field">
+                    <label>Documento</label>
+                    <input class="input-glass" type="text" formControlName="documento" placeholder="Cédula / NIT" />
+                </div>
+
+                <div class="form-field">
+                    <label>Email</label>
+                    <input class="input-glass" type="email" formControlName="email" placeholder="correo@email.com" />
+                </div>
+
+                <div class="form-field">
+                    <label>Teléfono</label>
+                    <input class="input-glass" type="text" formControlName="telefono" placeholder="Teléfono" />
+                </div>
+
+                <div class="form-field">
+                    <label>Género</label>
+                    <mat-select class="input-glass" formControlName="genero" placeholder="Seleccione género">
+                        <mat-option value="">—</mat-option>
+                        <mat-option value="masculino">Masculino</mat-option>
+                        <mat-option value="femenino">Femenino</mat-option>
+                        <mat-option value="otro">Otro</mat-option>
+                    </mat-select>
+                </div>
+
+                <div class="form-field">
+                    <label>Fecha de Nacimiento</label>
+                    <input class="input-glass" type="date" formControlName="fecha_nacimiento" />
+                </div>
+
+                <div class="form-field" style="grid-column: 1 / -1;">
+                    <label>Notas</label>
+                    <textarea class="input-glass" formControlName="notas" rows="3"
+                        placeholder="Notas adicionales"></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
+                <button class="btn-neon" type="submit" [disabled]="formulario.invalid" style="min-width: 160px;">
+                    <mat-icon>save</mat-icon>
+                    {{ isEditing ? 'Actualizar' : 'Crear' }}
+                </button>
+                <button *ngIf="isEditing" class="btn-danger" type="button" (click)="eliminar()"
+                    style="min-width: 160px;">
+                    <mat-icon>delete</mat-icon>
+                    Eliminar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
