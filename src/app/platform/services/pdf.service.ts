@@ -16,7 +16,7 @@ export class PdfService {
     }
 
     /**
-     * Descarga un PDF del backend y lo abre en una nueva pestaña.
+     * Descarga un PDF de backend y lo abre en una nueva pestaña.
      * @param endpoint - Ruta relativa (ej: '/reportes/comanda/uuid')
      */
     abrirPdf(endpoint: string): Promise<void> {
