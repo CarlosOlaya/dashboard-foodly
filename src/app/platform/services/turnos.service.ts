@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, TurnoCaja, ResumenTurnoEnVivo } from '../../auth/interfaces/interfaces';
+import { ApiResponse, CerrarTurnoResponse, TurnoCaja, ResumenTurnoEnVivo } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class TurnosService extends ApiBaseService {
@@ -12,8 +12,8 @@ export class TurnosService extends ApiBaseService {
         );
     }
 
-    cerrarTurno(turnoId: string, efectivoContado: number, observaciones?: string): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${this.baseUrl}/turnos/${turnoId}/cerrar`,
+    cerrarTurno(turnoId: string, efectivoContado: number, observaciones?: string): Observable<CerrarTurnoResponse> {
+        return this.http.put<CerrarTurnoResponse>(`${this.baseUrl}/turnos/${turnoId}/cerrar`,
             { efectivo_contado: efectivoContado, observaciones },
         );
     }
@@ -31,6 +31,6 @@ export class TurnosService extends ApiBaseService {
     }
 
     getResumenTurnoEnVivo(): Observable<ResumenTurnoEnVivo> {
-        return this.http.get<any>(`${this.baseUrl}/turnos/activo/resumen`);
+        return this.http.get<ResumenTurnoEnVivo>(`${this.baseUrl}/turnos/activo/resumen`);
     }
 }

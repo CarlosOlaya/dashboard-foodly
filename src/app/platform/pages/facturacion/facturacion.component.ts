@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { PlatformService } from '../../services/platform.service';
-import { Factura } from '../../../auth/interfaces/interfaces';
+import { Factura, FacturaFiltros } from '../../../shared/interfaces';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -90,7 +90,7 @@ export class FacturacionComponent implements OnInit, AfterViewInit {
 
   cargarFacturas(): void {
     this.loading = true;
-    const filtros: any = {};
+    const filtros: FacturaFiltros = {};
     if (this.filtroEstado) filtros.estado = this.filtroEstado;
     if (this.fechaDesde) filtros.desde = this.fechaDesde;
     if (this.fechaHasta) filtros.hasta = this.fechaHasta;

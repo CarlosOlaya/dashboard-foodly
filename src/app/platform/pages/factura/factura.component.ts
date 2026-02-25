@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
-import { Factura, DetalleFactura } from '../../../auth/interfaces/interfaces';
+import { Factura, DetalleFactura } from '../../../shared/interfaces';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';

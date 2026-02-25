@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, Categoria, Plato, RecetaInsumo } from '../../auth/interfaces/interfaces';
+import { ApiResponse, Categoria, Plato, RecetaInsumo } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class CartaService extends ApiBaseService {
@@ -32,7 +32,7 @@ export class CartaService extends ApiBaseService {
         return this.http.get<Plato>(`${this.baseUrl}/carta/${id}`);
     }
 
-    crearPlato(data: any): Observable<ApiResponse<Plato>> {
+    crearPlato(data: Partial<Plato>): Observable<ApiResponse<Plato>> {
         return this.http.post<ApiResponse<Plato>>(`${this.baseUrl}/carta/new`, data);
     }
 

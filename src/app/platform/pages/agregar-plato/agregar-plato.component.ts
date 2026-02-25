@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { Categoria, Producto, RecetaInsumo } from '../../../auth/interfaces/interfaces';
+import { Categoria, Producto, RecetaInsumo } from '../../../shared/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriasDialogComponent } from '../categorias-dialog/categorias-dialog.component';
 

@@ -119,8 +119,8 @@
                     <!-- Header de columnas -->
                     <div class="pago-row pago-row-header" *ngIf="servicioMonto > 0">
                         <span class="pago-col-label" style="flex:1">Método</span>
-                        <span class="pago-col-label" style="width:90px; text-align:right">Monto</span>
-                        <span class="pago-col-label" style="width:80px; text-align:right">Propina</span>
+                        <span class="pago-col-label" style="width:90px; text-align:right">Subtotal</span>
+                        <span class="pago-col-label" style="width:80px; text-align:right">Servicio</span>
                         <span style="width:28px"></span>
                     </div>
                     <div *ngFor="let pago of pagos; let i = index" class="pago-row">
@@ -129,11 +129,12 @@
                             <option value="tarjeta">Tarjeta</option>
                             <option value="transferencia">Transferencia</option>
                         </select>
-                        <input type="number" [(ngModel)]="pago.monto" class="pago-monto" placeholder="Monto">
+                        <input type="number" [(ngModel)]="pago.monto" class="pago-monto" placeholder="Subtotal">
                         <div class="pago-propina-wrap" *ngIf="servicioMonto > 0">
-                            <input type="number" [(ngModel)]="pago.propina" class="pago-propina-input" placeholder="0">
+                            <input type="number" [(ngModel)]="pago.propina" class="pago-propina-input"
+                                placeholder="Servicio">
                             <button class="pago-propina-fill" (click)="asignarPropinaRestante(i)"
-                                title="Asignar propina restante aquí">
+                                title="Asignar servicio restante aquí">
                                 <mat-icon>vertical_align_bottom</mat-icon>
                             </button>
                         </div>
@@ -147,7 +148,7 @@
                     <!-- Balance de montos -->
                     <div class="pago-balance" [class.pago-ok]="Math.abs(diferenciaPagos) <= 1"
                         [class.pago-error]="Math.abs(diferenciaPagos) > 1">
-                        <span>Suma: ${{ sumaPagos | number:'1.0-0' }}</span>
+                        <span>Subtotal: ${{ sumaPagos | number:'1.0-0' }} / ${{ subtotal | number:'1.0-0' }}</span>
                         <span *ngIf="diferenciaPagos > 1">Faltan: ${{ diferenciaPagos | number:'1.0-0' }}</span>
                         <span *ngIf="diferenciaPagos < -1">Sobran: ${{ (-diferenciaPagos) | number:'1.0-0' }}</span>
                         <span *ngIf="Math.abs(diferenciaPagos) <= 1">✓ Cuadrado</span>
@@ -156,7 +157,7 @@
                     <div class="pago-balance" *ngIf="servicioMonto > 0"
                         [class.pago-ok]="Math.abs(diferenciaPropinas) <= 1"
                         [class.pago-error]="Math.abs(diferenciaPropinas) > 1">
-                        <span>Propinas: ${{ sumaPropinas | number:'1.0-0' }} / ${{ servicioMonto | number:'1.0-0'
+                        <span>Servicio: ${{ sumaPropinas | number:'1.0-0' }} / ${{ servicioMonto | number:'1.0-0'
                             }}</span>
                         <span *ngIf="diferenciaPropinas > 1">Faltan: ${{ diferenciaPropinas | number:'1.0-0' }}</span>
                         <span *ngIf="diferenciaPropinas < -1">Sobran: ${{ (-diferenciaPropinas) | number:'1.0-0'

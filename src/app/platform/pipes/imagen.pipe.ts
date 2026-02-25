@@ -3,13 +3,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'imagen' })
 export class ImagenPipe implements PipeTransform {
 
-  transform(input: any): string {
+  transform(input: { imagen_url?: string; numero?: number } | null): string {
     // Plato
     if (input?.imagen_url) {
       return input.imagen_url;
     }
     // Mesa
-    if ('numero' in input) {
+    if (input && 'numero' in input) {
       return 'assets/mesa.png';
     }
     // Default avatar

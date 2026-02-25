@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Cliente } from '../../../auth/interfaces/interfaces';
+import { Cliente } from '../../../shared/interfaces';
 import { PlatformService } from '../../services/platform.service';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';

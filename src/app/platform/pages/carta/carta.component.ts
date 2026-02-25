@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
-import { Plato, Categoria } from '../../../auth/interfaces/interfaces';
+import { Plato, Categoria } from '../../../shared/interfaces';
 
 @Component({
   selector: 'app-carta',

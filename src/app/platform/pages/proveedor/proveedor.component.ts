@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Proveedor } from '../../../auth/interfaces/interfaces';
+import { Proveedor } from '../../../shared/interfaces';
 import { PlatformService } from '../../services/platform.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';

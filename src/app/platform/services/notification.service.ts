@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { SocketService } from './socket.service';
-import { Producto } from '../../auth/interfaces/interfaces';
+import { Producto } from '../../shared/interfaces';
 
 export interface StockAlertPayload {
     producto_id: string;

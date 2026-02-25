@@ -211,7 +211,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
-    height: calc(100vh - var(--toolbar-height, 56px) - 50px);
+    height: calc(100vh - var(--toolbar-height, 56px) - 75px);
     min-height: 0;
     overflow: hidden;
 }

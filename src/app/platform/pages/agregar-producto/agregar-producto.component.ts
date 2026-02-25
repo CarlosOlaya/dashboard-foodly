@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlatformService } from '../../services/platform.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { Categoria } from '../../../auth/interfaces/interfaces';
+import { Categoria } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({

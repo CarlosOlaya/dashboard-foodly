@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Empleado } from '../../../auth/interfaces/interfaces';
+import { Empleado } from '../../../shared/interfaces';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

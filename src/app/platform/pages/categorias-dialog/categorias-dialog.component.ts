@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlatformService } from '../../services/platform.service';
-import { Categoria } from '../../../auth/interfaces/interfaces';
+import { Categoria, ApiResponse, CategoriasDialogData } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class CategoriasDialogComponent implements OnInit {
     constructor(
         private platformService: PlatformService,
         public dialogRef: MatDialogRef<CategoriasDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: CategoriasDialogData,
         private alert: AlertService,
     ) {
         this.selectedId = data?.selectedId || null;
@@ -43,12 +43,12 @@ export class CategoriasDialogComponent implements OnInit {
 
         this.loading = true;
         this.platformService.crearCategoria(nombre).subscribe({
-            next: (resp: any) => {
+            next: (resp: ApiResponse<Categoria>) => {
                 this.loading = false;
                 this.nuevaCat = '';
                 this.cargarCategorias();
 
-                const newCat = resp.data || resp;
+                const newCat = resp.data;
                 if (newCat?.id) {
                     this.selectedId = newCat.id;
                 }
@@ -100,7 +100,7 @@ export class CategoriasDialogComponent implements OnInit {
         if (!await this.alert.confirm(`¿Eliminar la categoría "${cat.nombre}"?`, 'Sí, eliminar')) return;
 
         this.platformService.eliminarCategoria(cat.id).subscribe({
-            next: (resp: any) => {
+            next: (resp: ApiResponse) => {
                 if (resp.ok) {
                     if (this.selectedId === cat.id) this.selectedId = null;
                     this.cargarCategorias();

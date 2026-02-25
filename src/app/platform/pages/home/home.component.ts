@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   toasts: StockNotification[] = [];
   private subs: Subscription[] = [];
-  activeChild: any = null;
+  activeChild: ArqueoComponent | EmpresaComponent | null = null;
 
   get isArqueo(): boolean {
     return this.currentRoute.includes('/arqueo');
@@ -107,8 +107,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.currentRoute = event.urlAfterRedirects || event.url;
+    ).subscribe((event) => {
+      this.currentRoute = (event as NavigationEnd).urlAfterRedirects || (event as NavigationEnd).url;
       // Close mobile menus on navigation
       this.showMoreMenu = false;
       this.showProfileMenu = false;

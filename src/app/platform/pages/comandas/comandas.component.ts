@@ -4,7 +4,7 @@ import { PlatformService } from '../../services/platform.service';
 import { PdfService } from '../../services/pdf.service';
 import { SocketService } from '../../services/socket.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Comanda } from '../../../auth/interfaces/interfaces';
+import { Comanda } from '../../../shared/interfaces';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
@@ -33,7 +33,7 @@ export class ComandasComponent implements OnInit, OnDestroy {
     filtroArea = '';
     loading = true;
     areasConfig: AreaOption[] = [];
-    private intervalo: any;
+    private intervalo: ReturnType<typeof setInterval> | null = null;
     private audioCtx: AudioContext | null = null;
     private prevIds = new Set<string>();
     private wsSubs: Subscription[] = [];
@@ -55,14 +55,14 @@ export class ComandasComponent implements OnInit, OnDestroy {
         this.socketService.connect(tenantId);
 
         this.wsSubs.push(
-            this.socketService.on<any>('comanda:nueva').subscribe(data => {
+            this.socketService.on<Comanda>('comanda:nueva').subscribe(data => {
                 // Agregar la nueva comanda a la lista de pendientes
                 if (!this.comandasPendientes.find(c => c.id === data.id)) {
                     this.comandasPendientes = [data, ...this.comandasPendientes];
                     this.playAlert();
                 }
             }),
-            this.socketService.on<any>('comanda:update').subscribe(data => {
+            this.socketService.on<Comanda>('comanda:update').subscribe(data => {
                 if (data.estado === 'entregada' || data.estado === 'lista') {
                     // Mover de pendientes a completadas
                     const comanda = this.comandasPendientes.find(c => c.id === data.id);
@@ -144,7 +144,8 @@ export class ComandasComponent implements OnInit, OnDestroy {
     }
 
     esAnulacion(c: Comanda): boolean {
-        return c.payload?.tipo_comanda === 'anulacion';
+        const p = c.payload as { tipo_comanda?: string } | null;
+        return p?.tipo_comanda === 'anulacion';
     }
 
     get comandasVisibles(): Comanda[] {

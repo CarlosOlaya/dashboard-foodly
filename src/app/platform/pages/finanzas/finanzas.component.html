@@ -56,10 +56,11 @@
                 <mat-icon>trending_up</mat-icon>
                 Ventas diarias (últimos 30 días)
             </h3>
-            <div class="chart-wrapper" *ngIf="ventasDiarias[0]?.series?.length > 0; else sinVentas">
-                <ngx-charts-line-chart [results]="ventasDiarias" [scheme]="colorScheme" [xAxis]="true" [yAxis]="true"
-                    [showXAxisLabel]="false" [showYAxisLabel]="false" [yAxisTickFormatting]="axisFormatCurrency"
-                    [autoScale]="true" [gradient]="true" [animations]="true" [roundDomains]="true">
+            <div class="chart-wrapper" *ngIf="ventasDiarias.length && ventasDiarias[0]?.series?.length; else sinVentas">
+                <ngx-charts-line-chart [results]="ventasDiarias" [scheme]="$any(colorScheme)" [xAxis]="true"
+                    [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false"
+                    [yAxisTickFormatting]="axisFormatCurrency" [autoScale]="true" [gradient]="true" [animations]="true"
+                    [roundDomains]="true">
                 </ngx-charts-line-chart>
             </div>
             <ng-template #sinVentas>
@@ -77,9 +78,9 @@
                 Top 5 platos del mes
             </h3>
             <div class="chart-wrapper" *ngIf="topPlatos.length > 0; else sinPlatos">
-                <ngx-charts-bar-horizontal [results]="topPlatos" [scheme]="barColorScheme" [xAxis]="true" [yAxis]="true"
-                    [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true" [animations]="true"
-                    [roundDomains]="true" [roundEdges]="true">
+                <ngx-charts-bar-horizontal [results]="topPlatos" [scheme]="$any(barColorScheme)" [xAxis]="true"
+                    [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true"
+                    [animations]="true" [roundDomains]="true" [roundEdges]="true">
                 </ngx-charts-bar-horizontal>
             </div>
             <ng-template #sinPlatos>
@@ -97,7 +98,7 @@
                 Métodos de pago
             </h3>
             <div class="chart-wrapper chart-wrapper--pie" *ngIf="porMetodoPago.length > 0; else sinPagos">
-                <ngx-charts-pie-chart [results]="porMetodoPago" [scheme]="pieColorScheme" [labels]="true"
+                <ngx-charts-pie-chart [results]="porMetodoPago" [scheme]="$any(pieColorScheme)" [labels]="true"
                     [doughnut]="true" [arcWidth]="0.4" [animations]="true" [gradient]="true">
                 </ngx-charts-pie-chart>
             </div>

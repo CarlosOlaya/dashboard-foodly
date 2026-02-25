@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
+import {
+  NgxChartSeriesItem, NgxChartDataItem,
+  DashboardResponse
+} from '../../../shared/interfaces';
 
 @Component({
   selector: 'app-finanzas',
@@ -19,18 +23,21 @@ export class FinanzasComponent implements OnInit {
   propinasMes = 0;
 
   // Charts data
-  ventasDiarias: any[] = [];
-  topPlatos: any[] = [];
-  porMetodoPago: any[] = [];
+  ventasDiarias: NgxChartSeriesItem[] = [];
+  topPlatos: NgxChartDataItem[] = [];
+  porMetodoPago: NgxChartDataItem[] = [];
 
   // Chart options
-  colorScheme: any = {
+  colorScheme = {
+    name: 'dashboard', selectable: true, group: 'ordinal' as const,
     domain: ['#22d3ee', '#14b8a6', '#06b6d4', '#0ea5e9', '#38bdf8', '#67e8f9']
   };
-  pieColorScheme: any = {
+  pieColorScheme = {
+    name: 'dashboardPie', selectable: true, group: 'ordinal' as const,
     domain: ['#22d3ee', '#14b8a6', '#f59e0b', '#8b5cf6', '#f43f5e']
   };
-  barColorScheme: any = {
+  barColorScheme = {
+    name: 'dashboardBar', selectable: true, group: 'ordinal' as const,
     domain: ['#14b8a6']
   };
 
@@ -50,20 +57,20 @@ export class FinanzasComponent implements OnInit {
         // Ventas diarias → line chart
         this.ventasDiarias = [{
           name: 'Ventas',
-          series: data.ventas_diarias.map((v: any) => ({
+          series: data.ventas_diarias.map((v) => ({
             name: this.formatFecha(v.fecha),
             value: v.total
           }))
         }];
 
         // Top platos → horizontal bar chart
-        this.topPlatos = data.top_platos.map((p: any) => ({
+        this.topPlatos = data.top_platos.map((p: { nombre: string; cantidad: number }) => ({
           name: p.nombre,
           value: p.cantidad
         }));
 
         // Método de pago → pie chart
-        this.porMetodoPago = data.por_metodo_pago.map((m: any) => ({
+        this.porMetodoPago = data.por_metodo_pago.map((m: { metodo: string; total: number }) => ({
           name: this.capitalizarMetodo(m.metodo),
           value: m.total
         }));
@@ -105,11 +112,11 @@ export class FinanzasComponent implements OnInit {
     return `$${val}`;
   };
 
-  pieLabel = (data: any) => {
+  pieLabel = (data: { data: { name: string } }) => {
     return `${data.data.name}`;
   };
 
-  pieLabelValue = (data: any) => {
+  pieLabelValue = (data: { value: number }) => {
     return this.formatCurrency(data.value);
   };
 }

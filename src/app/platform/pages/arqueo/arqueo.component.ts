@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { PdfService } from '../../services/pdf.service';
-import { TurnoCaja } from '../../../auth/interfaces/interfaces';
+import { CerrarTurnoResponse, ResumenTurnoEnVivo, TurnoCaja } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AlertService } from '../../services/alert.service';
 export class ArqueoComponent implements OnInit, OnDestroy {
 
   turnoActivo: TurnoCaja | null = null;
-  resumen: any = null;
+  resumen: ResumenTurnoEnVivo | null = null;
   historial: TurnoCaja[] = [];
   loading = true;
 
@@ -32,8 +32,8 @@ export class ArqueoComponent implements OnInit, OnDestroy {
 
   // Timer
   tiempoActivo = '0h 0m';
-  private timerRef: any;
-  private refreshRef: any;
+  private timerRef: ReturnType<typeof setInterval> | null = null;
+  private refreshRef: ReturnType<typeof setInterval> | null = null;
 
   get isAdmin(): boolean {
     return this.authService.isAdmin;
@@ -225,9 +225,9 @@ export class ArqueoComponent implements OnInit, OnDestroy {
           result.value.contado,
           result.value.obs || undefined
         ).subscribe({
-          next: (resp: any) => {
+          next: (resp: CerrarTurnoResponse) => {
             this.cerrandoTurno = false;
-            if (resp.ok) {
+            if (resp.ok && resp.resumen) {
               const r = resp.resumen;
               const difColor = r.diferencia >= 0 ? '#10b981' : '#ef4444';
               const difLabel = r.diferencia > 0 ? 'Sobrante' : r.diferencia < 0 ? 'Faltante' : 'Cuadrado';
@@ -294,10 +294,10 @@ export class ArqueoComponent implements OnInit, OnDestroy {
               // ── Imprimir tickets de cierre ──
               const turnoId = this.turnoActivo!.id;
               this.pdfService.imprimirCierreTurno(turnoId)
-                .catch((err: any) => console.error('Error al imprimir cierre:', err));
+                .catch((err: Error) => console.error('Error al imprimir cierre:', err));
               setTimeout(() => {
                 this.pdfService.imprimirFacturasTurno(turnoId)
-                  .catch((err: any) => console.error('Error al imprimir facturas:', err));
+                  .catch((err: Error) => console.error('Error al imprimir facturas:', err));
               }, 800);
               this.turnoActivo = null;
               this.resumen = null;

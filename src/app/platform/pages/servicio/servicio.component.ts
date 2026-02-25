@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
 import { PdfService } from '../../services/pdf.service';
-import { Plato, Categoria, PedidoItem, Mesa } from '../../../auth/interfaces/interfaces';
+import { Plato, Categoria, PedidoItem, Mesa, FacturaActivaMesa, EnviarComandaResponse, DetalleAccionResponse, ApiResponse } from '../../../shared/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../../auth/services/auth.service';
@@ -103,7 +103,7 @@ export class ServicioComponent implements OnInit {
 
   cargarFactura(): void {
     this.platformService.getFacturaActivaMesa(this.mesaId).subscribe({
-      next: (factura: any) => {
+      next: (factura: FacturaActivaMesa) => {
         this.loading = false;
         if (factura) {
           this.facturaId = factura.id;
@@ -112,8 +112,8 @@ export class ServicioComponent implements OnInit {
           this.facturaDescuento = Number(factura.descuento_monto) || 0;
           this.facturaSubtotalBackend = Number(factura.subtotal) || 0;
           this.itemsFactura = (factura.items || [])
-            .filter((d: any) => d.estado_pedido !== 'anulado')
-            .map((d: any) => ({
+            .filter((d) => d.estado_pedido !== 'anulado')
+            .map((d) => ({
               id: d.id,
               plato_id: d.plato_id,
               plato_nombre: d.plato_nombre || d.plato?.nombre || '',
@@ -125,7 +125,7 @@ export class ServicioComponent implements OnInit {
               descuento_porcentaje: Number(d.descuento_porcentaje) || 0,
               descuento_monto: Number(d.descuento_monto) || 0,
             }))
-            .sort((a: any, b: any) => new Date(b.hora_pedido).getTime() - new Date(a.hora_pedido).getTime());
+            .sort((a: PedidoItem, b: PedidoItem) => new Date(b.hora_pedido!).getTime() - new Date(a.hora_pedido!).getTime());
         }
       },
       error: () => { this.loading = false; }
@@ -296,7 +296,7 @@ export class ServicioComponent implements OnInit {
     }));
 
     this.platformService.enviarComanda(this.facturaId, items).subscribe({
-      next: (res: any) => {
+      next: (res: EnviarComandaResponse) => {
         const comandas = res.comandas || [];
         for (const comanda of comandas) {
           this.imprimirComandaPdf(comanda.id);
@@ -340,7 +340,7 @@ export class ServicioComponent implements OnInit {
     }).then(result => {
       if (result.isConfirmed && result.value) {
         this.platformService.anularDetalle(item.id!, result.value).subscribe({
-          next: (res: any) => {
+          next: (res: DetalleAccionResponse) => {
             this.itemsFactura = this.itemsFactura.filter(i => i.id !== item.id);
             this.itemSeleccionado = null;
             this.alert.success(res.mensaje, 2000);
@@ -405,7 +405,7 @@ export class ServicioComponent implements OnInit {
         if (!motivoResult.isConfirmed || !motivoResult.value) return;
 
         this.platformService.ajustarCantidadDetalle(item.id!, nuevaCantidad, motivoResult.value).subscribe({
-          next: (res: any) => {
+          next: (res: DetalleAccionResponse) => {
             if (nuevaCantidad === 0) {
               this.itemsFactura = this.itemsFactura.filter(i => i.id !== item.id);
             } else {
@@ -471,7 +471,7 @@ export class ServicioComponent implements OnInit {
           const mesaDestinoId = result.value;
 
           this.platformService.transferirItems([item.id!], mesaDestinoId).subscribe({
-            next: (res: any) => {
+            next: (res: ApiResponse) => {
               this.itemsFactura = this.itemsFactura.filter(i => i.id !== item.id);
               this.itemSeleccionado = null;
               this.alert.success(res.mensaje, 2000);
@@ -598,7 +598,7 @@ export class ServicioComponent implements OnInit {
 
     if (!formValues) return;
     const fv = formValues as { tipo: string; valor: number };
-    this.platformService.descuentoItem(item.id!, fv.tipo as any, fv.valor).subscribe({
+    this.platformService.descuentoItem(item.id!, fv.tipo as 'porcentaje' | 'valor', fv.valor).subscribe({
       next: () => {
         this.alert.success(`Descuento aplicado — ${item.plato_nombre}`);
         this.cargarFactura();
@@ -629,7 +629,7 @@ export class ServicioComponent implements OnInit {
 
     if (!formValues) return;
     const fv = formValues as { tipo: string; valor: number };
-    this.platformService.descuentoMesa(this.facturaId, fv.tipo as any, fv.valor).subscribe({
+    this.platformService.descuentoMesa(this.facturaId, fv.tipo as 'porcentaje' | 'valor', fv.valor).subscribe({
       next: () => {
         this.alert.success('Descuento de mesa aplicado');
         this.cargarFactura();

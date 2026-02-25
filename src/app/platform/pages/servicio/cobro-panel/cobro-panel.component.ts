@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { PlatformService } from '../../../services/platform.service';
 import { PdfService } from '../../../services/pdf.service';
-import { PedidoItem } from '../../../../auth/interfaces/interfaces';
+import { PedidoItem } from '../../../../shared/interfaces';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class CobroPanelComponent {
     servicioValor = 0;
     metodoPago = 'efectivo';
     pagoDividido = false;
-    pagos: Array<{ metodo: string; monto: number; propina: number; ref: string }> = [];
+    pagos: Array<{ metodo: string; monto: number | null; propina: number | null; ref: string }> = [];
     procesando = false;
 
     constructor(
@@ -87,8 +87,8 @@ export class CobroPanelComponent {
         this.pagoDividido = !this.pagoDividido;
         if (this.pagoDividido) {
             this.pagos = [
-                { metodo: 'efectivo', monto: 0, propina: 0, ref: '' },
-                { metodo: 'tarjeta', monto: 0, propina: 0, ref: '' },
+                { metodo: 'efectivo', monto: null, propina: null, ref: '' },
+                { metodo: 'tarjeta', monto: null, propina: null, ref: '' },
             ];
         } else {
             this.pagos = [{ metodo: this.metodoPago, monto: this.total, propina: 0, ref: '' }];
@@ -96,7 +96,7 @@ export class CobroPanelComponent {
     }
 
     agregarPago(): void {
-        this.pagos.push({ metodo: 'efectivo', monto: 0, propina: 0, ref: '' });
+        this.pagos.push({ metodo: 'efectivo', monto: null, propina: null, ref: '' });
     }
 
     quitarPago(i: number): void {
@@ -110,7 +110,7 @@ export class CobroPanelComponent {
     }
 
     get diferenciaPagos(): number {
-        return this.total - this.sumaPagos;
+        return this.subtotal - this.sumaPagos;
     }
 
     get sumaPropinas(): number {
@@ -137,11 +137,11 @@ export class CobroPanelComponent {
 
         if (this.pagoDividido) {
             if (Math.abs(this.diferenciaPagos) > 1) {
-                this.alert.warning(`Montos no cuadran. Diferencia: $${this.diferenciaPagos.toLocaleString()}`);
+                this.alert.warning(`Montos no cuadran. Diferencia: $${this.diferenciaPagos.toLocaleString()}. El subtotal debe sumar $${this.subtotal.toLocaleString()}`);
                 return;
             }
             if (propina > 0 && Math.abs(this.diferenciaPropinas) > 1) {
-                this.alert.warning(`Propinas no cuadran. Faltan $${this.diferenciaPropinas.toLocaleString()} por asignar`);
+                this.alert.warning(`Servicio no cuadra. Faltan $${this.diferenciaPropinas.toLocaleString()} por asignar`);
                 return;
             }
             this.procesando = true;
@@ -175,7 +175,7 @@ export class CobroPanelComponent {
         this.cobroExitoso.emit(this.facturaId);
     }
 
-    private onCobroError(err: any): void {
+    private onCobroError(err: { error?: { message?: string } }): void {
         this.procesando = false;
         this.alert.error(err?.error?.message || 'No se pudo cerrar');
     }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PlatformService } from '../../services/platform.service';
 import { SocketService } from '../../services/socket.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Mesa, TurnoCaja } from '../../../auth/interfaces/interfaces';
+import { Mesa, TurnoCaja, EstadoMesa } from '../../../shared/interfaces';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../services/alert.service';
 
@@ -39,7 +39,7 @@ export class MesasComponent implements OnInit, OnDestroy {
     // WebSocket: escuchar cambios de mesa en tiempo real
     const tenantId = this.authService.usuario.tenant_id;
     this.socketService.connect(tenantId);
-    this.wsSub = this.socketService.on<{ id: string; numero: number; estado: string }>('mesa:update')
+    this.wsSub = this.socketService.on<{ id: string; numero: number; estado: EstadoMesa }>('mesa:update')
       .subscribe(data => {
         const mesa = this.mesas.find(m => m.id === data.id || m.numero === data.numero);
         if (mesa) {

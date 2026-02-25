@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, Proveedor } from '../../auth/interfaces/interfaces';
+import { ApiResponse, Proveedor } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class ProveedoresApiService extends ApiBaseService {

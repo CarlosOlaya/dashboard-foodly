@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformService } from '../../services/platform.service';
 import { switchMap } from 'rxjs';
-import { Plato } from '../../../auth/interfaces/interfaces';
+import { Plato } from '../../../shared/interfaces';
 
 @Component({
   selector: 'app-plato',

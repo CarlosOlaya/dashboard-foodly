@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, MovimientoInventario, Producto } from '../../auth/interfaces/interfaces';
+import { ApiResponse, MovimientoInventario, MovimientoRequest, Producto, ResumenInventario, TomaInventarioResponse } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class InventarioApiService extends ApiBaseService {
@@ -18,7 +18,7 @@ export class InventarioApiService extends ApiBaseService {
         return this.http.post<ApiResponse<Producto>>(`${this.baseUrl}/inventario/productos`, data);
     }
 
-    registrarMovimiento(data: any): Observable<ApiResponse> {
+    registrarMovimiento(data: MovimientoRequest): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${this.baseUrl}/inventario/movimiento`, data);
     }
 
@@ -36,11 +36,11 @@ export class InventarioApiService extends ApiBaseService {
         return this.http.delete<ApiResponse>(`${this.baseUrl}/inventario/productos/${id}`);
     }
 
-    getResumenInventario(): Observable<{ total_productos: number; stock_bajo: number; agotados: number; movimientos_hoy: number }> {
-        return this.http.get<any>(`${this.baseUrl}/inventario/resumen`);
+    getResumenInventario(): Observable<ResumenInventario> {
+        return this.http.get<ResumenInventario>(`${this.baseUrl}/inventario/resumen`);
     }
 
-    registrarTomaInventario(items: { producto_id: string; conteo_fisico: number }[]): Observable<ApiResponse> {
-        return this.http.post<any>(`${this.baseUrl}/inventario/toma`, { items });
+    registrarTomaInventario(items: { producto_id: string; conteo_fisico: number }[]): Observable<TomaInventarioResponse> {
+        return this.http.post<TomaInventarioResponse>(`${this.baseUrl}/inventario/toma`, { items });
     }
 }

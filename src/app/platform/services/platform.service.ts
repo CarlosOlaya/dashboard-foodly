@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
-  ApiResponse, Categoria, Cliente, Comanda, Empleado,
-  Factura, Mesa, MovimientoInventario, PaginatedResponse, Plato, Producto,
-  Proveedor, RecetaInsumo, Tenant, TurnoCaja,
+  ApiResponse, Categoria, CerrarTurnoResponse, Cliente, Comanda, ComandaItemRequest,
+  DetalleAccionResponse, Empleado, EnviarComandaResponse,
+  Factura, FacturaActivaMesa, FacturaFiltros, Mesa, MovimientoInventario, MovimientoRequest,
+  PaginatedResponse, Plato, Producto,
+  Proveedor, RecetaInsumo, ResumenInventario, Tenant, TomaInventarioResponse, TurnoCaja,
   VentaDiaria, DashboardResponse, PrecuentaResponse, ResumenTurnoEnVivo
-} from '../../auth/interfaces/interfaces';
+} from '../../shared/interfaces';
 
 // Importar los servicios individuales
 import { EmpleadosService } from './empleados.service';
@@ -66,12 +68,12 @@ export class PlatformService {
   actualizarEstadoMesa(mesaId: string, estado: string, empleadoId?: string): Observable<ApiResponse> { return this.mesasSvc.actualizarEstadoMesa(mesaId, estado, empleadoId); }
   actualizarComensales(mesaId: string, comensales: number): Observable<ApiResponse> { return this.mesasSvc.actualizarComensales(mesaId, comensales); }
   liberarMesa(mesaId: string): Observable<ApiResponse> { return this.mesasSvc.liberarMesa(mesaId); }
-  getFacturaActivaMesa(mesaId: string): Observable<Factura> { return this.mesasSvc.getFacturaActivaMesa(mesaId); }
+  getFacturaActivaMesa(mesaId: string): Observable<FacturaActivaMesa> { return this.mesasSvc.getFacturaActivaMesa(mesaId); }
 
   // ── FACTURAS / ITEMS ──────────────────────────────────
-  enviarComanda(facturaId: string, items: Array<{ plato_id: string; cantidad: number; comentario?: string }>): Observable<ApiResponse> { return this.comandasSvc.enviarComanda(facturaId, items); }
-  anularDetalle(detalleId: string, motivo: string): Observable<ApiResponse> { return this.facturasSvc.anularDetalle(detalleId, motivo); }
-  ajustarCantidadDetalle(detalleId: string, nuevaCantidad: number, motivo: string): Observable<ApiResponse> { return this.facturasSvc.ajustarCantidadDetalle(detalleId, nuevaCantidad, motivo); }
+  enviarComanda(facturaId: string, items: ComandaItemRequest[]): Observable<EnviarComandaResponse> { return this.comandasSvc.enviarComanda(facturaId, items); }
+  anularDetalle(detalleId: string, motivo: string): Observable<DetalleAccionResponse> { return this.facturasSvc.anularDetalle(detalleId, motivo); }
+  ajustarCantidadDetalle(detalleId: string, nuevaCantidad: number, motivo: string): Observable<DetalleAccionResponse> { return this.facturasSvc.ajustarCantidadDetalle(detalleId, nuevaCantidad, motivo); }
   transferirItems(detalleIds: string[], mesaDestinoId: string, motivo?: string): Observable<ApiResponse> { return this.facturasSvc.transferirItems(detalleIds, mesaDestinoId, motivo); }
 
   // ── CARTA / PLATOS ────────────────────────────────────
@@ -81,7 +83,7 @@ export class PlatformService {
   eliminarCategoria(id: string): Observable<ApiResponse> { return this.cartaSvc.eliminarCategoria(id); }
   getCarta(): Observable<Plato[]> { return this.cartaSvc.getCarta(); }
   getPlato(id: string): Observable<Plato> { return this.cartaSvc.getPlato(id); }
-  crearPlato(data: any): Observable<ApiResponse<Plato>> { return this.cartaSvc.crearPlato(data); }
+  crearPlato(data: Partial<Plato>): Observable<ApiResponse<Plato>> { return this.cartaSvc.crearPlato(data); }
   actualizarPlato(id: string, data: Partial<Plato>): Observable<ApiResponse> { return this.cartaSvc.actualizarPlato(id, data); }
   toggleDisponibilidad(id: string, disponibilidad: boolean): Observable<ApiResponse> { return this.cartaSvc.toggleDisponibilidad(id, disponibilidad); }
   eliminarPlato(id: string): Observable<ApiResponse> { return this.cartaSvc.eliminarPlato(id); }
@@ -92,7 +94,7 @@ export class PlatformService {
   deleteRecetaInsumo(insumoId: string): Observable<ApiResponse> { return this.cartaSvc.deleteRecetaInsumo(insumoId); }
 
   // ── FACTURAS ──────────────────────────────────────────
-  getFacturas(filtros?: { estado?: string; desde?: string; hasta?: string; page?: number; limit?: number }): Observable<PaginatedResponse<Factura>> { return this.facturasSvc.getFacturas(filtros); }
+  getFacturas(filtros?: FacturaFiltros): Observable<PaginatedResponse<Factura>> { return this.facturasSvc.getFacturas(filtros); }
   getFactura(id: string): Observable<Factura> { return this.facturasSvc.getFactura(id); }
   cerrarFactura(id: string, metodoPago: string, propina = 0, descuentoPct = 0): Observable<ApiResponse> { return this.facturasSvc.cerrarFactura(id, metodoPago, propina, descuentoPct); }
   cerrarFacturaDividida(id: string, pagos: Array<{ metodo: string; monto: number; propina?: number; ref?: string; pagado_por?: string }>, propina = 0, descuentoPct = 0): Observable<ApiResponse> { return this.facturasSvc.cerrarFacturaDividida(id, pagos, propina, descuentoPct); }
@@ -105,7 +107,7 @@ export class PlatformService {
   getDashboard(): Observable<DashboardResponse> { return this.facturasSvc.getDashboard(); }
 
   // ── COMANDAS ──────────────────────────────────────────
-  generarComanda(facturaId: string, items: any[]): Observable<ApiResponse> { return this.comandasSvc.generarComanda(facturaId, items); }
+  generarComanda(facturaId: string, items: ComandaItemRequest[]): Observable<ApiResponse> { return this.comandasSvc.generarComanda(facturaId, items); }
   getComandasActivas(area?: string): Observable<Comanda[]> { return this.comandasSvc.getComandasActivas(area); }
   marcarComandaImpresa(id: string): Observable<ApiResponse> { return this.comandasSvc.marcarComandaImpresa(id); }
   marcarComandaLista(id: string): Observable<ApiResponse> { return this.comandasSvc.marcarComandaLista(id); }
@@ -114,7 +116,7 @@ export class PlatformService {
 
   // ── TURNOS ────────────────────────────────────────────
   abrirTurno(efectivoInicial = 0): Observable<ApiResponse<TurnoCaja>> { return this.turnosSvc.abrirTurno(efectivoInicial); }
-  cerrarTurno(turnoId: string, efectivoContado: number, observaciones?: string): Observable<ApiResponse> { return this.turnosSvc.cerrarTurno(turnoId, efectivoContado, observaciones); }
+  cerrarTurno(turnoId: string, efectivoContado: number, observaciones?: string): Observable<CerrarTurnoResponse> { return this.turnosSvc.cerrarTurno(turnoId, efectivoContado, observaciones); }
   getTurnoActivo(): Observable<TurnoCaja | null> { return this.turnosSvc.getTurnoActivo(); }
   getHistorialTurnos(): Observable<TurnoCaja[]> { return this.turnosSvc.getHistorialTurnos(); }
   getTurno(id: string): Observable<TurnoCaja> { return this.turnosSvc.getTurno(id); }
@@ -131,12 +133,12 @@ export class PlatformService {
   getProductos(): Observable<Producto[]> { return this.inventarioSvc.getProductos(); }
   getStockBajo(): Observable<Producto[]> { return this.inventarioSvc.getStockBajo(); }
   crearProducto(data: Partial<Producto>): Observable<ApiResponse<Producto>> { return this.inventarioSvc.crearProducto(data); }
-  registrarMovimiento(data: any): Observable<ApiResponse> { return this.inventarioSvc.registrarMovimiento(data); }
+  registrarMovimiento(data: MovimientoRequest): Observable<ApiResponse> { return this.inventarioSvc.registrarMovimiento(data); }
   getMovimientos(productoId?: string): Observable<MovimientoInventario[]> { return this.inventarioSvc.getMovimientos(productoId); }
   actualizarProducto(id: string, data: Partial<Producto>): Observable<ApiResponse<Producto>> { return this.inventarioSvc.actualizarProducto(id, data); }
   eliminarProducto(id: string): Observable<ApiResponse> { return this.inventarioSvc.eliminarProducto(id); }
-  getResumenInventario(): Observable<{ total_productos: number; stock_bajo: number; agotados: number; movimientos_hoy: number }> { return this.inventarioSvc.getResumenInventario(); }
-  registrarTomaInventario(items: { producto_id: string; conteo_fisico: number }[]): Observable<ApiResponse> { return this.inventarioSvc.registrarTomaInventario(items); }
+  getResumenInventario(): Observable<ResumenInventario> { return this.inventarioSvc.getResumenInventario(); }
+  registrarTomaInventario(items: { producto_id: string; conteo_fisico: number }[]): Observable<TomaInventarioResponse> { return this.inventarioSvc.registrarTomaInventario(items); }
 
   // ── EMPRESA / TENANT ─────────────────────────────────
   getEmpresa(): Observable<Tenant> { return this.empresaSvc.getEmpresa(); }

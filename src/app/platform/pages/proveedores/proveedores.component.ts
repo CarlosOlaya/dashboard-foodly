@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
-import { Proveedor } from '../../../auth/interfaces/interfaces';
+import { Proveedor } from '../../../shared/interfaces';
 import { PlatformService } from '../../services/platform.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

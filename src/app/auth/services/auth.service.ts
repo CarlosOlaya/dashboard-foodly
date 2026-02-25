@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, map, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginResponse, RenewResponse, Usuario } from '../interfaces/interfaces';
+import { LoginResponse, RenewResponse, Usuario } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -50,7 +50,7 @@ export class AuthService {
 
     register(tenant_id: string, email: string, password: string): Observable<boolean> {
         const url = `${this.baseUrl}/auth/new`;
-        return this.http.post<any>(url, { tenant_id, email, password, rol: 'mesero' }).pipe(
+        return this.http.post<LoginResponse>(url, { tenant_id, email, password, rol: 'mesero' }).pipe(
             tap(resp => {
                 if (resp.ok) this.guardarToken(resp.token);
             }),
@@ -61,7 +61,7 @@ export class AuthService {
 
     registerWithRole(tenant_id: string, email: string, password: string, rol: string): Observable<boolean> {
         const url = `${this.baseUrl}/auth/new`;
-        return this.http.post<any>(url, { tenant_id, email, password, rol }).pipe(
+        return this.http.post<LoginResponse>(url, { tenant_id, email, password, rol }).pipe(
             tap(resp => {
                 if (resp.ok) this.guardarToken(resp.token);
             }),
@@ -82,7 +82,7 @@ export class AuthService {
         plan?: string;
     }): Observable<boolean> {
         const url = `${this.baseUrl}/auth/onboard`;
-        return this.http.post<any>(url, data).pipe(
+        return this.http.post<LoginResponse>(url, data).pipe(
             tap(resp => {
                 if (resp.ok) {
                     this.guardarToken(resp.token);

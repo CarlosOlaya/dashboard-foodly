@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { DetalleFactura } from '../../../shared/interfaces';
 
 @Component({
   selector: 'app-detalle-factura',
@@ -7,6 +8,6 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './detalle-factura.component.css'
 })
 export class DetalleFacturaComponent {
-  @Input() dataSourceFactura: MatTableDataSource<any> = new MatTableDataSource<any>();
+  @Input() dataSourceFactura: MatTableDataSource<DetalleFactura> = new MatTableDataSource<DetalleFactura>();
   @Input() displayedColumnsFactura: string[] = ['plato', 'precio', 'cantidad', 'total'];
 }

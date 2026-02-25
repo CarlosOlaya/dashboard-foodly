@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, Factura, PaginatedResponse, VentaDiaria, DashboardResponse, PrecuentaResponse } from '../../auth/interfaces/interfaces';
+import { ApiResponse, DetalleAccionResponse, Factura, FacturaFiltros, PaginatedResponse, VentaDiaria, DashboardResponse, PrecuentaResponse } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class FacturasApiService extends ApiBaseService {
 
-    getFacturas(filtros?: { estado?: string; desde?: string; hasta?: string; page?: number; limit?: number }): Observable<PaginatedResponse<Factura>> {
+    getFacturas(filtros?: FacturaFiltros): Observable<PaginatedResponse<Factura>> {
         let url = `${this.baseUrl}/facturas/view`;
         const params: string[] = [];
         if (filtros?.estado) params.push(`estado=${filtros.estado}`);
@@ -42,16 +42,16 @@ export class FacturasApiService extends ApiBaseService {
         return this.http.put<ApiResponse>(`${this.baseUrl}/facturas/${id}/anular`, { motivo });
     }
 
-    anularDetalle(detalleId: string, motivo: string): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${this.baseUrl}/facturas/detalle/${detalleId}/anular`, { motivo });
+    anularDetalle(detalleId: string, motivo: string): Observable<DetalleAccionResponse> {
+        return this.http.put<DetalleAccionResponse>(`${this.baseUrl}/facturas/detalle/${detalleId}/anular`, { motivo });
     }
 
-    ajustarCantidadDetalle(detalleId: string, nuevaCantidad: number, motivo: string): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${this.baseUrl}/facturas/detalle/${detalleId}/ajustar`, { nueva_cantidad: nuevaCantidad, motivo });
+    ajustarCantidadDetalle(detalleId: string, nuevaCantidad: number, motivo: string): Observable<DetalleAccionResponse> {
+        return this.http.put<DetalleAccionResponse>(`${this.baseUrl}/facturas/detalle/${detalleId}/ajustar`, { nueva_cantidad: nuevaCantidad, motivo });
     }
 
     transferirItems(detalleIds: string[], mesaDestinoId: string, motivo?: string): Observable<ApiResponse> {
-        return this.http.put<any>(`${this.baseUrl}/facturas/transferir-items`, { detalle_ids: detalleIds, mesa_destino_id: mesaDestinoId, motivo });
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturas/transferir-items`, { detalle_ids: detalleIds, mesa_destino_id: mesaDestinoId, motivo });
     }
 
     descuentoItem(detalleId: string, tipo: 'porcentaje' | 'valor', valor: number): Observable<ApiResponse> {
@@ -63,14 +63,14 @@ export class FacturasApiService extends ApiBaseService {
     }
 
     getPrecuenta(facturaId: string, servicioPct = 0): Observable<PrecuentaResponse> {
-        return this.http.get<any>(`${this.baseUrl}/facturas/precuenta/${facturaId}?servicio_pct=${servicioPct}`);
+        return this.http.get<PrecuentaResponse>(`${this.baseUrl}/facturas/precuenta/${facturaId}?servicio_pct=${servicioPct}`);
     }
 
     getVentasDiarias(): Observable<VentaDiaria[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/facturas/ventas/diarias`);
+        return this.http.get<VentaDiaria[]>(`${this.baseUrl}/facturas/ventas/diarias`);
     }
 
     getDashboard(): Observable<DashboardResponse> {
-        return this.http.get<any>(`${this.baseUrl}/facturas/dashboard`);
+        return this.http.get<DashboardResponse>(`${this.baseUrl}/facturas/dashboard`);
     }
 }

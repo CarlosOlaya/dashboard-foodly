@@ -86,16 +86,20 @@
                 <div class="caja-resumen resumen-ventas">
                     <h4><mat-icon>trending_up</mat-icon> Ventas</h4>
                     <div class="caja-row">
-                        <span>Total ventas</span>
-                        <span><b>${{ formatMoney(resumen.total_ventas) }}</b></span>
+                        <span>Ventas netas</span>
+                        <span><b>${{ formatMoney(resumen.total_ventas - resumen.total_propinas) }}</b></span>
                     </div>
                     <div class="caja-row">
-                        <span>Total propinas</span>
+                        <span>Servicio</span>
                         <span><b>${{ formatMoney(resumen.total_propinas) }}</b></span>
                     </div>
                     <div class="caja-row">
                         <span>Descuentos</span>
                         <span class="pay-negative">-${{ formatMoney(resumen.total_descuentos) }}</span>
+                    </div>
+                    <div class="caja-row caja-subtotal">
+                        <span><b>Ingreso total</b></span>
+                        <span><b>${{ formatMoney(resumen.total_ventas - resumen.total_descuentos) }}</b></span>
                     </div>
                 </div>
                 <div class="caja-resumen resumen-facturas">
@@ -114,14 +118,14 @@
                     </div>
                 </div>
                 <div class="caja-resumen resumen-mesas">
-                    <h4><mat-icon>table_bar</mat-icon> Mesas</h4>
+                    <h4><mat-icon>table_bar</mat-icon> Efectivo en caja</h4>
                     <div class="caja-row">
-                        <span>Ocupadas</span>
-                        <span><b>{{ resumen.mesas_ocupadas }}</b></span>
+                        <span>Efectivo inicial</span>
+                        <span>${{ formatMoney(turnoActivo.efectivo_inicial) }}</span>
                     </div>
-                    <div class="caja-row">
-                        <span>Total mesas</span>
-                        <span><b>{{ resumen.mesas_totales }}</b></span>
+                    <div class="caja-row caja-total">
+                        <span><b>Esperado en caja</b></span>
+                        <span class="caja-total-val">${{ formatMoney(resumen.efectivo_esperado) }}</span>
                     </div>
                 </div>
             </div>
@@ -135,27 +139,21 @@
             </h3>
             <div class="dash-scroll">
                 <div class="caja-resumen resumen-efectivo">
-                    <h4><mat-icon>payments</mat-icon> Efectivo en caja</h4>
+                    <h4><mat-icon>payments</mat-icon> Efectivo</h4>
                     <div class="caja-row">
-                        <span>Efectivo inicial</span>
-                        <span>${{ formatMoney(turnoActivo.efectivo_inicial) }}</span>
-                    </div>
-                    <div class="caja-row">
-                        <span>+ Venta</span>
+                        <span>Venta</span>
                         <span>${{ formatMoney(resumen.total_efectivo) }}</span>
                     </div>
                     <div class="caja-row">
-                        <span>+ Propina</span>
+                        <span>Servicio</span>
                         <span>${{ formatMoney(resumen.propina_efectivo) }}</span>
                     </div>
-                    <div class="caja-row caja-subtotal">
-                        <span><b>Total efectivo</b></span>
-                        <span><b>${{ formatMoney(resumen.total_efectivo + resumen.propina_efectivo) }}</b></span>
-                    </div>
                     <div class="caja-row caja-total">
-                        <span><b>= Esperado en caja</b></span>
-                        <span class="caja-total-val">${{ formatMoney(resumen.efectivo_esperado) }}</span>
+                        <span><b>Total efectivo</b></span>
+                        <span class="caja-total-val">${{ formatMoney(resumen.total_efectivo +
+                            resumen.propina_efectivo)}}</span>
                     </div>
+
                 </div>
                 <div class="caja-resumen resumen-tarjeta">
                     <h4><mat-icon>credit_card</mat-icon> Tarjetas / Datáfono</h4>
@@ -164,7 +162,7 @@
                         <span>${{ formatMoney(resumen.total_datafono) }}</span>
                     </div>
                     <div class="caja-row">
-                        <span>Propina</span>
+                        <span>Servicio</span>
                         <span>${{ formatMoney(resumen.propina_datafono) }}</span>
                     </div>
                     <div class="caja-row caja-total">
@@ -180,7 +178,7 @@
                         <span>${{ formatMoney(resumen.total_transferencia) }}</span>
                     </div>
                     <div class="caja-row">
-                        <span>Propina</span>
+                        <span>Servicio</span>
                         <span>${{ formatMoney(resumen.propina_transferencia) }}</span>
                     </div>
                     <div class="caja-row caja-total">
@@ -357,7 +355,7 @@
                 <h3>Otros</h3>
                 <div class="detalle-grid cols-3">
                     <div class="detalle-item">
-                        <span class="d-label">Propinas</span>
+                        <span class="d-label">Servicio</span>
                         <span class="d-value">${{ formatMoney(turnoDetalle.total_propinas) }}</span>
                     </div>
                     <div class="detalle-item">

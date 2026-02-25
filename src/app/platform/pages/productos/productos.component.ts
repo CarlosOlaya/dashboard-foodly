@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlatformService } from '../../services/platform.service';
 import { PdfService } from '../../services/pdf.service';
-import { Producto, MovimientoInventario, Categoria } from '../../../auth/interfaces/interfaces';
+import { Producto, MovimientoInventario, Categoria } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -263,7 +263,7 @@ export class ProductosComponent implements OnInit {
         this.alert.fire({
           icon: 'success',
           title: 'Toma registrada',
-          html: `<p>${(resp as any).ajustes} ajustes realizados</p><p>${(resp as any).sinCambio} sin cambio</p>`,
+          html: `<p>${resp.ajustes ?? 0} ajustes realizados</p><p>${resp.sinCambio ?? 0} sin cambio</p>`,
           timer: 3000,
           showConfirmButton: false,
           timerProgressBar: true,

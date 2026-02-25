@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlatformService } from '../../services/platform.service';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Tenant } from '../../../auth/interfaces/interfaces';
+import { Tenant } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -111,7 +111,7 @@ export class EmpresaComponent implements OnInit {
                 this.subiendoLogo = false;
                 this.logoPreview = null;
                 // Guardar la URL en la empresa
-                this.platformService.actualizarEmpresa({ logo_url: resp.url } as any).subscribe({
+                this.platformService.actualizarEmpresa({ logo_url: resp.url }).subscribe({
                     next: (empresa) => {
                         this.empresa = empresa;
                         this.formulario?.patchValue({ logo_url: resp.url });
@@ -129,7 +129,7 @@ export class EmpresaComponent implements OnInit {
 
     async eliminarLogo(): Promise<void> {
         if (!await this.alert.confirm('El logo se quitará de la empresa', 'Sí, eliminar')) return;
-        this.platformService.actualizarEmpresa({ logo_url: '' } as any).subscribe({
+        this.platformService.actualizarEmpresa({ logo_url: '' }).subscribe({
             next: (empresa) => {
                 this.empresa = empresa;
                 this.formulario?.patchValue({ logo_url: '' });

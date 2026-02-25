@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, Factura, Mesa } from '../../auth/interfaces/interfaces';
+import { ApiResponse, FacturaActivaMesa, Mesa } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class MesasService extends ApiBaseService {
@@ -32,7 +32,7 @@ export class MesasService extends ApiBaseService {
         return this.http.put<ApiResponse>(`${this.baseUrl}/mesas/${mesaId}/liberar`, {});
     }
 
-    getFacturaActivaMesa(mesaId: string): Observable<Factura> {
-        return this.http.get<Factura>(`${this.baseUrl}/mesas/${mesaId}/factura`);
+    getFacturaActivaMesa(mesaId: string): Observable<FacturaActivaMesa> {
+        return this.http.get<FacturaActivaMesa>(`${this.baseUrl}/mesas/${mesaId}/factura`);
     }
 }

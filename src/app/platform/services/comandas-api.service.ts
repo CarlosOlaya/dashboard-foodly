@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiBaseService } from './api-base.service';
-import { ApiResponse, Comanda } from '../../auth/interfaces/interfaces';
+import { ApiResponse, Comanda, ComandaItemRequest, EnviarComandaResponse } from '../../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class ComandasApiService extends ApiBaseService {
 
-    enviarComanda(facturaId: string, items: Array<{ plato_id: string; cantidad: number; comentario?: string }>): Observable<ApiResponse> {
-        return this.http.post<any>(`${this.baseUrl}/comandas/new`, { factura_id: facturaId, items });
+    enviarComanda(facturaId: string, items: ComandaItemRequest[]): Observable<EnviarComandaResponse> {
+        return this.http.post<EnviarComandaResponse>(`${this.baseUrl}/comandas/new`, { factura_id: facturaId, items });
     }
 
-    generarComanda(facturaId: string, items: any[]): Observable<ApiResponse> {
+    generarComanda(facturaId: string, items: ComandaItemRequest[]): Observable<ApiResponse> {
         return this.http.post<ApiResponse>(`${this.baseUrl}/comandas/new`,
-            { factura_id: facturaId, items },
+            { factura_id: facturaId, items }
         );
     }
 
