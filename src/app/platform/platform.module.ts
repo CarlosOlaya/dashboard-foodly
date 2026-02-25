@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PlatformRoutingModule } from './platform-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
+import { SharedModule } from '../shared/shared.module';
 
 // Core components — always loaded
 import { HomeComponent } from './pages/home/home.component';
@@ -31,6 +32,7 @@ import { ImagenPipe } from './pipes/imagen.pipe';
     ReactiveFormsModule,
     MaterialModule,
     FormsModule,
+    SharedModule,
   ]
 })
 export class PlatformModule { }

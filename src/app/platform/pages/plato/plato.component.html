@@ -53,6 +53,6 @@
   </div>
 </div>
 
-<div *ngIf="!plato" style="display: flex; justify-content: center; padding: 64px;">
-  <mat-spinner diameter="40"></mat-spinner>
+<div *ngIf="!plato">
+  <app-loading message="Cargando plato..."></app-loading>
 </div>

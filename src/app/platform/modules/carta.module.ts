@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { CartaComponent } from '../pages/carta/carta.component';
 import { AgregarPlatoComponent } from '../pages/agregar-plato/agregar-plato.component';
@@ -28,6 +29,7 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
+        SharedModule,
     ],
 })
 export class CartaModule { }

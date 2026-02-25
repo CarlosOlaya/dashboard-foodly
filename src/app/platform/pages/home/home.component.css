@@ -1014,11 +1014,12 @@
     /* ── Notification panel on mobile ── */
     .notif-panel {
         position: fixed;
-        top: 52px;
+        top: 56px;
         right: 8px;
         left: 8px;
         width: auto;
-        max-height: 50vh;
+        max-height: 60vh;
         border-radius: 16px;
+        z-index: 1000;
     }
 }

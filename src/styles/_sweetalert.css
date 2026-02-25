@@ -180,6 +180,31 @@
     resize: vertical !important;
 }
 
+/* Select dropdown dark theme */
+.swal2-popup select,
+.swal2-popup .swal2-select {
+    color-scheme: dark;
+}
+
+.swal2-popup select option {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+/* Number input spinners (Chrome/Edge) */
+.swal2-popup input[type="number"]::-webkit-inner-spin-button,
+.swal2-popup input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Number input spinners (Firefox) */
+.swal2-popup input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 /* Timer progress bar */
 .swal2-timer-progress-bar {
     background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary)) !important;

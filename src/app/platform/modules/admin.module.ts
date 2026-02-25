@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { EmpresaComponent } from '../pages/empresa/empresa.component';
 import { NominaComponent } from '../pages/nomina/nomina.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
+        SharedModule,
     ],
 })
 export class AdminModule { }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { ProductosComponent } from '../pages/productos/productos.component';
 import { AgregarProductoComponent } from '../pages/agregar-producto/agregar-producto.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
+        SharedModule,
     ],
 })
 export class InventarioModule { }

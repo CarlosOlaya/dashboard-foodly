@@ -2,7 +2,7 @@
     <!-- ── MOBILE HEADER (hidden in servicio) ── -->
     <header class="mobile-header" *ngIf="!isServicio">
         <div class="mobile-header-brand">
-            <img src="/assets/web-app-manifest-512x512.png" alt="Foodly" class="mobile-brand-logo">
+            <img src="/assets/icons/icon-512x512.png" alt="Foodly" class="mobile-brand-logo">
             <span class="mobile-brand-name">{{ currentPageTitle }}</span>
         </div>
         <div class="mobile-header-actions">
@@ -38,10 +38,37 @@
                 </button>
             </ng-container>
             <!-- Notification Bell (admin only) -->
-            <button class="mobile-notif-btn" *ngIf="isAdmin" (click)="toggleNotifPanel()" title="Notificaciones">
-                <mat-icon>notifications</mat-icon>
-                <span class="notif-bell-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
-            </button>
+            <div class="notif-wrapper" *ngIf="isAdmin">
+                <button class="mobile-notif-btn" (click)="toggleNotifPanel()" title="Notificaciones">
+                    <mat-icon>notifications</mat-icon>
+                    <span class="notif-bell-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+                </button>
+
+                <!-- Notification Panel (mobile) -->
+                <div class="notif-panel" *ngIf="showNotifPanel">
+                    <div class="notif-panel-header">
+                        <span class="notif-panel-title">Alertas de Stock</span>
+                        <button class="notif-clear" (click)="notifService.clearAll()" *ngIf="notifications.length">
+                            Limpiar
+                        </button>
+                    </div>
+                    <div class="notif-panel-body">
+                        <div *ngIf="!notifications.length" class="notif-empty">
+                            <mat-icon>check_circle</mat-icon>
+                            <p>Sin alertas activas</p>
+                        </div>
+                        <div *ngFor="let n of notifications" class="notif-item"
+                            [class.notif-agotado]="n.tipo === 'agotado'">
+                            <mat-icon class="notif-item-icon">{{ n.tipo === 'agotado' ? 'error' : 'warning'
+                                }}</mat-icon>
+                            <div class="notif-item-text">
+                                <span class="notif-item-msg">{{ n.mensaje }}</span>
+                                <span class="notif-item-time">{{ n.timestamp | date:'shortTime' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -49,7 +76,7 @@
     <aside class="app-sidebar" [style.display]="isServicio ? 'none' : ''">
         <!-- Brand -->
         <div class="sidebar-brand">
-            <img src="/assets/favicon.svg" alt="Foodly" class="brand-logo">
+            <img src="/assets/icons/icon-512x512.png" alt="Foodly" class="brand-logo">
             <h1>Foodly</h1>
             <!-- Notification Bell -->
             <div class="notif-wrapper" *ngIf="isAdmin">

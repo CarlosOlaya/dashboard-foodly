@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
+import { SharedModule } from '../../shared/shared.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { FacturacionComponent } from '../pages/facturacion/facturacion.component';
@@ -37,6 +38,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         MaterialModule,
         NgxChartsModule,
+        SharedModule,
     ],
 })
 export class FinanzasModule { }

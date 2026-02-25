@@ -50,9 +50,8 @@
 <!-- ══════════════════════════════════════ -->
 <!-- LOADING                               -->
 <!-- ══════════════════════════════════════ -->
-<div *ngIf="loading" class="loading-wrap">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando...</p>
+<div *ngIf="loading">
+    <app-loading message="Cargando arqueo..."></app-loading>
 </div>
 
 <!-- ══════════════════════════════════════ -->

@@ -335,6 +335,23 @@
     color: rgba(71, 85, 105, 0.5);
 }
 
+select.input-glass {
+    color-scheme: dark;
+}
+
+/* Hide ugly number input spinners globally */
+input[type="number"].input-glass::-webkit-inner-spin-button,
+input[type="number"].input-glass::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type="number"].input-glass {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 /* ── Tables ── */
 .table-dark-glass {
     width: 100%;
