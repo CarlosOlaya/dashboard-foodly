@@ -278,7 +278,7 @@
   </app-cobro-panel>
 
   <!-- Loading -->
-  <div *ngIf="loading" class="flex items-center" style="justify-content: center; padding: 64px 0;">
-    <mat-icon class="spin" style="font-size: 32px; color: var(--brand-primary);">sync</mat-icon>
+  <div *ngIf="loading" style="display:flex; justify-content:center; padding:64px 0;">
+    <app-loading message="Cargando servicio..."></app-loading>
   </div>
 </div>
