@@ -161,15 +161,15 @@ export class ProductosComponent implements OnInit {
       html: `
         <p style="font-size:13px; color:#888; margin-bottom:12px;">Stock actual: <strong>${Number(producto.stock)}</strong> ${producto.tipo_stock || 'und'}</p>
         <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
-          <select id="swal-tipo-mov" class="swal2-input" style="margin:0;">
+          <select id="swal-tipo-mov" class="input-glass" style="width:100%;">
             <option value="entrada_compra">Entrada: Compra</option>
             <option value="entrada_ajuste">Entrada: Ajuste</option>
             <option value="salida_ajuste">Salida: Ajuste</option>
             <option value="devolucion">Devolución</option>
           </select>
-          <input id="swal-cantidad" class="swal2-input" type="number" placeholder="Cantidad *" min="0.01" step="0.01" style="margin:0;">
-          <input id="swal-motivo" class="swal2-input" placeholder="Motivo" style="margin:0;">
-          <input id="swal-costo" class="swal2-input" type="number" placeholder="Costo unitario (opcional)" min="0" step="0.01" style="margin:0;">
+          <input id="swal-cantidad" class="input-glass" type="number" placeholder="Cantidad *" min="0.01" step="0.01" style="width:100%;">
+          <input id="swal-motivo" class="input-glass" placeholder="Motivo" style="width:100%;">
+          <input id="swal-costo" class="input-glass" type="number" placeholder="Costo unitario (opcional)" min="0" step="0.01" style="width:100%;">
         </div>
       `,
       showCancelButton: true,

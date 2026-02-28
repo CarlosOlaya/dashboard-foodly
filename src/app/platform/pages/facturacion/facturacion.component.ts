@@ -33,6 +33,8 @@ export class FacturacionComponent implements OnInit, AfterViewInit {
   totalFacturas = 0;
   ticketPromedio = 0;
   totalAnuladas = 0;
+  totalPropinas = 0;
+  totalDescuentos = 0;
   metodosPago: { metodo: string; total: number; cantidad: number }[] = [];
 
   constructor(
@@ -113,6 +115,8 @@ export class FacturacionComponent implements OnInit, AfterViewInit {
     this.totalAnuladas = facturas.filter(f => f.estado === 'anulada').length;
     this.totalFacturas = cerradas.length;
     this.totalVentas = cerradas.reduce((sum, f) => sum + (Number(f.total) || 0), 0);
+    this.totalPropinas = cerradas.reduce((sum, f) => sum + (Number(f.propina) || 0), 0);
+    this.totalDescuentos = cerradas.reduce((sum, f) => sum + (Number(f.descuento_monto) || 0), 0);
     this.ticketPromedio = this.totalFacturas > 0 ? this.totalVentas / this.totalFacturas : 0;
 
     // Agrupar por método de pago

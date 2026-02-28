@@ -8,3 +8,4 @@ export * from './inventario.interfaces';
 export * from './turno.interfaces';
 export * from './tenant.interfaces';
 export * from './api.interfaces';
+export * from './analytics.interfaces';

@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   // ── Hero item (admin only) ──
-  navDashboard: NavItem = { label: 'Dashboard', icon: 'analytics', route: './finanzas' };
+  navDashboard: NavItem = { label: 'Reportes', icon: 'analytics', route: './reportes' };
 
   // ── Operaciones — mesero, bartender, cocinero, cajero, admin ──
   navOperaciones: NavItem[] = [

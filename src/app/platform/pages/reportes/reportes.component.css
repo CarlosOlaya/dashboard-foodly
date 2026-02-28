@@ -1,3 +1,11 @@
+/* ══════════════════════════════════════════════════════════
+   REPORTES — Component Styles
+   
+   Reuses the same class names as Facturación (filtros-bar, 
+   periodo-btn, metricas-inline) and Inventario (inv-tabs, 
+   inv-tab) to ensure visual consistency.
+   ══════════════════════════════════════════════════════════ */
+
 :host {
     display: block;
     height: 100%;
@@ -5,7 +13,7 @@
 }
 
 /* ══════════════════════════════════════════════
-   FILTROS BAR
+   FILTROS BAR (same as facturacion)
    ══════════════════════════════════════════════ */
 .filtros-bar {
     display: flex;
@@ -16,14 +24,12 @@
     margin-bottom: 20px;
 }
 
-.periodo-btns,
-.estado-btns {
+.periodo-btns {
     display: flex;
     gap: 6px;
 }
 
-.periodo-btn,
-.estado-btn {
+.periodo-btn {
     padding: 6px 14px;
     border: 1px solid var(--border-subtle);
     border-radius: 20px;
@@ -35,14 +41,12 @@
     transition: all 0.2s ease;
 }
 
-.periodo-btn:hover,
-.estado-btn:hover {
+.periodo-btn:hover {
     border-color: var(--brand-primary);
     color: var(--brand-primary);
 }
 
-.periodo-btn.active,
-.estado-btn.active {
+.periodo-btn.active {
     background: var(--brand-primary);
     border-color: var(--brand-primary);
     color: var(--text-on-brand);
@@ -72,7 +76,54 @@
 }
 
 /* ══════════════════════════════════════════════
-   MÉTRICAS ROW (standalone, like dashboard KPIs)
+   TABS (same as inventario)
+   ══════════════════════════════════════════════ */
+.inv-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.inv-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.inv-tab mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.inv-tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.inv-tab.active {
+    background: rgba(15, 23, 42, 0.8);
+    color: var(--brand-primary);
+    box-shadow: 0 2px 8px var(--brand-tint-12);
+    font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════
+   MÉTRICAS (same as facturacion)
    ══════════════════════════════════════════════ */
 .metricas-inline {
     display: flex;
@@ -140,19 +191,19 @@
     color: var(--purple-light);
 }
 
-.metrica-icon.anuladas {
-    background: var(--bg-danger-tint);
-    color: var(--danger);
-}
-
 .metrica-icon.propinas {
     background: var(--bg-success-tint);
     color: var(--success);
 }
 
-.metrica-icon.descuentos {
+.metrica-icon.comensales {
     background: var(--bg-warning-tint);
     color: var(--warning);
+}
+
+.metrica-icon.descuentos {
+    background: var(--bg-danger-tint);
+    color: var(--danger);
 }
 
 .metrica-info {
@@ -177,135 +228,166 @@
 }
 
 /* ══════════════════════════════════════════════
-   MÉTODOS DE PAGO BAR
+   LOADING
    ══════════════════════════════════════════════ */
-.metodos-pago-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.metodo-chip {
+.loading-state {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    font-size: 0.82rem;
+    justify-content: center;
+    gap: 12px;
+    padding: 60px 0;
+    color: var(--text-muted);
+    font-size: 14px;
 }
 
-.metodo-chip mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+/* ══════════════════════════════════════════════
+   SECTION SPACING
+   ══════════════════════════════════════════════ */
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ══════════════════════════════════════════════
+   CHART CARDS
+   ══════════════════════════════════════════════ */
+.chart-card {
+    padding: 16px 18px;
+}
+
+.chart-card h3,
+.table-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 16px 0;
+}
+
+.chart-card h3 mat-icon,
+.table-card h3 mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
     color: var(--brand-primary);
 }
 
-.metodo-nombre {
+.chart-wrapper {
+    height: 320px;
+    width: 100%;
+}
+
+.chart-pie {
+    height: 280px;
+}
+
+.chart-tall {
+    height: 400px;
+}
+
+.charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ══════════════════════════════════════════════
+   DATA TABLES
+   ══════════════════════════════════════════════ */
+.table-card {
+    padding: 16px 18px;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.data-table thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-subtle);
+    white-space: nowrap;
+}
+
+.data-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.data-table tbody tr:hover {
+    background: var(--bg-surface);
+}
+
+.data-table tbody td {
+    padding: 10px 14px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.th-rank {
+    width: 40px;
+    text-align: center;
+}
+
+.td-rank {
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.th-num {
+    text-align: right;
+}
+
+.td-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.td-name {
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.metodo-total {
-    font-weight: 700;
-    color: var(--brand-primary);
+.td-success {
+    color: var(--success);
+    font-weight: 600;
 }
 
-.metodo-count {
-    color: var(--text-muted);
-    font-size: 0.75rem;
+.td-danger {
+    color: var(--danger);
+    font-weight: 600;
 }
 
-/* ══════════════════════════════════════════════
-   TABLA
-   ══════════════════════════════════════════════ */
-.metodo-badge {
+.badge-cat {
     display: inline-block;
     padding: 2px 10px;
     border-radius: 12px;
-    background: var(--brand-tint-08);
-    color: var(--brand-primary);
-    font-size: 0.78rem;
-    font-weight: 500;
-}
-
-.btn-icon-print {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 8px;
-    background: var(--brand-tint-06);
-    color: var(--brand-primary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.btn-icon-print:hover {
-    background: var(--brand-primary);
-    color: var(--text-on-brand);
-}
-
-.btn-icon-print mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-}
-
-.mat-column-acciones {
-    width: 50px;
-    text-align: center;
-}
-
-/* Header actions */
-.header-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.mb-16 {
-    margin-bottom: 16px;
-}
-
-/* ══════════════════════════════════════════════
-   LOADING BAR
-   ══════════════════════════════════════════════ */
-.loading-bar {
-    height: 3px;
-    background: var(--border-subtle);
-    overflow: hidden;
-}
-
-.loading-bar-inner {
-    height: 100%;
-    width: 40%;
-    background: var(--brand-primary);
-    animation: loadSlide 1.2s ease-in-out infinite;
-}
-
-@keyframes loadSlide {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(350%);
-    }
+    background: var(--bg-info-tint);
+    color: var(--info);
+    font-size: 11px;
+    font-weight: 600;
 }
 
 /* ══════════════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════════════ */
 @media (max-width: 900px) {
-    .metricas-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .filtros-bar {
         flex-direction: column;
         align-items: flex-start;
@@ -318,7 +400,7 @@
 
 @media (max-width: 768px) {
 
-    /* ── Metrics — horizontal scroll on mobile ── */
+    /* Metrics — horizontal scroll */
     .metricas-inline {
         gap: 8px;
         margin-bottom: 10px;
@@ -359,24 +441,27 @@
         height: 15px;
     }
 
-    /* ── Payment methods — wrap + smaller ── */
-    .metodos-pago-bar {
-        gap: 6px;
+    /* Charts */
+    .charts-row {
+        grid-template-columns: 1fr;
     }
 
-    .metodo-chip {
-        padding: 6px 10px;
-        font-size: 0.78rem;
+    .chart-wrapper {
+        height: 220px;
     }
 
-    /* ── Filters — compact ── */
+    .chart-card,
+    .table-card {
+        padding: 14px 16px;
+    }
+
+    /* Filters */
     .filtros-bar {
         padding: 12px 14px;
         gap: 10px;
     }
 
-    .periodo-btns,
-    .estado-btns {
+    .periodo-btns {
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -384,13 +469,11 @@
         gap: 4px;
     }
 
-    .periodo-btns::-webkit-scrollbar,
-    .estado-btns::-webkit-scrollbar {
+    .periodo-btns::-webkit-scrollbar {
         display: none;
     }
 
-    .periodo-btn,
-    .estado-btn {
+    .periodo-btn {
         flex-shrink: 0;
         padding: 5px 10px;
         font-size: 0.78rem;
@@ -401,31 +484,25 @@
         gap: 6px;
     }
 
-    /* ── Table — card-list mode on mobile ── */
-    .card-glass {
-        overflow-x: auto;
+    /* Tables */
+    .table-scroll {
         -webkit-overflow-scrolling: touch;
-    }
-
-    table {
-        min-width: 600px;
-    }
-
-    .mat-mdc-header-cell,
-    .mat-mdc-cell {
-        padding: 8px 10px !important;
-        font-size: 12px !important;
-    }
-
-    /* Hide less important columns on mobile */
-    .mat-column-metodo_pago,
-    .mat-column-empleado {
-        display: none;
     }
 }
 
-@media (max-width: 600px) {
-    .metricas-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 640px) {
+    .inv-tab {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    .inv-tab mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .inv-tab .tab-label {
+        display: none;
     }
 }

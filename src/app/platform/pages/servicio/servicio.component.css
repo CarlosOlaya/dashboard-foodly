@@ -29,7 +29,6 @@
   padding: 6px 16px;
   border-radius: 0.5rem;
   letter-spacing: -0.02em;
-  box-shadow: 0 4px 12px var(--brand-tint-20);
 }
 
 .btn-verificador {
@@ -37,9 +36,9 @@
   align-items: center;
   gap: 5px;
   padding: 6px 14px;
-  background: rgba(99, 102, 241, 0.1);
+  background: var(--bg-indigo-tint);
   color: var(--indigo);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid var(--bg-indigo-tint-hover);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
@@ -48,7 +47,7 @@
 }
 
 .btn-verificador:hover {
-  background: rgba(99, 102, 241, 0.18);
+  background: var(--bg-indigo-tint-hover);
   transform: translateY(-1px);
 }
 
@@ -79,10 +78,10 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   overflow: hidden;
   min-height: 0;
@@ -151,7 +150,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface);
 }
 
 /* ═══ Product Grid (Cards con fotos) ═══ */
@@ -163,8 +162,8 @@
 }
 
 .producto-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
@@ -285,6 +284,11 @@
   flex-direction: column;
 }
 
+/* Hide ::after price on desktop — only used in mobile list mode */
+.producto-card-body::after {
+  content: none;
+}
+
 .producto-card-nombre {
   font-size: 10px;
   font-weight: 600;
@@ -303,11 +307,30 @@
 }
 
 /* ═══ Category chips ═══ */
-.cat-chips {
+/* ── Category bar: [Todos] [scroll...] [≡] ── */
+.cat-bar {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: nowrap;
+}
+
+.cat-chip-fixed {
+  flex-shrink: 0;
+}
+
+.cat-chips-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cat-chips-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .cat-chip {
@@ -328,7 +351,6 @@
   background: var(--brand-primary);
   color: var(--text-on-brand);
   font-weight: 700;
-  box-shadow: 0 2px 8px var(--brand-tint-20);
 }
 
 /* ── Hamburger "Más" Button ── */
@@ -521,30 +543,30 @@
 }
 
 .btn-action-edit {
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--bg-info-tint);
   color: var(--info);
 }
 
 .btn-action-transfer {
-  background: rgba(99, 102, 241, 0.1);
+  background: var(--bg-indigo-tint);
   color: var(--indigo);
 }
 
 .btn-action-void {
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--bg-danger-tint);
   color: var(--danger);
 }
 
 .btn-action-edit:hover {
-  background: rgba(59, 130, 246, 0.2);
+  background: var(--bg-info-tint-hover);
 }
 
 .btn-action-transfer:hover {
-  background: rgba(99, 102, 241, 0.2);
+  background: var(--bg-indigo-tint-hover);
 }
 
 .btn-action-void:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--bg-danger-tint-hover);
 }
 
 /* ═══ Action Bar (panel inferior horizontal) ═══ */
@@ -586,6 +608,16 @@
   gap: 8px;
 }
 
+/* On desktop, action-bar-scroll is just a transparent flex wrapper */
+.action-bar-scroll {
+  display: flex;
+  gap: 8px;
+}
+
+.action-bar-btn-pinned {
+  flex-shrink: 0;
+}
+
 .action-bar-btn {
   display: flex;
   align-items: center;
@@ -616,66 +648,77 @@
 }
 
 .action-bar-btn-edit {
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--bg-info-tint);
   color: var(--info);
 }
 
 .action-bar-btn-edit:not(:disabled):hover {
-  background: rgba(59, 130, 246, 0.2);
+  background: var(--bg-info-tint-hover);
 }
 
 .action-bar-btn-transfer {
-  background: rgba(99, 102, 241, 0.1);
+  background: var(--bg-indigo-tint);
   color: var(--indigo);
 }
 
 .action-bar-btn-transfer:not(:disabled):hover {
-  background: rgba(99, 102, 241, 0.2);
+  background: var(--bg-indigo-tint-hover);
 }
 
 .action-bar-btn-void {
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--bg-danger-tint);
   color: var(--danger);
 }
 
 .action-bar-btn-void:not(:disabled):hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--bg-danger-tint-hover);
 }
 
 .action-bar-btn-desc-item {
-  background: rgba(245, 158, 11, 0.1);
+  background: var(--bg-warning-tint);
   color: var(--warning);
 }
 
 .action-bar-btn-desc-item:not(:disabled):hover {
-  background: rgba(245, 158, 11, 0.2);
+  background: var(--bg-warning-tint-hover);
 }
 
 .action-bar-btn-desc-mesa {
-  background: rgba(139, 92, 246, 0.1);
+  background: var(--bg-purple-tint);
   color: var(--purple);
 }
 
 .action-bar-btn-desc-mesa:not(:disabled):hover {
-  background: rgba(139, 92, 246, 0.2);
+  background: var(--bg-purple-tint-hover);
 }
 
 .action-bar-btn-cortesia {
-  background: rgba(34, 197, 94, 0.1);
+  background: var(--bg-success-tint);
   color: var(--success);
 }
 
 .action-bar-btn-cortesia:not(:disabled):hover {
-  background: rgba(34, 197, 94, 0.2);
+  background: var(--bg-success-tint-hover);
 }
 
 .action-bar-btn-precuenta {
-  background: rgba(var(--brand-sec-rgb), 0.10);
+  background: var(--brand-tint-10);
   color: var(--brand-primary);
 }
 
 .action-bar-btn-precuenta:not(:disabled):hover {
-  background: rgba(var(--brand-sec-rgb), 0.20);
+  background: var(--brand-tint-20);
+}
+
+.action-bar-btn-cobrar {
+  background: var(--brand-primary);
+  color: var(--text-on-brand);
+  font-weight: 700;
+}
+
+.action-bar-btn-cobrar:not(:disabled):hover {
+  background: var(--brand-primary-dark);
+  box-shadow: var(--shadow-glow);
 }
 
 /* ═══ Quantity Controls (+/-) ═══ */
@@ -756,7 +799,7 @@
 }
 
 .btn-icon-sm.delete:hover {
-  background: rgba(239, 68, 68, 0.08);
+  background: var(--bg-danger-tint);
 }
 
 .btn-icon-sm.delete:hover mat-icon {
@@ -1014,33 +1057,35 @@
     border-radius: 12px;
   }
 
-  /* ── Product grid — 3 cols ── */
+  /* ── Product grid — 4 compact cols with images ── */
   .producto-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .producto-img-wrap {
+    aspect-ratio: 1 / 1;
   }
 
   .producto-card-body {
-    padding: 4px 6px 6px;
+    padding: 3px 4px 4px;
   }
 
   .producto-card-nombre {
-    font-size: 11px;
+    font-size: 10px;
   }
 
-  /* ── Category chips — horizontal scroll ── */
-  .cat-chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
+  /* Disable hover effects on touch */
+  .producto-card:hover {
+    transform: none;
+    box-shadow: none;
   }
 
-  .cat-chips::-webkit-scrollbar {
-    display: none;
+  .producto-card:active {
+    transform: scale(0.95);
   }
 
+  /* ── Category bar — bigger touch targets on mobile ── */
   .cat-chip {
     flex-shrink: 0;
     min-height: 34px;
@@ -1108,13 +1153,20 @@
     width: 100%;
     display: flex;
     gap: 4px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
     padding-bottom: 2px;
   }
 
-  .action-bar-buttons::-webkit-scrollbar {
+  .action-bar-scroll {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .action-bar-scroll::-webkit-scrollbar {
     display: none;
   }
 
@@ -1242,18 +1294,6 @@
    PANEL DE COBRO
    ═══════════════════════════════════════════════════════ */
 
-/* Botón cobrar en action bar */
-.action-bar-btn-cobrar {
-  background: linear-gradient(135deg, var(--success-light), var(--success)) !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-}
-
-.action-bar-btn-cobrar:hover:not(:disabled) {
-  box-shadow: 0 2px 12px rgba(34, 197, 94, 0.35);
-}
-
 
 /* ═══ Discount / Cortesía Tags (Col Cuenta) ═══ */
 .cuenta-cortesia-tag {
@@ -1281,13 +1321,13 @@
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 6px;
-  background: rgba(245, 158, 11, 0.12);
+  background: var(--bg-warning-tint);
   color: var(--warning);
   margin-left: 6px;
 }
 
 .cuenta-row-cortesia {
-  background: rgba(34, 197, 94, 0.04) !important;
+  background: var(--bg-success-tint) !important;
 }
 
 /* breakdown-row and text-red also used in descuento modals */

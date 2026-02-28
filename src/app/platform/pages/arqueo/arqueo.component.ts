@@ -131,7 +131,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
       title: 'Abrir Turno de Caja',
       html: `
         <p style="margin-bottom: 16px; color: #64748b;">Ingresa el efectivo inicial en caja</p>
-        <input id="swal-efectivo" type="number" class="swal2-input" placeholder="Efectivo inicial" value="0" min="0" step="1000">
+        <input id="swal-efectivo" type="number" class="input-glass" placeholder="Efectivo inicial" value="0" min="0" step="1000" style="width:100%;">
       `,
       showCancelButton: true,
       confirmButtonText: 'Abrir turno',
@@ -202,11 +202,11 @@ export class ArqueoComponent implements OnInit, OnDestroy {
         </div>
         <div style="margin-bottom: 12px;">
           <label style="display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 4px;">Efectivo contado</label>
-          <input id="swal-contado" type="number" class="swal2-input" placeholder="Efectivo contado" min="0" step="1000" style="margin:0; width:100%;">
+          <input id="swal-contado" type="number" class="input-glass" placeholder="Efectivo contado" min="0" step="1000" style="width:100%;">
         </div>
         <div>
           <label style="display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 4px;">Observaciones (opcional)</label>
-          <textarea id="swal-obs" class="swal2-textarea" placeholder="Observaciones..." style="margin:0; width:100%; min-height: 60px;"></textarea>
+          <textarea id="swal-obs" class="input-glass" placeholder="Observaciones..." style="width:100%; min-height: 60px;"></textarea>
         </div>
       `,
       showCancelButton: true,

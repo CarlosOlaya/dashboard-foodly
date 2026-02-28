@@ -236,12 +236,12 @@
         <div class="more-sheet-title">Menú</div>
 
         <div class="more-sheet-grid">
-            <!-- Dashboard (admin) -->
-            <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./finanzas" (click)="showMoreMenu = false">
-                <div class="more-sheet-icon" style="background: rgba(34,211,238,0.12);">
-                    <mat-icon style="color: var(--brand-primary);">analytics</mat-icon>
+            <!-- Reportes (admin) -->
+            <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./reportes" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: var(--bg-info-tint);">
+                    <mat-icon style="color: var(--info);">analytics</mat-icon>
                 </div>
-                <span>Dashboard</span>
+                <span>Reportes</span>
             </a>
 
             <!-- Carta -->

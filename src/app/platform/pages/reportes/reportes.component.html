@@ -1,0 +1,404 @@
+<!-- ═══ PAGE HEADER (matches all other modules) ═══ -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title"><mat-icon>analytics</mat-icon>Reportes</h1>
+        <p class="page-subtitle">Análisis detallado de ventas, propinas, productos y empleados</p>
+    </div>
+</div>
+
+<!-- ═══ DATE CONTROLS ═══ -->
+<div class="filtros-bar card-glass">
+    <div class="periodo-btns">
+        <button *ngFor="let p of presets" class="periodo-btn" [class.active]="activePreset === p.value"
+            (click)="applyPreset(p.value)">
+            {{ p.label }}
+        </button>
+        <button class="periodo-btn" [class.active]="activePreset === 'personalizado'"
+            (click)="activePreset = 'personalizado'">
+            Personalizado
+        </button>
+    </div>
+
+    <div class="fechas-custom" *ngIf="activePreset === 'personalizado'">
+        <input type="date" class="input-glass input-sm" [(ngModel)]="desde" />
+        <span class="fecha-sep">—</span>
+        <input type="date" class="input-glass input-sm" [(ngModel)]="hasta" />
+        <button class="btn-neon btn-sm" (click)="onDateChange()">Aplicar</button>
+    </div>
+</div>
+
+<!-- ═══ TABS (matches inventario pattern) ═══ -->
+<div class="inv-tabs">
+    <button *ngFor="let tab of tabs" class="inv-tab" [class.active]="activeTab === tab.id" (click)="activeTab = tab.id">
+        <mat-icon>{{ tab.icon }}</mat-icon>
+        <span class="tab-label">{{ tab.label }}</span>
+    </button>
+</div>
+
+<!-- ═══ LOADING ═══ -->
+<div *ngIf="loading" class="loading-state">
+    <mat-icon class="spin">autorenew</mat-icon>
+    <span>Cargando datos...</span>
+</div>
+
+<!-- ═══ CONTENT ═══ -->
+<div *ngIf="!loading" class="tab-content">
+
+    <!-- ── TAB: RESUMEN ── -->
+    <div *ngIf="activeTab === 'resumen'" class="section">
+        <!-- KPIs -->
+        <div class="metricas-inline">
+            <div class="metrica-card">
+                <div class="metrica-icon ventas"><mat-icon>attach_money</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Venta Neta</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.venta_neta) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon facturas"><mat-icon>receipt_long</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Facturas</span>
+                    <span class="metrica-valor">{{ resumen.total_facturas }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon ticket"><mat-icon>confirmation_number</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Ticket Prom.</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.ticket_promedio) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon propinas"><mat-icon>volunteer_activism</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Propinas</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.total_propinas) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon comensales"><mat-icon>groups</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Comensales</span>
+                    <span class="metrica-valor">{{ resumen.total_comensales }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon descuentos"><mat-icon>sell</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Descuentos</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.total_descuentos) }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 1: Ventas por Día + Facturas por Día -->
+        <div class="charts-row">
+            <div class="chart-card card-glass">
+                <h3><mat-icon>trending_up</mat-icon> Ventas por Día</h3>
+                <div class="chart-wrapper">
+                    <ngx-charts-line-chart [results]="chartVentasDia" [scheme]="$any(colorScheme)" [xAxis]="true"
+                        [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false"
+                        [yAxisTickFormatting]="axisFormat" [autoScale]="true" [animations]="false" [gradient]="true"
+                        [tooltipDisabled]="false">
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+            <div class="chart-card card-glass">
+                <h3><mat-icon>receipt_long</mat-icon> Facturas por Día</h3>
+                <div class="chart-wrapper">
+                    <ngx-charts-line-chart [results]="chartFacturasDia" [scheme]="$any(pieColors)" [xAxis]="true"
+                        [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false" [autoScale]="true"
+                        [animations]="false" [gradient]="true" [tooltipDisabled]="false">
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Top 10 Platos + Ventas por Categoría -->
+        <div class="charts-row">
+            <div class="chart-card card-glass">
+                <h3><mat-icon>restaurant_menu</mat-icon> Top 10 Platos</h3>
+                <div class="chart-wrapper">
+                    <ngx-charts-bar-horizontal [results]="chartTopPlatos" [scheme]="$any(barColors)" [xAxis]="true"
+                        [yAxis]="true" [animations]="true" [gradient]="true" [tooltipDisabled]="false"
+                        [showDataLabel]="true">
+                    </ngx-charts-bar-horizontal>
+                </div>
+            </div>
+            <div class="chart-card card-glass">
+                <h3><mat-icon>category</mat-icon> Ventas por Categoría</h3>
+                <div class="chart-wrapper chart-pie">
+                    <ngx-charts-pie-chart [results]="chartCategorias" [scheme]="$any(pieColors)" [labels]="true"
+                        [doughnut]="true" [animations]="true" [tooltipDisabled]="false">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Métodos de Pago + Ventas por Hora -->
+        <div class="charts-row">
+            <div class="chart-card card-glass">
+                <h3><mat-icon>payments</mat-icon> Métodos de Pago</h3>
+                <div class="chart-wrapper chart-pie">
+                    <ngx-charts-pie-chart [results]="chartMetodos" [scheme]="$any(pieColors)" [labels]="true"
+                        [doughnut]="true" [animations]="true" [tooltipDisabled]="false">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+            <div class="chart-card card-glass">
+                <h3><mat-icon>schedule</mat-icon> Ventas por Hora</h3>
+                <div class="chart-wrapper">
+                    <ngx-charts-bar-vertical [results]="chartHoras" [scheme]="$any(colorScheme)" [xAxis]="true"
+                        [yAxis]="true" [yAxisTickFormatting]="axisFormat" [animations]="true" [gradient]="true"
+                        [tooltipDisabled]="false">
+                    </ngx-charts-bar-vertical>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: PRODUCTOS ── -->
+    <div *ngIf="activeTab === 'productos'" class="section">
+        <div class="card-glass table-card">
+            <h3><mat-icon>restaurant_menu</mat-icon> Productos más vendidos</h3>
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="th-rank">#</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th class="th-num">Cantidad</th>
+                            <th class="th-num">Ingreso Bruto</th>
+                            <th class="th-num">Descuentos</th>
+                            <th class="th-num">Ingreso Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of productos; let i = index">
+                            <td class="td-rank">{{ i + 1 }}</td>
+                            <td class="td-name">{{ p.nombre }}</td>
+                            <td><span class="badge-cat">{{ p.categoria }}</span></td>
+                            <td class="td-num">{{ p.cantidad }}</td>
+                            <td class="td-num">{{ formatCurrency(p.ingreso_bruto) }}</td>
+                            <td class="td-num td-danger">{{ p.descuentos > 0 ? '-' + formatCurrency(p.descuentos) : '—'
+                                }}</td>
+                            <td class="td-num td-success">{{ formatCurrency(p.ingreso_neto) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: PROPINAS ── -->
+    <div *ngIf="activeTab === 'propinas'" class="section">
+        <div class="metricas-inline">
+            <div class="metrica-card">
+                <div class="metrica-icon propinas"><mat-icon>volunteer_activism</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Total Propinas</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.total_propinas) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon ventas"><mat-icon>room_service</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Total Servicio</span>
+                    <span class="metrica-valor">{{ formatCurrency(resumen.total_servicio) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon ticket"><mat-icon>percent</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">% sobre Ventas</span>
+                    <span class="metrica-valor">{{ resumen.venta_neta > 0 ? ((resumen.total_propinas /
+                        resumen.venta_neta) * 100).toFixed(1) : '0' }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts: Propinas Día + Propinas por Empleado -->
+        <div class="charts-row">
+            <div class="chart-card card-glass">
+                <h3><mat-icon>trending_up</mat-icon> Propinas por Día</h3>
+                <div class="chart-wrapper">
+                    <ngx-charts-line-chart [results]="chartPropinasDia" [scheme]="$any(colorScheme)" [xAxis]="true"
+                        [yAxis]="true" [yAxisTickFormatting]="axisFormat" [autoScale]="true" [animations]="false"
+                        [gradient]="true" [tooltipDisabled]="false">
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+            <div class="chart-card card-glass">
+                <h3><mat-icon>pie_chart</mat-icon> Distribución por Empleado</h3>
+                <div class="chart-wrapper chart-pie">
+                    <ngx-charts-pie-chart [results]="chartPropinasEmpleado" [scheme]="$any(pieColors)" [labels]="true"
+                        [doughnut]="true" [animations]="true" [tooltipDisabled]="false">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-glass table-card">
+            <h3><mat-icon>badge</mat-icon> Detalle por Empleado</h3>
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th class="th-num">Facturas</th>
+                            <th class="th-num">Ventas</th>
+                            <th class="th-num">Propinas</th>
+                            <th class="th-num">Servicio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let e of propinas?.por_empleado || []">
+                            <td class="td-name">{{ e.empleado }}</td>
+                            <td class="td-num">{{ e.facturas }}</td>
+                            <td class="td-num">{{ formatCurrency(e.ventas) }}</td>
+                            <td class="td-num td-success">{{ formatCurrency(e.propinas) }}</td>
+                            <td class="td-num">{{ formatCurrency(e.servicio) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: EMPLEADOS ── -->
+    <div *ngIf="activeTab === 'empleados'" class="section">
+        <div class="card-glass table-card">
+            <h3><mat-icon>badge</mat-icon> Rendimiento por Empleado</h3>
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th class="th-num">Facturas</th>
+                            <th class="th-num">Ventas</th>
+                            <th class="th-num">Ticket Prom.</th>
+                            <th class="th-num">Comensales</th>
+                            <th class="th-num">Propinas</th>
+                            <th class="th-num">Descuentos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let e of empleados">
+                            <td class="td-name">{{ e.nombre }}</td>
+                            <td class="td-num">{{ e.facturas }}</td>
+                            <td class="td-num">{{ formatCurrency(e.ventas) }}</td>
+                            <td class="td-num">{{ formatCurrency(e.ticket_promedio) }}</td>
+                            <td class="td-num">{{ e.comensales }}</td>
+                            <td class="td-num td-success">{{ formatCurrency(e.propinas) }}</td>
+                            <td class="td-num td-danger">{{ e.descuentos > 0 ? '-' + formatCurrency(e.descuentos) : '—'
+                                }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: PAGOS ── -->
+    <div *ngIf="activeTab === 'pagos'" class="section">
+        <div class="charts-row">
+            <div class="chart-card card-glass">
+                <h3><mat-icon>payments</mat-icon> Distribución de Pagos</h3>
+                <div class="chart-wrapper chart-pie">
+                    <ngx-charts-pie-chart [results]="chartMetodos" [scheme]="$any(pieColors)" [labels]="true"
+                        [doughnut]="true" [animations]="true" [tooltipDisabled]="false">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+            <div class="card-glass table-card">
+                <h3><mat-icon>list_alt</mat-icon> Detalle por Método</h3>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Método</th>
+                                <th class="th-num">Transacciones</th>
+                                <th class="th-num">Total</th>
+                                <th class="th-num">Propinas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let m of metodosPago">
+                                <td class="td-name">{{ capitalizarMetodo(m.metodo) }}</td>
+                                <td class="td-num">{{ m.transacciones }}</td>
+                                <td class="td-num">{{ formatCurrency(m.total) }}</td>
+                                <td class="td-num td-success">{{ formatCurrency(m.propinas) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: DESCUENTOS ── -->
+    <div *ngIf="activeTab === 'descuentos'" class="section">
+        <div class="metricas-inline">
+            <div class="metrica-card">
+                <div class="metrica-icon descuentos"><mat-icon>sell</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Total Descuentos</span>
+                    <span class="metrica-valor">{{ formatCurrency(descuentos.total_descuento_mesa +
+                        descuentos.total_descuento_items) }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon propinas"><mat-icon>card_giftcard</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">Cortesías ({{ formatCurrency(descuentos.valor_cortesias) }})</span>
+                    <span class="metrica-valor">{{ descuentos.cortesias }}</span>
+                </div>
+            </div>
+            <div class="metrica-card">
+                <div class="metrica-icon facturas"><mat-icon>percent</mat-icon></div>
+                <div class="metrica-info">
+                    <span class="metrica-label">% sobre Venta Bruta</span>
+                    <span class="metrica-valor">{{ resumen.venta_bruta > 0 ? (((descuentos.total_descuento_mesa +
+                        descuentos.total_descuento_items) / resumen.venta_bruta) * 100).toFixed(1) : '0' }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-glass table-card" *ngIf="descuentos.top_items.length > 0">
+            <h3><mat-icon>list_alt</mat-icon> Items con más Descuentos</h3>
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="th-num">Cantidad</th>
+                            <th class="th-num">Total Descuento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of descuentos.top_items">
+                            <td class="td-name">{{ item.nombre }}</td>
+                            <td class="td-num">{{ item.cantidad }}</td>
+                            <td class="td-num td-danger">-{{ formatCurrency(item.total_descuento) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: HORARIOS ── -->
+    <div *ngIf="activeTab === 'horarios'" class="section">
+        <div class="chart-card card-glass">
+            <h3><mat-icon>schedule</mat-icon> Ventas por Hora del Día</h3>
+            <div class="chart-wrapper chart-tall">
+                <ngx-charts-bar-vertical [results]="chartHoras" [scheme]="$any(colorScheme)" [xAxis]="true"
+                    [yAxis]="true" [yAxisTickFormatting]="axisFormat" [animations]="true" [gradient]="true"
+                    [tooltipDisabled]="false" [showDataLabel]="true">
+                </ngx-charts-bar-vertical>
+            </div>
+        </div>
+    </div>
+</div>

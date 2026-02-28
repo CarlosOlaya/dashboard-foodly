@@ -206,13 +206,13 @@ export class AgregarPlatoComponent implements OnInit {
         <div style="text-align:left; display:flex; flex-direction:column; gap:12px;">
           <div>
             <label style="font-size:12px; font-weight:600; color:#64748b;">Insumo *</label>
-            <select id="swal-prod" class="swal2-input" style="margin:0; margin-top:4px;">
+            <select id="swal-prod" class="input-glass" style="width:100%; margin-top:4px;">
               ${Object.entries(options).map(([id, name]) => `<option value="${id}">${name}</option>`).join('')}
             </select>
           </div>
           <div>
             <label style="font-size:12px; font-weight:600; color:#64748b;">Cantidad por unidad del plato *</label>
-            <input id="swal-cant" class="swal2-input" type="number" placeholder="Ej: 0.200" min="0.0001" step="0.0001" style="margin:0; margin-top:4px;">
+            <input id="swal-cant" class="input-glass" type="number" placeholder="Ej: 0.200" min="0.0001" step="0.0001" style="width:100%; margin-top:4px;">
             <p style="font-size:11px; color:#94a3b8; margin:4px 0 0 0;">Cuánto de este insumo se consume al vender 1 unidad del plato</p>
           </div>
         </div>

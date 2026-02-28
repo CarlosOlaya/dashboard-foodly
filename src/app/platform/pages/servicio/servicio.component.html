@@ -20,7 +20,7 @@
         <mat-icon>receipt</mat-icon>
         <span>Precuenta</span>
       </button>
-      <span class="badge-total">Total Mesa: ${{ totalGeneral | number:'1.0-0' }}</span>
+      <span class="badge-total">Total Mesa: {{ totalGeneral | moneda }}</span>
     </div>
   </div>
 
@@ -61,16 +61,20 @@
             <input (keyup)="filtrarPlatos($event)" placeholder="Buscar platos..." />
           </div>
 
-          <div class="cat-chips">
-            <button class="cat-chip" [class.active]="!categoriaActiva" (click)="mostrarTodos()">Todos</button>
-            <button *ngFor="let cat of categoriasVisibles" class="cat-chip"
-              [class.active]="categoriaActiva === cat.nombre" (click)="filtrarPorCategoria(cat)">
-              {{ cat.nombre }}
-            </button>
+          <div class="cat-bar">
+            <button class="cat-chip cat-chip-fixed" [class.active]="!categoriaActiva"
+              (click)="mostrarTodos()">Todos</button>
+
+            <div class="cat-chips-scroll">
+              <button *ngFor="let cat of categoriasVisibles" class="cat-chip"
+                [class.active]="categoriaActiva === cat.nombre" (click)="filtrarPorCategoria(cat)">
+                {{ cat.nombre }}
+              </button>
+            </div>
 
             <!-- Hamburger for overflow -->
             <div class="chips-more-wrap" *ngIf="categoriasOverflow.length > 0">
-              <button class="cat-chip chips-more-btn" [class.active-menu]="showMoreCats"
+              <button class="cat-chip cat-chip-fixed chips-more-btn" [class.active-menu]="showMoreCats"
                 (click)="toggleMoreCats($event)">
                 <mat-icon>menu</mat-icon>
               </button>
@@ -97,12 +101,12 @@
                   <mat-icon>lunch_dining</mat-icon>
                 </div>
                 <div class="producto-overlay"></div>
-                <span class="producto-badge-precio">${{ producto.precio_venta | number:'1.0-0' }}</span>
+                <span class="producto-badge-precio">{{ producto.precio_venta | moneda }}</span>
                 <div class="producto-add-btn">
                   <mat-icon>add</mat-icon>
                 </div>
               </div>
-              <div class="producto-card-body">
+              <div class="producto-card-body" [attr.data-precio]="producto.precio_venta | moneda">
                 <span class="producto-card-nombre">{{ producto.nombre }}</span>
               </div>
             </div>
@@ -140,7 +144,7 @@
                 </button>
               </div>
               <div class="cuenta-item-subtotal">
-                ${{ item.precio * item.cantidad | number:'1.0-0' }}
+                {{ item.precio * item.cantidad | moneda }}
               </div>
               <button class="btn-icon-sm" (click)="comentario(item); $event.stopPropagation()" title="Comentario">
                 <mat-icon>chat_bubble_outline</mat-icon>
@@ -162,7 +166,7 @@
         <div class="col-footer">
           <div class="total-row total-compact" *ngIf="seleccionados.length > 0">
             <span>Total</span>
-            <span class="text-neon">${{ subtotalNuevo | number:'1.0-0' }}</span>
+            <span class="text-neon">{{ subtotalNuevo | moneda }}</span>
           </div>
           <button class="btn-neon w-full" (click)="comandar()" [disabled]="seleccionados.length === 0">
             <mat-icon>send</mat-icon>
@@ -196,13 +200,11 @@
               </div>
               <span class="qty-badge">x{{ item.cantidad }}</span>
               <div class="cuenta-item-subtotal" *ngIf="!item.descuento_monto || item.descuento_monto === 0">
-                ${{ item.precio * item.cantidad | number:'1.0-0' }}
+                {{ item.precio * item.cantidad | moneda }}
               </div>
               <div class="cuenta-item-subtotal" *ngIf="(item.descuento_monto || 0) > 0">
-                <span style="text-decoration:line-through; font-size:11px; color:#aaa; margin-right:4px;">${{
-                  item.precio * item.cantidad | number:'1.0-0' }}</span>
-                <span style="color:#16a34a; font-weight:700;">${{ (item.precio * item.cantidad) - (item.descuento_monto
-                  || 0) | number:'1.0-0' }}</span>
+                <span style="text-decoration:line-through; font-size:11px; color:#aaa; margin-right:4px;">{{ item.precio * item.cantidad | moneda }}</span>
+                <span style="color:#16a34a; font-weight:700;">{{ (item.precio * item.cantidad) - (item.descuento_monto || 0) | moneda }}</span>
               </div>
             </div>
           </div>
@@ -227,37 +229,40 @@
       </span>
     </div>
     <div class="action-bar-buttons">
-      <button class="action-bar-btn action-bar-btn-edit"
-        [disabled]="!itemSeleccionado || itemSeleccionado.cantidad <= 1" (click)="ajustarCantidad(itemSeleccionado!)">
-        <mat-icon>edit</mat-icon>
-        <span>Ajustar Cant.</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-transfer" [disabled]="!itemSeleccionado"
-        (click)="transferirItem(itemSeleccionado!)">
-        <mat-icon>swap_horiz</mat-icon>
-        <span>Transferir</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-void" [disabled]="!itemSeleccionado"
-        (click)="anularItem(itemSeleccionado!)">
-        <mat-icon>block</mat-icon>
-        <span>Anular</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-desc-item" [disabled]="!itemSeleccionado" (click)="descuentoItem()">
-        <mat-icon>sell</mat-icon>
-        <span>Desc. Item</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-desc-mesa" [disabled]="itemsFactura.length === 0"
-        (click)="descuentoMesa()">
-        <mat-icon>discount</mat-icon>
-        <span>Desc. Mesa</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-cortesia" [disabled]="itemsFactura.length === 0"
-        (click)="abrirCortesia()">
-        <mat-icon>card_giftcard</mat-icon>
-        <span>Cortesía</span>
-      </button>
-      <button class="action-bar-btn action-bar-btn-cobrar" *ngIf="canCobrar" [disabled]="itemsFactura.length === 0"
-        (click)="abrirCobro()">
+      <div class="action-bar-scroll">
+        <button class="action-bar-btn action-bar-btn-edit"
+          [disabled]="!itemSeleccionado || itemSeleccionado.cantidad <= 1" (click)="ajustarCantidad(itemSeleccionado!)">
+          <mat-icon>edit</mat-icon>
+          <span>Ajustar Cant.</span>
+        </button>
+        <button class="action-bar-btn action-bar-btn-transfer" [disabled]="!itemSeleccionado"
+          (click)="transferirItem(itemSeleccionado!)">
+          <mat-icon>swap_horiz</mat-icon>
+          <span>Transferir</span>
+        </button>
+        <button class="action-bar-btn action-bar-btn-void" [disabled]="!itemSeleccionado"
+          (click)="anularItem(itemSeleccionado!)">
+          <mat-icon>block</mat-icon>
+          <span>Anular</span>
+        </button>
+        <button class="action-bar-btn action-bar-btn-desc-item" [disabled]="!itemSeleccionado"
+          (click)="descuentoItem()">
+          <mat-icon>sell</mat-icon>
+          <span>Desc. Item</span>
+        </button>
+        <button class="action-bar-btn action-bar-btn-desc-mesa" [disabled]="itemsFactura.length === 0"
+          (click)="descuentoMesa()">
+          <mat-icon>discount</mat-icon>
+          <span>Desc. Mesa</span>
+        </button>
+        <button class="action-bar-btn action-bar-btn-cortesia" [disabled]="itemsFactura.length === 0"
+          (click)="abrirCortesia()">
+          <mat-icon>card_giftcard</mat-icon>
+          <span>Cortesía</span>
+        </button>
+      </div>
+      <button class="action-bar-btn action-bar-btn-cobrar action-bar-btn-pinned" *ngIf="canCobrar"
+        [disabled]="itemsFactura.length === 0" (click)="abrirCobro()">
         <mat-icon>payments</mat-icon>
         <span>Cobrar</span>
       </button>

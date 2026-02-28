@@ -52,6 +52,13 @@ const routes: Routes = [
         loadChildren: () => import('./modules/admin.module').then(m => m.AdminModule),
       },
 
+      // ── Reportes (lazy) ────────────────────────────────
+      {
+        path: '',
+        canActivate: [adminGuard],
+        loadChildren: () => import('./modules/reportes.module').then(m => m.ReportesModule),
+      },
+
       { path: '**', redirectTo: 'mesas' },
     ]
   },

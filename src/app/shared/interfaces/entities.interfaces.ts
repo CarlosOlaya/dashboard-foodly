@@ -52,6 +52,7 @@ export interface Plato {
     imagen_url?: string;
     disponibilidad: boolean;
     controla_stock?: boolean;
+    stock_disponible?: number | null;
     tiempo_preparacion_min?: number;
     activo: boolean;
 }

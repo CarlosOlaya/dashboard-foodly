@@ -30,6 +30,27 @@
     </div>
   </div>
   <div class="metrica-card">
+    <div class="metrica-icon ticket"><mat-icon>confirmation_number</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Ticket Prom.</span>
+      <span class="metrica-valor">${{ ticketPromedio | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="metrica-card">
+    <div class="metrica-icon propinas"><mat-icon>volunteer_activism</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Propinas</span>
+      <span class="metrica-valor">${{ totalPropinas | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="metrica-card">
+    <div class="metrica-icon descuentos"><mat-icon>sell</mat-icon></div>
+    <div class="metrica-info">
+      <span class="metrica-label">Descuentos</span>
+      <span class="metrica-valor">${{ totalDescuentos | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="metrica-card">
     <div class="metrica-icon anuladas"><mat-icon>block</mat-icon></div>
     <div class="metrica-info">
       <span class="metrica-label">Anuladas</span>

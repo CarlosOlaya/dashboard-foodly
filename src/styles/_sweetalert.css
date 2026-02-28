@@ -131,14 +131,14 @@
 }
 
 .swal2-deny {
-    background: rgba(239, 68, 68, 0.12) !important;
+    background: var(--bg-danger-tint) !important;
     color: var(--danger) !important;
     font-family: 'Inter', sans-serif !important;
     font-weight: 600 !important;
     font-size: 13px !important;
     padding: 10px 28px !important;
     border-radius: var(--radius-sm) !important;
-    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+    border: 1px solid var(--bg-danger-tint-hover) !important;
     transition: all var(--transition) !important;
 }
 
@@ -184,11 +184,22 @@
 .swal2-popup select,
 .swal2-popup .swal2-select {
     color-scheme: dark;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding: 10px 36px 10px 14px !important;
+    height: auto !important;
+    min-height: 44px;
+    line-height: 1.4;
+    cursor: pointer;
 }
 
 .swal2-popup select option {
-    background: var(--bg-card);
-    color: var(--text-primary);
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 8px 12px;
 }
 
 /* Number input spinners (Chrome/Edge) */
@@ -222,4 +233,50 @@
 .swal2-close:hover {
     color: var(--text-primary) !important;
     transform: rotate(90deg) !important;
+}
+
+/* ── Utility classes for SweetAlert inline HTML ──
+   Use these inside html: `` strings instead of inline styles.
+   Since SweetAlert renders outside Angular component scope,
+   these global classes allow modal content to use the design system. */
+
+.swal-title-custom {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.swal-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.swal-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.swal-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.swal-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.swal-pill-name {
+    font-weight: 600;
+    color: var(--text-primary);
 }

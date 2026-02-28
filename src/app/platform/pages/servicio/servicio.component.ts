@@ -183,7 +183,39 @@ export class ServicioComponent implements OnInit {
   // Selección de productos (nuevo pedido)
   // ══════════════════════════════════════════════════════
 
+  /**
+   * Calcula cuántas unidades de un plato están en la selección actual (aún no enviadas).
+   * NO cuenta itemsFactura porque esos ya fueron descontados del stock en el backend,
+   * así que stock_disponible ya los refleja.
+   */
+  private cantidadYaEnPedido(platoId: string): number {
+    return this.seleccionados.find(p => p.plato_id === platoId)?.cantidad || 0;
+  }
+
+  /**
+   * Verifica si se puede agregar una unidad más de un plato.
+   * Retorna true si OK, false si excede stock.
+   */
+  private puedeAgregarMas(producto: Plato, cantidadEnSeleccion: number): boolean {
+    if (producto.stock_disponible == null) return true; // sin control de stock
+    if (cantidadEnSeleccion >= producto.stock_disponible) {
+      const disponibles = producto.stock_disponible;
+      this.alert.warning(
+        disponibles <= 0
+          ? `"${producto.nombre}" está agotado en inventario.`
+          : `Solo puedes pedir ${disponibles} unidad(es) de "${producto.nombre}".`,
+        2500,
+      );
+      return false;
+    }
+    return true;
+  }
+
   seleccionarProducto(producto: Plato): void {
+    const yaEnPedido = this.cantidadYaEnPedido(producto.id);
+
+    if (!this.puedeAgregarMas(producto, yaEnPedido)) return;
+
     const existente = this.seleccionados.find(p => p.plato_id === producto.id);
     if (existente) {
       existente.cantidad += 1;
@@ -213,6 +245,13 @@ export class ServicioComponent implements OnInit {
   }
 
   agregarUno(item: PedidoItem): void {
+    // Buscar el plato original para conocer su stock_disponible
+    const producto = this.productos.find(p => p.id === item.plato_id);
+    if (producto) {
+      const yaEnPedido = this.cantidadYaEnPedido(item.plato_id);
+      if (!this.puedeAgregarMas(producto, yaEnPedido)) return;
+    }
+
     item.cantidad += 1;
     this.seleccionados = [...this.seleccionados];
   }
@@ -304,6 +343,7 @@ export class ServicioComponent implements OnInit {
 
         // Recargar factura desde el servidor para tener IDs reales
         this.cargarFactura();
+        this.cargarCarta(); // Actualizar stock_disponible
         this.seleccionados = [];
         this.enviando = false;
 
@@ -312,6 +352,8 @@ export class ServicioComponent implements OnInit {
       error: (err) => {
         this.enviando = false;
         this.alert.error(err?.error?.message || 'No se pudo enviar la comanda');
+        // Recargar carta para actualizar stock_disponible
+        this.cargarCarta();
       }
     });
   }

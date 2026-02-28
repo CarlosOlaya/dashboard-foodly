@@ -241,7 +241,7 @@
 
 .btn-mini-danger:hover {
     color: var(--danger) !important;
-    background: rgba(239, 68, 68, 0.08) !important;
+    background: var(--bg-danger-tint) !important;
 }
 
 .btn-sm {

@@ -14,6 +14,7 @@ import { CobroPanelComponent } from './pages/servicio/cobro-panel/cobro-panel.co
 import { ComandasComponent } from './pages/comandas/comandas.component';
 import { PrintComponent } from './impresiones/print/print.component';
 import { ImagenPipe } from './pipes/imagen.pipe';
+import { MonedaPipe } from './pipes/moneda.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ImagenPipe } from './pipes/imagen.pipe';
     ComandasComponent,
     PrintComponent,
     ImagenPipe,
+    MonedaPipe,
   ],
   imports: [
     CommonModule,

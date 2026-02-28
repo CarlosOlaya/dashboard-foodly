@@ -16,16 +16,15 @@
                         <span class="cobro-item-name">{{ item.plato_nombre }}</span>
                         <span class="cobro-item-qty">x{{ item.cantidad }}</span>
                         <span class="cobro-item-price" *ngIf="!item.descuento_monto || item.descuento_monto === 0">
-                            ${{ item.precio * item.cantidad | number:'1.0-0' }}
+                            {{ item.precio * item.cantidad | moneda }}
                         </span>
                         <span class="cobro-item-price" *ngIf="(item.descuento_monto || 0) > 0"
                             style="display:flex; flex-direction:column; align-items:flex-end;">
-                            <span style="text-decoration:line-through; font-size:11px; color:#aaa;">${{ item.precio *
-                                item.cantidad
-                                | number:'1.0-0' }}</span>
-                            <span style="color:#16a34a; font-weight:700;">${{ (item.precio * item.cantidad) -
+                            <span style="text-decoration:line-through; font-size:11px; color:#aaa;">{{ item.precio *
+                                item.cantidad | moneda }}</span>
+                            <span style="color:#16a34a; font-weight:700;">{{ (item.precio * item.cantidad) -
                                 (item.descuento_monto
-                                || 0) | number:'1.0-0' }}</span>
+                                || 0) | moneda }}</span>
                         </span>
                         <span *ngIf="(item.descuento_monto || 0) > 0" class="cobro-item-desc-tag">
                             -{{ item.descuento_porcentaje || 0 }}%
@@ -35,16 +34,16 @@
                 <div *ngIf="totalDescuentosItems > 0 || facturaDescuento > 0" class="cobro-descuentos-summary">
                     <div *ngIf="totalDescuentosItems > 0" class="breakdown-row text-red">
                         <span>Desc. items</span>
-                        <span>-${{ totalDescuentosItems | number:'1.0-0' }}</span>
+                        <span>-{{ totalDescuentosItems | moneda }}</span>
                     </div>
                     <div *ngIf="facturaDescuento > 0" class="breakdown-row text-red">
                         <span>Desc. mesa</span>
-                        <span>-${{ facturaDescuento | number:'1.0-0' }}</span>
+                        <span>-{{ facturaDescuento | moneda }}</span>
                     </div>
                 </div>
                 <div class="cobro-subtotal-line">
                     <span>Subtotal</span>
-                    <span>${{ subtotal | number:'1.0-0' }}</span>
+                    <span>{{ subtotal | moneda }}</span>
                 </div>
             </div>
 
@@ -148,20 +147,18 @@
                     <!-- Balance de montos -->
                     <div class="pago-balance" [class.pago-ok]="Math.abs(diferenciaPagos) <= 1"
                         [class.pago-error]="Math.abs(diferenciaPagos) > 1">
-                        <span>Subtotal: ${{ sumaPagos | number:'1.0-0' }} / ${{ subtotal | number:'1.0-0' }}</span>
-                        <span *ngIf="diferenciaPagos > 1">Faltan: ${{ diferenciaPagos | number:'1.0-0' }}</span>
-                        <span *ngIf="diferenciaPagos < -1">Sobran: ${{ (-diferenciaPagos) | number:'1.0-0' }}</span>
+                        <span>Subtotal: {{ sumaPagos | moneda }} / {{ subtotal | moneda }}</span>
+                        <span *ngIf="diferenciaPagos > 1">Faltan: {{ diferenciaPagos | moneda }}</span>
+                        <span *ngIf="diferenciaPagos < -1">Sobran: {{ (-diferenciaPagos) | moneda }}</span>
                         <span *ngIf="Math.abs(diferenciaPagos) <= 1">✓ Cuadrado</span>
                     </div>
                     <!-- Balance de propinas -->
                     <div class="pago-balance" *ngIf="servicioMonto > 0"
                         [class.pago-ok]="Math.abs(diferenciaPropinas) <= 1"
                         [class.pago-error]="Math.abs(diferenciaPropinas) > 1">
-                        <span>Servicio: ${{ sumaPropinas | number:'1.0-0' }} / ${{ servicioMonto | number:'1.0-0'
-                            }}</span>
-                        <span *ngIf="diferenciaPropinas > 1">Faltan: ${{ diferenciaPropinas | number:'1.0-0' }}</span>
-                        <span *ngIf="diferenciaPropinas < -1">Sobran: ${{ (-diferenciaPropinas) | number:'1.0-0'
-                            }}</span>
+                        <span>Servicio: {{ sumaPropinas | moneda }} / {{ servicioMonto | moneda }}</span>
+                        <span *ngIf="diferenciaPropinas > 1">Faltan: {{ diferenciaPropinas | moneda }}</span>
+                        <span *ngIf="diferenciaPropinas < -1">Sobran: {{ (-diferenciaPropinas) | moneda }}</span>
                         <span *ngIf="Math.abs(diferenciaPropinas) <= 1">✓ Cuadrado</span>
                     </div>
                 </div>
@@ -174,16 +171,16 @@
             <div class="cobro-total-breakdown" *ngIf="servicioMonto > 0">
                 <div class="breakdown-row">
                     <span>Subtotal</span>
-                    <span>${{ subtotal | number:'1.0-0' }}</span>
+                    <span>{{ subtotal | moneda }}</span>
                 </div>
                 <div class="breakdown-row">
                     <span>Servicio</span>
-                    <span>+${{ servicioMonto | number:'1.0-0' }}</span>
+                    <span>+{{ servicioMonto | moneda }}</span>
                 </div>
             </div>
             <div class="cobro-total-display">
                 <span>TOTAL A COBRAR</span>
-                <span class="cobro-total-amount">${{ total | number:'1.0-0' }}</span>
+                <span class="cobro-total-amount">{{ total | moneda }}</span>
             </div>
             <div class="cobro-footer-actions">
                 <button class="cobro-confirm-btn" [disabled]="procesando" (click)="confirmarCobro()">

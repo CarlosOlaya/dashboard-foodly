@@ -71,13 +71,13 @@
 }
 
 .stat-warning {
-    background: rgba(245, 158, 11, 0.06) !important;
-    border: 1px solid rgba(245, 158, 11, 0.15) !important;
+    background: var(--bg-warning-tint) !important;
+    border: 1px solid var(--bg-warning-tint-hover) !important;
 }
 
 .stat-danger {
-    background: rgba(239, 68, 68, 0.06) !important;
-    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+    background: var(--bg-danger-tint) !important;
+    border: 1px solid var(--bg-danger-tint-hover) !important;
 }
 
 /* Header actions */
@@ -161,7 +161,7 @@
 /* Danger ghost button */
 .btn-danger-ghost:hover {
     color: var(--danger) !important;
-    background: rgba(239, 68, 68, 0.08) !important;
+    background: var(--bg-danger-tint) !important;
 }
 
 /* ═══════════════════════════════════════ */
@@ -286,17 +286,17 @@
 }
 
 .stock-ok {
-    background: rgba(34, 197, 94, 0.1);
+    background: var(--bg-success-tint);
     color: var(--success);
 }
 
 .stock-bajo {
-    background: rgba(245, 158, 11, 0.1);
+    background: var(--bg-warning-tint);
     color: var(--warning-dark);
 }
 
 .stock-agotado {
-    background: rgba(239, 68, 68, 0.1);
+    background: var(--bg-danger-tint);
     color: var(--danger-dark);
 }
 
@@ -486,17 +486,17 @@
 }
 
 .mov-entrada {
-    background: rgba(34, 197, 94, 0.1);
+    background: var(--bg-success-tint);
     color: var(--success);
 }
 
 .mov-salida {
-    background: rgba(239, 68, 68, 0.1);
+    background: var(--bg-danger-tint);
     color: var(--danger-dark);
 }
 
 .mov-ajuste {
-    background: rgba(245, 158, 11, 0.1);
+    background: var(--bg-warning-tint);
     color: var(--warning-dark);
 }
 
@@ -685,11 +685,11 @@
 }
 
 .toma-diff-pos {
-    background: rgba(34, 197, 94, 0.04) !important;
+    background: var(--bg-success-tint) !important;
 }
 
 .toma-diff-neg {
-    background: rgba(239, 68, 68, 0.04) !important;
+    background: var(--bg-danger-tint) !important;
 }
 
 .toma-col-name {

@@ -335,8 +335,8 @@
 }
 
 .resumen-facturas {
-    background: rgba(59, 130, 246, 0.05);
-    border-color: rgba(59, 130, 246, 0.1);
+    background: var(--bg-info-tint);
+    border-color: var(--bg-info-tint);
 }
 
 .resumen-facturas h4 {
@@ -374,8 +374,8 @@
 }
 
 .resumen-tarjeta {
-    background: rgba(59, 130, 246, 0.05);
-    border-color: rgba(59, 130, 246, 0.1);
+    background: var(--bg-info-tint);
+    border-color: var(--bg-info-tint);
 }
 
 .resumen-tarjeta h4 {
@@ -387,8 +387,8 @@
 }
 
 .resumen-transferencia {
-    background: rgba(139, 92, 246, 0.05);
-    border-color: rgba(139, 92, 246, 0.1);
+    background: var(--bg-purple-tint);
+    border-color: var(--bg-purple-tint);
 }
 
 .resumen-transferencia h4 {

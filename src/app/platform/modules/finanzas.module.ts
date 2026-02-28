@@ -11,7 +11,7 @@ import { FacturaComponent } from '../pages/factura/factura.component';
 import { DetalleFacturaComponent } from '../pages/detalle-factura/detalle-factura.component';
 import { GastosComponent } from '../pages/gastos/gastos.component';
 import { ArqueoComponent } from '../pages/arqueo/arqueo.component';
-import { FinanzasComponent } from '../pages/finanzas/finanzas.component';
+
 import { adminGuard } from '../../guards/admin.guard';
 
 const routes: Routes = [
@@ -19,7 +19,6 @@ const routes: Routes = [
     { path: 'factura/:id', component: FacturaComponent },
     { path: 'gastos', component: GastosComponent, canActivate: [adminGuard] },
     { path: 'arqueo', component: ArqueoComponent, canActivate: [adminGuard] },
-    { path: 'finanzas', component: FinanzasComponent, canActivate: [adminGuard] },
 ];
 
 @NgModule({
@@ -29,7 +28,6 @@ const routes: Routes = [
         DetalleFacturaComponent,
         GastosComponent,
         ArqueoComponent,
-        FinanzasComponent,
     ],
     imports: [
         CommonModule,
