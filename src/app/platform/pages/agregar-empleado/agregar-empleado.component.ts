@@ -33,10 +33,14 @@ export class AgregarEmpleadoComponent implements OnInit {
     telefono: [''],
     cargo: ['', [Validators.required]],
     salario: [0],
+    foto_url: [''],
   });
 
   id = '';
   isEditing = false;
+  fotoPreview = '';
+  subiendoFoto = false;
+  private fotoCambiada = false;
 
   constructor(
     private fb: FormBuilder,
@@ -66,9 +70,17 @@ export class AgregarEmpleadoComponent implements OnInit {
             telefono: empleado.telefono,
             cargo: empleado.cargo,
             salario: empleado.salario,
+            foto_url: empleado.foto_url || '',
           });
+          this.fotoPreview = empleado.foto_url || '';
         });
     }
+
+    // Keep preview in sync with form control
+    this.fotoPreview = this.formulario.get('foto_url')?.value || '';
+    this.formulario.get('foto_url')?.valueChanges.subscribe(value => {
+      this.fotoPreview = value || '';
+    });
   }
 
   private loadRoles(): void {
@@ -88,7 +100,14 @@ export class AgregarEmpleadoComponent implements OnInit {
   }
 
   guardar(): void {
-    const data = this.formulario.value;
+    const data = { ...this.formulario.value };
+    data.salario = Number(data.salario) || 0;
+
+    // Only include foto_url if the user actually uploaded a new photo
+    if (!this.fotoCambiada) {
+      delete data.foto_url;
+    }
+
     if (!this.isEditing) {
       this.platformService.crearEmpleado(data).subscribe(() => {
         this.alert.success('Empleado creado correctamente');
@@ -107,6 +126,31 @@ export class AgregarEmpleadoComponent implements OnInit {
     this.platformService.eliminarEmpleado(this.id).subscribe(resp => {
       this.alert.success(resp.mensaje);
       this.router.navigateByUrl('/home/empleados');
+    });
+  }
+
+  onFotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+
+    // Local preview immediately
+    const reader = new FileReader();
+    reader.onload = () => this.fotoPreview = reader.result as string;
+    reader.readAsDataURL(file);
+
+    // Upload to Cloudinary
+    this.subiendoFoto = true;
+    this.platformService.subirImagen(file, 'empleados').subscribe({
+      next: (resp) => {
+        this.formulario.get('foto_url')?.setValue(resp.url);
+        this.fotoCambiada = true;
+        this.subiendoFoto = false;
+      },
+      error: () => {
+        this.subiendoFoto = false;
+        this.alert.error('Error al subir la foto');
+      }
     });
   }
 }

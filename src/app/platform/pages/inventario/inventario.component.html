@@ -31,58 +31,31 @@
     </div>
 </div>
 
-<!-- ═══ Stats Cards ═══ -->
-<div class="stats-row">
-    <div class="stat-card card-glass">
-        <mat-icon class="stat-icon stat-icon-primary">inventory_2</mat-icon>
-        <div class="stat-info">
-            <div class="stat-value">{{ resumen.total_productos }}</div>
-            <div class="stat-label">Insumos</div>
-        </div>
-    </div>
-    <div class="stat-card card-glass" [class.stat-warning]="resumen.stock_bajo > 0">
-        <mat-icon class="stat-icon stat-icon-warning">warning_amber</mat-icon>
-        <div class="stat-info">
-            <div class="stat-value">{{ resumen.stock_bajo }}</div>
-            <div class="stat-label">Stock bajo</div>
-        </div>
-    </div>
-    <div class="stat-card card-glass" [class.stat-danger]="resumen.agotados > 0">
-        <mat-icon class="stat-icon stat-icon-danger">error</mat-icon>
-        <div class="stat-info">
-            <div class="stat-value">{{ resumen.agotados }}</div>
-            <div class="stat-label">Agotados</div>
-        </div>
-    </div>
-    <div class="stat-card card-glass">
-        <mat-icon class="stat-icon stat-icon-info">swap_vert</mat-icon>
-        <div class="stat-info">
-            <div class="stat-value">{{ resumen.movimientos_hoy }}</div>
-            <div class="stat-label">Mov. hoy</div>
-        </div>
-    </div>
-</div>
 
 <!-- Tab navigation -->
 <div class="inv-tabs">
     <button class="inv-tab" [class.active]="vista === 'productos'" (click)="cambiarVista('productos')">
         <mat-icon>inventory_2</mat-icon>
         Insumos
+        <span class="tab-badge">{{ resumen.total_productos }}</span>
     </button>
     <button class="inv-tab" [class.active]="vista === 'stock-bajo'" (click)="cambiarVista('stock-bajo')">
         <mat-icon>warning_amber</mat-icon>
         Alertas
-        <span class="tab-badge" *ngIf="stockBajo.length">{{ stockBajo.length }}</span>
+        <span class="tab-badge tab-badge-warning" *ngIf="resumen.stock_bajo + resumen.agotados > 0">{{
+            resumen.stock_bajo + resumen.agotados }}</span>
     </button>
     <button class="inv-tab" [class.active]="vista === 'movimientos'" (click)="cambiarVista('movimientos')">
         <mat-icon>swap_vert</mat-icon>
         Movimientos
+        <span class="tab-badge" *ngIf="resumen.movimientos_hoy > 0">{{ resumen.movimientos_hoy }}</span>
     </button>
     <button class="inv-tab" [class.active]="vista === 'toma'" (click)="cambiarVista('toma')">
         <mat-icon>fact_check</mat-icon>
         Toma
     </button>
 </div>
+
 
 <!-- ═══════════════════════════════════════ -->
 <!-- VISTA: Productos                       -->

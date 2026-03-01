@@ -68,6 +68,50 @@
         border-radius: 10px;
     }
 
+    /* Show page-header for detail pages (empleado, cliente, proveedor, factura) */
+    .page-header.detail-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 4px;
+        margin-bottom: 8px;
+        gap: 8px;
+    }
+
+    .page-header.detail-header .page-title {
+        display: block !important;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .page-header.detail-header .page-subtitle {
+        display: block !important;
+        font-size: 11px;
+        margin: 0;
+    }
+
+    .page-header.detail-header .btn-ghost {
+        display: flex !important;
+        padding: 6px !important;
+        min-height: unset;
+    }
+
+    .page-header.detail-header .btn-neon,
+    .page-header.detail-header .btn-danger {
+        display: flex !important;
+        padding: 6px 12px !important;
+        font-size: 12px;
+        min-height: unset;
+        gap: 4px;
+    }
+
+    .page-header.detail-header .btn-neon mat-icon,
+    .page-header.detail-header .btn-danger mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
     /* Title and subtitle hidden — shown in mobile header instead */
     .page-title {
         display: none !important;

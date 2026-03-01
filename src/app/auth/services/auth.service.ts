@@ -37,6 +37,7 @@ export class AuthService {
                         apellido: resp.apellido,
                         rol: resp.rol,
                         tenant_id: resp.tenant_id,
+                        foto_url: resp.foto_url || null,
                     };
                 }
             }),
@@ -93,6 +94,7 @@ export class AuthService {
                         apellido: resp.apellido,
                         rol: resp.rol,
                         tenant_id: resp.tenant_id,
+                        foto_url: resp.foto_url || null,
                     };
                 }
             }),
@@ -114,6 +116,7 @@ export class AuthService {
                         apellido: resp.apellido,
                         rol: resp.rol,
                         tenant_id: resp.tenant_id,
+                        foto_url: resp.foto_url || null,
                     };
                 }
             }),

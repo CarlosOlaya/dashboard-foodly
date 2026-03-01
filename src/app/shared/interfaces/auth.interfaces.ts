@@ -8,6 +8,7 @@ export interface AuthResponse {
     apellido: string;
     rol: string;
     tenant_id: string;
+    foto_url: string | null;
     token: string;
 }
 
@@ -24,4 +25,5 @@ export interface Usuario {
     apellido: string;
     rol: string;
     tenant_id: string;
+    foto_url: string | null;
 }

@@ -6,9 +6,9 @@ import { Producto, MovimientoInventario, Categoria } from '../../../shared/inter
 import { AlertService } from '../../services/alert.service';
 
 @Component({
-  selector: 'app-productos',
-  templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css']
+  selector: 'app-inventario',
+  templateUrl: './inventario.component.html',
+  styleUrls: ['./inventario.component.css']
 })
 export class ProductosComponent implements OnInit {
   Number = Number;
@@ -123,12 +123,12 @@ export class ProductosComponent implements OnInit {
 
   // ── Crear producto ──
   nuevoProducto(): void {
-    this.router.navigateByUrl('/home/agregar-producto');
+    this.router.navigateByUrl('/home/agregar-insumo');
   }
 
   // ── Editar producto ──
   editarProducto(p: Producto): void {
-    this.router.navigate(['/home/editar-producto', p.id]);
+    this.router.navigate(['/home/editar-insumo', p.id]);
   }
 
   // ── Eliminar producto ──

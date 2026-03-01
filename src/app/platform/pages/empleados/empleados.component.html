@@ -20,6 +20,20 @@
   <section tabindex="0">
     <table mat-table [dataSource]="dataSource" matSort>
 
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let e" class="avatar-cell">
+          <div class="emp-avatar" *ngIf="e.foto_url; else initials">
+            <img [src]="e.foto_url" alt="" class="emp-avatar-img">
+          </div>
+          <ng-template #initials>
+            <div class="emp-avatar emp-avatar-initials">
+              {{ e.nombre?.charAt(0) }}{{ e.apellido1?.charAt(0) }}
+            </div>
+          </ng-template>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
         <td mat-cell *matCellDef="let e">{{ e.nombre }}</td>
@@ -54,7 +68,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="empleadoSel(row)"></tr>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="6" style="padding: 24px; text-align: center; color: var(--text-muted);">
+        <td class="mat-cell" colspan="7" style="padding: 24px; text-align: center; color: var(--text-muted);">
           No hay datos que coincidan con "{{ input.value }}"
         </td>
       </tr>

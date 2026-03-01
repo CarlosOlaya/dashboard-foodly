@@ -164,12 +164,17 @@
         <!-- Sidebar Footer -->
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <div class="user-avatar-placeholder">
-                    <mat-icon>person</mat-icon>
+                <div class="user-avatar" *ngIf="usuario.foto_url; else sidebarInitials">
+                    <img [src]="usuario.foto_url" alt="Avatar" class="user-avatar-img">
                 </div>
+                <ng-template #sidebarInitials>
+                    <div class="user-avatar-placeholder">
+                        <span>{{ usuario.name.charAt(0) }}{{ usuario.apellido.charAt(0) }}</span>
+                    </div>
+                </ng-template>
                 <div class="sidebar-user-info">
                     <div class="sidebar-user-name">{{ usuario.name }} {{ usuario.apellido }}</div>
-                    <div class="sidebar-user-role">{{ usuario.rol }}</div>
+                    <div class="sidebar-user-role">{{ usuario.rol | titlecase }}</div>
                 </div>
                 <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
                     <mat-icon>logout</mat-icon>
@@ -283,7 +288,7 @@
                     <span>Empleados</span>
                 </a>
 
-                <a class="more-sheet-item" routerLink="./productos" (click)="showMoreMenu = false">
+                <a class="more-sheet-item" routerLink="./inventario" (click)="showMoreMenu = false">
                     <div class="more-sheet-icon" style="background: rgba(239,68,68,0.12);">
                         <mat-icon style="color: #ef4444;">inventory_2</mat-icon>
                     </div>
@@ -308,12 +313,17 @@
         <div class="more-sheet-handle"></div>
 
         <div class="profile-sheet-user">
-            <div class="user-avatar-placeholder">
-                <mat-icon>person</mat-icon>
+            <div class="user-avatar" *ngIf="usuario.foto_url; else profileInitials">
+                <img [src]="usuario.foto_url" alt="Avatar" class="user-avatar-img">
             </div>
+            <ng-template #profileInitials>
+                <div class="user-avatar-placeholder">
+                    <span>{{ usuario.name.charAt(0) }}{{ usuario.apellido.charAt(0) }}</span>
+                </div>
+            </ng-template>
             <div class="profile-sheet-info">
                 <div class="profile-sheet-name">{{ usuario.name }} {{ usuario.apellido }}</div>
-                <div class="profile-sheet-role">{{ usuario.rol }}</div>
+                <div class="profile-sheet-role">{{ usuario.rol | titlecase }}</div>
             </div>
         </div>
 

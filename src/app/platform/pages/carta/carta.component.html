@@ -16,20 +16,21 @@
     <input (keyup)="filtrarPlatos($event)" placeholder="Buscar platillos, ingredientes, categorías..." />
   </div>
 
-  <div class="carta-chips">
-    <button class="carta-chip" [class.active]="!categoriaActiva" (click)="mostrarTodos()">
-      Todos
-    </button>
-    <button *ngFor="let cat of categoriasVisibles; trackBy: trackByCatNombre" class="carta-chip"
-      [class.active]="categoriaActiva?.nombre === cat.nombre" (click)="filtrarPorCategoria(cat)">
-      {{ cat.nombre }}
-    </button>
+  <div class="cat-bar">
+    <button class="cat-chip cat-chip-fixed" [class.active]="!categoriaActiva" (click)="mostrarTodos()">Todos</button>
+
+    <div class="cat-chips-scroll">
+      <button *ngFor="let cat of categoriasVisibles; trackBy: trackByCatNombre" class="cat-chip"
+        [class.active]="categoriaActiva?.nombre === cat.nombre" (click)="filtrarPorCategoria(cat)">
+        {{ cat.nombre }}
+      </button>
+    </div>
 
     <!-- Hamburger for overflow categories -->
     <div class="chips-more-wrap" *ngIf="categoriasOverflow.length > 0">
-      <button class="carta-chip chips-more-btn" [class.active-menu]="showMoreCats" (click)="toggleMoreCats($event)">
+      <button class="cat-chip cat-chip-fixed chips-more-btn" [class.active-menu]="showMoreCats"
+        (click)="toggleMoreCats($event)">
         <mat-icon>menu</mat-icon>
-        <span>Más</span>
       </button>
 
       <!-- Dropdown -->

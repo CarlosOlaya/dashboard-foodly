@@ -144,59 +144,56 @@ export class ReportesComponent implements OnInit {
         // Ventas por día (line)
         this.chartVentasDia = [{
             name: 'Ventas',
-            series: this.ventasDia.map(v => ({
+            series: (this.ventasDia || []).map(v => ({
                 name: this.formatFecha(v.fecha),
-                value: v.total,
+                value: Number(v.total) || 0,
             }))
         }];
 
         // Facturas por día (line, secondary series)
         this.chartFacturasDia = [{
             name: 'Facturas',
-            series: this.ventasDia.map(v => ({
+            series: (this.ventasDia || []).map(v => ({
                 name: this.formatFecha(v.fecha),
-                value: v.facturas,
+                value: Number(v.facturas) || 0,
             }))
         }];
 
         // Ventas por hora (bar)
-        this.chartHoras = this.ventasHora.map(h => ({
+        this.chartHoras = (this.ventasHora || []).map(h => ({
             name: `${String(h.hora).padStart(2, '0')}:00`,
-            value: h.total,
+            value: Number(h.total) || 0,
         }));
 
         // Top 10 platos (horizontal bar)
-        this.chartTopPlatos = this.productos.slice(0, 10).map(p => ({
+        this.chartTopPlatos = (this.productos || []).slice(0, 10).map(p => ({
             name: p.nombre.length > 20 ? p.nombre.slice(0, 20) + '…' : p.nombre,
-            value: p.cantidad,
+            value: Number(p.cantidad) || 0,
         }));
 
-        // Categorías (pie)
-        this.chartCategorias = this.categorias.map(c => ({
-            name: c.categoria,
-            value: c.total,
-        }));
+        // Categorías (pie) — filter out zero values
+        this.chartCategorias = (this.categorias || [])
+            .map(c => ({ name: c.categoria, value: Number(c.total) || 0 }))
+            .filter(c => c.value > 0);
 
-        // Métodos de pago (pie)
-        this.chartMetodos = this.metodosPago.map(m => ({
-            name: this.capitalizarMetodo(m.metodo),
-            value: m.total,
-        }));
+        // Métodos de pago (pie) — filter out zero values
+        this.chartMetodos = (this.metodosPago || [])
+            .map(m => ({ name: this.capitalizarMetodo(m.metodo), value: Number(m.total) || 0 }))
+            .filter(m => m.value > 0);
 
         // Propinas por día (line)
         this.chartPropinasDia = [{
             name: 'Propinas',
             series: (this.propinas?.por_dia || []).map(p => ({
                 name: this.formatFecha(p.fecha),
-                value: p.propinas,
+                value: Number(p.propinas) || 0,
             })),
         }];
 
         // Propinas por empleado (pie)
-        this.chartPropinasEmpleado = (this.propinas?.por_empleado || []).map(e => ({
-            name: e.empleado,
-            value: e.propinas,
-        }));
+        this.chartPropinasEmpleado = (this.propinas?.por_empleado || [])
+            .map(e => ({ name: e.empleado, value: Number(e.propinas) || 0 }))
+            .filter(e => e.value > 0);
     }
 
     // ── Formatters ──

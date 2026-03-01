@@ -4,81 +4,7 @@
     overflow-y: auto;
 }
 
-/* ═══════════════════════════════════════ */
-/* STATS ROW                               */
-/* ═══════════════════════════════════════ */
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 10px !important;
-    transition: all 0.25s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-1px);
-}
-
-.stat-icon {
-    font-size: 28px !important;
-    width: 28px !important;
-    height: 28px !important;
-    flex-shrink: 0;
-}
-
-.stat-icon-primary {
-    color: var(--brand-primary) !important;
-}
-
-.stat-icon-warning {
-    color: var(--warning) !important;
-}
-
-.stat-icon-danger {
-    color: var(--danger) !important;
-}
-
-.stat-icon-info {
-    color: var(--indigo) !important;
-}
-
-.stat-info {
-    flex: 1;
-}
-
-.stat-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.stat-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-top: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.stat-warning {
-    background: var(--bg-warning-tint) !important;
-    border: 1px solid var(--bg-warning-tint-hover) !important;
-}
-
-.stat-danger {
-    background: var(--bg-danger-tint) !important;
-    border: 1px solid var(--bg-danger-tint-hover) !important;
-}
+/* (Stats row removed — counters now live as tab badges) */
 
 /* Header actions */
 .header-actions {
@@ -213,14 +139,19 @@
 }
 
 .tab-badge {
-    background: var(--danger);
-    color: #fff;
+    background: var(--brand-tint-15);
+    color: var(--brand-primary);
     font-size: 10px;
     font-weight: 700;
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: 10px;
     min-width: 18px;
     text-align: center;
+}
+
+.tab-badge-warning {
+    background: var(--bg-warning-tint);
+    color: var(--warning-dark);
 }
 
 .mb-16 {
@@ -576,9 +507,6 @@
 /* Mobile                                  */
 /* ═══════════════════════════════════════ */
 @media (max-width: 640px) {
-    .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
     .inv-grid {
         grid-template-columns: 1fr;

@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     { label: 'Clientes', icon: 'groups', route: './clientes' },
     { label: 'Proveedores', icon: 'local_shipping', route: './proveedores' },
     { label: 'Empleados', icon: 'badge', route: './empleados' },
-    { label: 'Inventario', icon: 'inventory_2', route: './productos' },
+    { label: 'Inventario', icon: 'inventory_2', route: './inventario' },
   ];
 
   // ── Configuración — admin only ──
@@ -161,7 +161,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       '/clientes': 'Clientes',
       '/proveedores': 'Proveedores',
       '/empleados': 'Empleados',
-      '/productos': 'Inventario',
+      '/inventario': 'Inventario',
       '/empresa': 'Empresa',
       '/cliente/': 'Cliente',
       '/empleado/': 'Empleado',
@@ -181,7 +181,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       '/empleados': { icon: 'add', label: 'Nuevo', route: '/home/agregar-empleado' },
       '/proveedores': { icon: 'add', label: 'Nuevo', route: '/home/agregar-proveedor' },
       '/clientes': { icon: 'add', label: 'Nuevo', route: '/home/agregar-cliente' },
-      '/productos': { icon: 'add', label: 'Nuevo', route: '/home/agregar-producto' },
+      '/inventario': { icon: 'add', label: 'Nuevo', route: '/home/agregar-insumo' },
     };
     for (const [key, action] of Object.entries(actionMap)) {
       if (this.currentRoute.includes(key)) return action;

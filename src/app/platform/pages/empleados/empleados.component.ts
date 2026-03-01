@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class EmpleadosComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['nombre', 'apellido1', 'documento', 'email', 'telefono', 'cargo'];
+  displayedColumns: string[] = ['avatar', 'nombre', 'apellido1', 'documento', 'email', 'telefono', 'cargo'];
   dataSource = new MatTableDataSource<Empleado>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

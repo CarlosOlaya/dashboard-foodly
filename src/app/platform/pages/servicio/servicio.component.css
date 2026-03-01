@@ -381,7 +381,7 @@
 .chips-dropdown {
   position: absolute;
   top: calc(100% + 6px);
-  left: 0;
+  right: 0;
   z-index: 200;
   min-width: 180px;
   max-height: 280px;

@@ -12,6 +12,7 @@ export interface Empleado {
     telefono?: string;
     cargo?: string;
     salario?: number;
+    foto_url?: string;
     activo: boolean;
     created_at: string;
 }

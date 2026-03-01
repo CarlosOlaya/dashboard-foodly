@@ -146,5 +146,5 @@ export class PlatformService {
   cambiarPlan(plan: string): Observable<ApiResponse> { return this.empresaSvc.cambiarPlan(plan); }
 
   // ── UPLOADS ─────────────────────────────────
-  subirImagen(file: File, carpeta: 'platos' | 'logo' | 'general' = 'general'): Observable<{ ok: boolean; url: string; public_id: string }> { return this.empresaSvc.subirImagen(file, carpeta); }
+  subirImagen(file: File, carpeta: 'platos' | 'logo' | 'empleados' | 'general' = 'general'): Observable<{ ok: boolean; url: string; public_id: string }> { return this.empresaSvc.subirImagen(file, carpeta); }
 }

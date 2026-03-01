@@ -18,7 +18,7 @@ export class EmpresaService extends ApiBaseService {
         return this.http.put<ApiResponse>(`${this.baseUrl}/empresa/plan`, { plan });
     }
 
-    subirImagen(file: File, carpeta: 'platos' | 'logo' | 'general' = 'general'): Observable<{ ok: boolean; url: string; public_id: string }> {
+    subirImagen(file: File, carpeta: 'platos' | 'logo' | 'empleados' | 'general' = 'general'): Observable<{ ok: boolean; url: string; public_id: string }> {
         const formData = new FormData();
         formData.append('file', file);
         return this.http.post<{ ok: boolean; url: string; public_id: string }>(`${this.baseUrl}/uploads/imagen?carpeta=${carpeta}`, formData);

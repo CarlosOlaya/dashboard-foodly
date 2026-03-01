@@ -8,6 +8,27 @@
     <div class="card-glass card-body-custom">
         <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="guardar()">
 
+            <!-- ═══ Avatar photo upload ═══ -->
+            <div class="avatar-upload-section">
+                <div class="avatar-upload-wrap" (click)="fotoInput.click()">
+                    <!-- Preview -->
+                    <img *ngIf="fotoPreview" [src]="fotoPreview" alt="Foto" class="avatar-preview-img">
+                    <div *ngIf="!fotoPreview && !subiendoFoto" class="avatar-placeholder-big">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                    <div *ngIf="subiendoFoto" class="avatar-uploading">
+                        <mat-icon class="spin">sync</mat-icon>
+                    </div>
+                    <!-- Overlay -->
+                    <div class="avatar-overlay">
+                        <mat-icon>photo_camera</mat-icon>
+                        <span>{{ fotoPreview ? 'Cambiar' : 'Subir' }} foto</span>
+                    </div>
+                </div>
+                <input #fotoInput type="file" accept="image/jpeg,image/png,image/webp" (change)="onFotoSelected($event)"
+                    style="display: none;" />
+                <input type="hidden" formControlName="foto_url" />
+            </div>
             <div class="form-grid">
                 <div class="form-field">
                     <label>Nombre *</label>
@@ -53,7 +74,8 @@
             </div>
 
             <div style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
-                <button class="btn-neon" type="submit" [disabled]="formulario.invalid" style="min-width: 160px;">
+                <button class="btn-neon" type="submit" [disabled]="formulario.invalid || subiendoFoto"
+                    style="min-width: 160px;">
                     <mat-icon>save</mat-icon>
                     {{ isEditing ? 'Actualizar' : 'Crear' }}
                 </button>

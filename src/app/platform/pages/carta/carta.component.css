@@ -100,48 +100,53 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* ── Category Chips ── */
-.carta-chips {
+/* ── Category Bar: [Todos] [scroll...] [≡] ── */
+.cat-bar {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-xl);
-    flex-shrink: 0;
-    flex-wrap: nowrap;
+    gap: 6px;
 }
 
-.carta-chips::-webkit-scrollbar {
+.cat-chip-fixed {
+    flex-shrink: 0;
+}
+
+.cat-chips-scroll {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cat-chips-scroll::-webkit-scrollbar {
     display: none;
 }
 
-.carta-chip {
-    padding: 0.5rem 1.25rem;
+.cat-chip {
+    padding: 0.5rem 1.1rem;
     border-radius: var(--radius-xl);
     font-size: 0.8rem;
     font-weight: 600;
     white-space: nowrap;
     color: var(--text-muted);
-    background: transparent;
-    border: none;
+    background: rgba(var(--brand-sec-rgb), 0.08);
+    border: 1px solid rgba(var(--brand-sec-rgb), 0.20);
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.carta-chip:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-}
-
-.carta-chip.active {
+.cat-chip:hover,
+.cat-chip.active {
     background: var(--brand-primary);
     color: var(--text-on-brand);
     font-weight: 700;
 }
 
-/* ── Hamburger "Más" Button ── */
+/* ── Hamburger \"Más\" Button ── */
 .chips-more-wrap {
     position: relative;
 }
@@ -149,19 +154,20 @@
 .chips-more-btn {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 0.45rem 0.85rem !important;
+    justify-content: center;
+    padding: 0.5rem 0.6rem !important;
 }
 
 .chips-more-btn mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .chips-more-btn.active-menu {
     background: rgba(255, 255, 255, 0.1);
     color: var(--brand-primary);
+    border-color: var(--brand-primary);
 }
 
 /* ── Overflow Dropdown ── */

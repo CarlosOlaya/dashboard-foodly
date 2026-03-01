@@ -7,9 +7,9 @@ import { Categoria } from '../../../shared/interfaces';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
-  selector: 'app-agregar-producto',
-  templateUrl: './agregar-producto.component.html',
-  styleUrls: ['./agregar-producto.component.css']
+  selector: 'app-agregar-insumo',
+  templateUrl: './agregar-insumo.component.html',
+  styleUrls: ['./agregar-insumo.component.css']
 })
 export class AgregarProductoComponent implements OnInit {
 
@@ -47,7 +47,7 @@ export class AgregarProductoComponent implements OnInit {
   ngOnInit(): void {
     this.platformService.getCategorias().subscribe(cats => this.categorias = cats);
 
-    if (this.router.url.includes('editar-producto')) {
+    if (this.router.url.includes('editar-insumo')) {
       this.isEditing = true;
       this.activatedRoute.params
         .pipe(
