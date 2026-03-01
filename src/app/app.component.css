@@ -1,16 +1,12 @@
-/* ── Splash Screen Overlay ── */
+/* ── Splash Screen Overlay ──
+   Just a solid background matching manifest background_color.
+   No logo, no spinner — blends invisibly with the PWA splash. */
 .app-splash {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    /* Match the manifest background_color exactly for seamless PWA transition */
     background: #0d1117;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
     opacity: 1;
     visibility: visible;
 }
@@ -19,44 +15,4 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-}
-
-.splash-logo {
-    width: 72px;
-    height: 72px;
-    animation: splashPulse 1.4s ease-in-out infinite;
-}
-
-.splash-logo svg {
-    width: 100%;
-    height: 100%;
-}
-
-@keyframes splashPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.06);
-        opacity: 0.8;
-    }
-}
-
-.splash-spinner {
-    width: 28px;
-    height: 28px;
-    border: 3px solid rgba(6, 249, 249, 0.15);
-    border-top-color: var(--brand-primary, #06f9f9);
-    border-radius: 50%;
-    animation: splashSpin 0.7s linear infinite;
-}
-
-@keyframes splashSpin {
-    to {
-        transform: rotate(360deg);
-    }
 }

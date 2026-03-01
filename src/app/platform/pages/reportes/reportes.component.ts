@@ -6,6 +6,8 @@ import {
     EmpleadoRendimiento, DescuentosData, PropinasData
 } from '../../../shared/interfaces';
 
+import { CHART_COLORS } from '../../../shared/chart-colors';
+
 type TabId = 'resumen' | 'productos' | 'propinas' | 'empleados' | 'pagos' | 'descuentos' | 'horarios';
 
 interface Tab { id: TabId; label: string; icon: string; }
@@ -47,18 +49,9 @@ export class ReportesComponent implements OnInit {
     chartPropinasEmpleado: any[] = [];
     chartFacturasDia: any[] = [];
 
-    colorScheme = {
-        name: 'reportes', selectable: true, group: 'ordinal' as const,
-        domain: ['#06f9f9', '#0d9488', '#14b8a6', '#22d3ee', '#38bdf8', '#67e8f9', '#a5f3fc']
-    };
-    pieColors = {
-        name: 'reportesPie', selectable: true, group: 'ordinal' as const,
-        domain: ['#06f9f9', '#14b8a6', '#f59e0b', '#8b5cf6', '#f43f5e', '#6366f1', '#0ea5e9', '#22d3ee']
-    };
-    barColors = {
-        name: 'reportesBar', selectable: true, group: 'ordinal' as const,
-        domain: ['#14b8a6']
-    };
+    colorScheme = CHART_COLORS.line;
+    pieColors = CHART_COLORS.pie;
+    barColors = CHART_COLORS.bar;
 
     tabs: Tab[] = [
         { id: 'resumen', label: 'Resumen', icon: 'dashboard' },
