@@ -120,4 +120,7 @@ export class CartaComponent implements OnInit {
   onDocumentClick(): void {
     this.showMoreCats = false;
   }
+
+  trackById(_: number, item: any): string { return item.id; }
+  trackByCatNombre(_: number, cat: Categoria): string { return cat.nombre; }
 }

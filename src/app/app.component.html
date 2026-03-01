@@ -1,6 +1,17 @@
 <!-- Splash overlay — covers everything while first navigation resolves -->
 <div class="app-splash" [class.splash-hidden]="!checking">
-    <img src="/assets/icons/icon-512x512.png" alt="Foodly" class="splash-logo" />
+    <div class="splash-logo">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="var(--brand-primary, #06f9f9)" />
+                    <stop offset="100%" stop-color="var(--brand-secondary, #8b5cf6)" />
+                </linearGradient>
+            </defs>
+            <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Inter, sans-serif"
+                font-weight="800" font-size="46" fill="url(#splashGrad)">F</text>
+        </svg>
+    </div>
     <div class="splash-spinner"></div>
 </div>
 

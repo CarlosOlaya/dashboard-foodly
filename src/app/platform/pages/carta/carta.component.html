@@ -20,7 +20,7 @@
     <button class="carta-chip" [class.active]="!categoriaActiva" (click)="mostrarTodos()">
       Todos
     </button>
-    <button *ngFor="let cat of categoriasVisibles" class="carta-chip"
+    <button *ngFor="let cat of categoriasVisibles; trackBy: trackByCatNombre" class="carta-chip"
       [class.active]="categoriaActiva?.nombre === cat.nombre" (click)="filtrarPorCategoria(cat)">
       {{ cat.nombre }}
     </button>
@@ -34,7 +34,7 @@
 
       <!-- Dropdown -->
       <div class="chips-dropdown" *ngIf="showMoreCats">
-        <button *ngFor="let cat of categoriasOverflow" class="dropdown-chip"
+        <button *ngFor="let cat of categoriasOverflow; trackBy: trackByCatNombre" class="dropdown-chip"
           [class.active]="categoriaActiva?.nombre === cat.nombre"
           (click)="filtrarPorCategoria(cat); showMoreCats = false">
           {{ cat.nombre }}
@@ -48,7 +48,8 @@
 <div class="carta-grid" *ngIf="!loading; else loadingTpl">
 
   <!-- Dish Card -->
-  <div *ngFor="let plato of productosFiltrados" class="dish-card" [class.agotado]="!plato.disponibilidad">
+  <div *ngFor="let plato of productosFiltrados; trackBy: trackById" class="dish-card"
+    [class.agotado]="!plato.disponibilidad">
     <div class="dish-img-wrap">
       <img *ngIf="plato.imagen_url" [src]="plato.imagen_url" [alt]="plato.nombre" class="dish-img" />
       <div *ngIf="!plato.imagen_url" class="dish-img-placeholder">

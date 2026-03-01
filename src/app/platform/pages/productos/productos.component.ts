@@ -277,4 +277,8 @@ export class ProductosComponent implements OnInit {
       },
     });
   }
+
+  // ── trackBy helpers ──
+  trackById(_: number, item: any): string { return item.id; }
+  trackByProductoId(_: number, item: any): string { return item.producto?.id; }
 }

@@ -94,7 +94,7 @@
     </div>
 
     <div class="inv-grid" *ngIf="!loading; else loadingTpl">
-        <div *ngFor="let p of productosFiltrados" class="inv-card card-glass">
+        <div *ngFor="let p of productosFiltrados; trackBy: trackById" class="inv-card card-glass">
             <div class="inv-card-header">
                 <div class="inv-card-name">{{ p.nombre }}</div>
                 <span class="inv-stock-badge" [ngClass]="getStockClass(p)">{{ getStockLabel(p) }}</span>
@@ -148,8 +148,8 @@
 <!-- ═══════════════════════════════════════ -->
 <ng-container *ngIf="vista === 'stock-bajo'">
     <div class="alert-list" *ngIf="stockBajo.length > 0; else noAlertas">
-        <div *ngFor="let p of stockBajo" class="alert-card card-glass" [class.alert-agotado]="Number(p.stock) <= 0"
-            [class.alert-bajo]="Number(p.stock) > 0">
+        <div *ngFor="let p of stockBajo; trackBy: trackById" class="alert-card card-glass"
+            [class.alert-agotado]="Number(p.stock) <= 0" [class.alert-bajo]="Number(p.stock) > 0">
             <div class="alert-icon-col">
                 <mat-icon *ngIf="Number(p.stock) <= 0" class="alert-icon-danger">error</mat-icon>
                 <mat-icon *ngIf="Number(p.stock) > 0" class="alert-icon-warning">warning_amber</mat-icon>
@@ -185,13 +185,14 @@
     <div class="mov-filter-row">
         <select class="input-glass mov-select" (change)="cargarMovimientos($any($event.target).value)">
             <option value="">Todos los insumos</option>
-            <option *ngFor="let p of productos" [value]="p.id" [selected]="p.id === productoSelId">{{ p.nombre }}
+            <option *ngFor="let p of productos; trackBy: trackById" [value]="p.id" [selected]="p.id === productoSelId">
+                {{ p.nombre }}
             </option>
         </select>
     </div>
 
     <div class="mov-list" *ngIf="movimientos.length > 0; else noMovimientos">
-        <div *ngFor="let m of movimientos" class="mov-row card-glass">
+        <div *ngFor="let m of movimientos; trackBy: trackById" class="mov-row card-glass">
             <div class="mov-tipo">
                 <span class="mov-badge" [ngClass]="getTipoBadgeClass(m.tipo)">{{ getTipoLabel(m.tipo) }}</span>
             </div>
@@ -251,7 +252,7 @@
             <div class="toma-col-conteo">Conteo físico</div>
             <div class="toma-col-diff">Diferencia</div>
         </div>
-        <div *ngFor="let item of tomaItems; let i = index" class="toma-row"
+        <div *ngFor="let item of tomaItems; let i = index; trackBy: trackByProductoId" class="toma-row"
             [class.toma-diff-pos]="item.conteo !== null && item.conteo - Number(item.producto.stock) > 0"
             [class.toma-diff-neg]="item.conteo !== null && item.conteo - Number(item.producto.stock) < 0">
             <div class="toma-col-name">
