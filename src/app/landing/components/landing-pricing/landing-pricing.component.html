@@ -1,0 +1,43 @@
+<section class="pricing-section">
+    <div class="pricing-inner">
+        <div class="section-header reveal">
+            <span class="section-tag">Precios</span>
+            <h2 class="section-title">Planes que se adaptan a tu negocio</h2>
+            <p class="section-subtitle">Sin amarres. Sin letra pequeña. Cancela cuando quieras.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div *ngFor="let plan of planes; let i = index" class="pricing-card reveal"
+                [class.pricing-destacado]="plan.destacado"
+                [class]="'pricing-card reveal reveal-delay-' + (i + 1) + (plan.destacado ? ' pricing-destacado' : '')">
+
+                <div class="pricing-badge" *ngIf="plan.destacado">
+                    <span class="material-icons badge-star">star</span>
+                    Más popular
+                </div>
+
+                <div class="pricing-icon-row">
+                    <span class="material-icons pricing-plan-icon">{{ plan.icon }}</span>
+                </div>
+                <h3 class="pricing-name">{{ plan.nombre }}</h3>
+
+                <div class="pricing-price">
+                    <span class="price-value">{{ plan.precio }}</span>
+                    <span class="price-period">{{ plan.periodo }}</span>
+                </div>
+
+                <ul class="pricing-features">
+                    <li *ngFor="let feat of plan.features">
+                        <span class="material-icons feat-icon">check_circle</span>
+                        {{ feat }}
+                    </li>
+                </ul>
+
+                <a routerLink="/auth/onboard" class="pricing-btn" [class.pricing-btn-primary]="plan.destacado">
+                    {{ plan.cta }}
+                    <span class="material-icons btn-arrow">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

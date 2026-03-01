@@ -9,3 +9,4 @@ export * from './turno.interfaces';
 export * from './tenant.interfaces';
 export * from './api.interfaces';
 export * from './analytics.interfaces';
+export * from './plan.interface';

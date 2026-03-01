@@ -1,0 +1,54 @@
+<!-- ═══════════ CTA Final ═══════════ -->
+<section class="cta-section">
+    <div class="cta-glow"></div>
+    <div class="cta-inner reveal">
+        <h2 class="cta-title">¿Listo para transformar tu restaurante?</h2>
+        <p class="cta-subtitle">
+            Únete a los restaurantes que ya gestionan todo con Foodly.
+            Empieza gratis, sin tarjeta de crédito.
+        </p>
+        <a routerLink="/auth/onboard" class="cta-btn">
+            Comienza gratis ahora
+            <span class="material-icons cta-btn-icon">arrow_forward</span>
+        </a>
+    </div>
+</section>
+
+<!-- ═══════════ Footer ═══════════ -->
+<footer class="landing-footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <!-- Brand -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="/assets/icons/favicon.svg" alt="Foodly" class="footer-logo-img">
+                    <span class="footer-logo-text">Foodly</span>
+                </div>
+                <p class="footer-tagline">Fácil. Fluido. Foodly.</p>
+                <p class="footer-desc">La plataforma inteligente para la gestión integral de restaurantes.</p>
+            </div>
+
+            <!-- Producto -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Producto</h4>
+                <a *ngFor="let link of footerLinks.producto" (click)="goTo(link.target)">{{ link.label }}</a>
+            </div>
+
+            <!-- Empresa -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Empresa</h4>
+                <a *ngFor="let link of footerLinks.empresa" (click)="goTo(link.target)">{{ link.label }}</a>
+            </div>
+
+            <!-- Legal -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Legal</h4>
+                <a *ngFor="let link of footerLinks.legal" (click)="goTo(link.target)">{{ link.label }}</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© {{ currentYear }} Foodly. Todos los derechos reservados.</span>
+        </div>
+    </div>
+</footer>

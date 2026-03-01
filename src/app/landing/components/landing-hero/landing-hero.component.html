@@ -1,0 +1,117 @@
+<section class="hero">
+    <!-- Ambient bg effects -->
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-grid-bg"></div>
+
+    <div class="hero-inner">
+        <!-- Left: Copy -->
+        <div class="hero-copy">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Fácil. Fluido. Foodly.
+            </div>
+
+            <h1 class="hero-title">
+                Gestiona tu restaurante
+                <span class="title-gradient">de forma inteligente</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Comandas en tiempo real, facturación, inventario, reportes y más
+                — todo en una sola plataforma diseñada para restaurantes modernos.
+            </p>
+
+            <div class="hero-actions">
+                <a routerLink="/auth/onboard" class="hero-btn-primary">
+                    Comienza gratis
+                    <span class="material-icons btn-icon">arrow_forward</span>
+                </a>
+                <a (click)="navigate.emit('caracteristicas')" class="hero-btn-outline">
+                    <span class="material-icons btn-icon-left">play_circle</span>
+                    Conoce más
+                </a>
+            </div>
+
+            <div class="hero-trust">
+                <div class="trust-checks">
+                    <div class="trust-item">
+                        <span class="material-icons trust-check">check_circle</span>
+                        Sin tarjeta de crédito
+                    </div>
+                    <div class="trust-item">
+                        <span class="material-icons trust-check">check_circle</span>
+                        Configuración en minutos
+                    </div>
+                    <div class="trust-item">
+                        <span class="material-icons trust-check">check_circle</span>
+                        Soporte incluido
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Dashboard mockup -->
+        <div class="hero-visual">
+            <div class="mockup-wrapper">
+                <div class="mockup-screen">
+                    <!-- Mini sidebar -->
+                    <div class="mock-sidebar">
+                        <div class="mock-logo"></div>
+                        <div class="mock-nav-item active"></div>
+                        <div class="mock-nav-item"></div>
+                        <div class="mock-nav-item"></div>
+                        <div class="mock-nav-item"></div>
+                        <div class="mock-nav-item"></div>
+                    </div>
+                    <!-- Main area -->
+                    <div class="mock-main">
+                        <div class="mock-toolbar"></div>
+                        <div class="mock-kpis">
+                            <div class="mock-kpi">
+                                <div class="kpi-icon kpi-1"></div>
+                                <div class="kpi-lines">
+                                    <div class="kpi-line-sm"></div>
+                                    <div class="kpi-line-lg"></div>
+                                </div>
+                            </div>
+                            <div class="mock-kpi">
+                                <div class="kpi-icon kpi-2"></div>
+                                <div class="kpi-lines">
+                                    <div class="kpi-line-sm"></div>
+                                    <div class="kpi-line-lg"></div>
+                                </div>
+                            </div>
+                            <div class="mock-kpi">
+                                <div class="kpi-icon kpi-3"></div>
+                                <div class="kpi-lines">
+                                    <div class="kpi-line-sm"></div>
+                                    <div class="kpi-line-lg"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mock-charts">
+                            <div class="mock-chart">
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height:40%"></div>
+                                    <div class="chart-bar" style="height:65%"></div>
+                                    <div class="chart-bar" style="height:85%"></div>
+                                    <div class="chart-bar" style="height:55%"></div>
+                                    <div class="chart-bar" style="height:92%"></div>
+                                    <div class="chart-bar" style="height:70%"></div>
+                                    <div class="chart-bar" style="height:60%"></div>
+                                </div>
+                            </div>
+                            <div class="mock-list">
+                                <div class="list-item"></div>
+                                <div class="list-item"></div>
+                                <div class="list-item"></div>
+                                <div class="list-item"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

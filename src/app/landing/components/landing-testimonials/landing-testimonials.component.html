@@ -1,0 +1,31 @@
+<section class="testimonials-section">
+    <div class="testimonials-inner">
+        <div class="section-header reveal">
+            <span class="section-tag">Testimonios</span>
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <p class="section-subtitle">Restaurantes reales, resultados reales.</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div *ngFor="let t of testimonials; let i = index; trackBy: trackByIdx" class="testimonial-card reveal"
+                [class]="'testimonial-card reveal reveal-delay-' + (i + 1)">
+
+                <div class="testimonial-stars">
+                    <span *ngFor="let s of [1,2,3,4,5]" class="star">★</span>
+                </div>
+
+                <blockquote class="testimonial-quote">
+                    "{{ t.quote }}"
+                </blockquote>
+
+                <div class="testimonial-author">
+                    <div class="author-avatar">{{ t.emoji }}</div>
+                    <div class="author-info">
+                        <strong class="author-name">{{ t.name }}</strong>
+                        <span class="author-role">{{ t.role }} · {{ t.restaurant }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

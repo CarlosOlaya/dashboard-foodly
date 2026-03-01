@@ -1,0 +1,26 @@
+<section class="hiw-section">
+    <div class="hiw-inner">
+        <div class="section-header reveal">
+            <span class="section-tag">Cómo funciona</span>
+            <h2 class="section-title">Empieza en minutos, no en semanas</h2>
+            <p class="section-subtitle">Tres pasos simples para digitalizar toda la operación de tu restaurante.</p>
+        </div>
+
+        <div class="hiw-steps">
+            <!-- Connector lines (absolute, behind icons) -->
+            <div class="connector connector-1"></div>
+            <div class="connector connector-2"></div>
+
+            <div *ngFor="let step of steps; let i = index" class="hiw-step reveal"
+                [class]="'hiw-step reveal reveal-delay-' + (i + 1)">
+
+                <div class="step-number">{{ step.num }}</div>
+                <div class="step-icon-wrap">
+                    <span class="material-icons step-icon">{{ step.icon }}</span>
+                </div>
+                <h3 class="step-title">{{ step.title }}</h3>
+                <p class="step-desc">{{ step.desc }}</p>
+            </div>
+        </div>
+    </div>
+</section>

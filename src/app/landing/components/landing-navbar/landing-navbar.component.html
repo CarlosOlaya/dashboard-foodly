@@ -1,0 +1,34 @@
+<nav class="landing-nav" [class.nav-scrolled]="scrolled">
+    <div class="nav-inner">
+        <!-- Logo -->
+        <a class="nav-logo" (click)="goTo('hero')">
+            <img src="/assets/icons/favicon.svg" alt="Foodly" class="nav-logo-img">
+            <span class="nav-logo-text">Foodly</span>
+        </a>
+
+        <!-- Desktop links -->
+        <ul class="nav-links">
+            <li *ngFor="let link of navLinks">
+                <a (click)="goTo(link.target)">{{ link.label }}</a>
+            </li>
+        </ul>
+
+        <!-- CTA -->
+        <div class="nav-actions">
+            <a routerLink="/auth" class="nav-btn-outline">Iniciar sesión</a>
+            <a routerLink="/auth/onboard" class="nav-btn-primary">Comenzar gratis</a>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button class="nav-hamburger" (click)="toggleMenu()" [class.open]="menuOpen" aria-label="Menú">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav-mobile" [class.nav-mobile-open]="menuOpen">
+        <a *ngFor="let link of navLinks" (click)="goTo(link.target)">{{ link.label }}</a>
+        <a routerLink="/auth" class="mobile-login">Iniciar sesión</a>
+        <a routerLink="/auth/onboard" class="nav-btn-primary mobile-cta">Comenzar gratis</a>
+    </div>
+</nav>

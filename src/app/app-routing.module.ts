@@ -4,6 +4,11 @@ import { validarTokenGuard } from './guards/validar-token.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () => import('./landing/landing.module').then(m => m.LandingModule),
+    pathMatch: 'full'
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
@@ -14,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'auth'
+    redirectTo: ''
   }
 ];
 
@@ -23,3 +28,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

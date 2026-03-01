@@ -3,15 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../../platform/services/alert.service';
-
-interface Plan {
-    id: string;
-    nombre: string;
-    precio: string;
-    periodo: string;
-    destacado: boolean;
-    features: string[];
-}
+import { Plan } from '../../../shared/interfaces/plan.interface';
+import { PLANES } from '../../../shared/data/planes.data';
 
 @Component({
     selector: 'app-onboard',
@@ -25,55 +18,9 @@ export class OnboardComponent {
     errorMsg = '';
     loading = false;
 
-    planes: Plan[] = [
-        {
-            id: 'basico',
-            nombre: 'Básico',
-            precio: '$49.900',
-            periodo: '/mes',
-            destacado: false,
-            features: [
-                'Hasta 5 mesas',
-                '1 usuario admin',
-                'Facturación básica',
-                'Carta digital',
-                'Soporte por email',
-            ]
-        },
-        {
-            id: 'profesional',
-            nombre: 'Profesional',
-            precio: '$99.900',
-            periodo: '/mes',
-            destacado: true,
-            features: [
-                'Hasta 20 mesas',
-                'Usuarios ilimitados',
-                'Facturación electrónica',
-                'Carta digital + QR',
-                'Inventario básico',
-                'Reportes y analytics',
-                'Soporte prioritario',
-            ]
-        },
-        {
-            id: 'empresarial',
-            nombre: 'Empresarial',
-            precio: '$199.900',
-            periodo: '/mes',
-            destacado: false,
-            features: [
-                'Mesas ilimitadas',
-                'Usuarios ilimitados',
-                'Facturación DIAN',
-                'Multi-sede',
-                'Inventario avanzado',
-                'Nómina integrada',
-                'API abierta',
-                'Soporte 24/7 dedicado',
-            ]
-        }
-    ];
+    /** Centralized plan data — shared with Landing pricing section */
+    planes: Plan[] = PLANES;
+
 
     empresaForm: FormGroup;
 

@@ -1,0 +1,21 @@
+<section class="features-section">
+    <div class="features-inner">
+        <div class="section-header reveal">
+            <span class="section-tag">Características</span>
+            <h2 class="section-title">Todo lo que necesitas para operar tu restaurante</h2>
+            <p class="section-subtitle">Una suite completa de herramientas diseñadas específicamente para el sector
+                gastronómico.</p>
+        </div>
+
+        <div class="features-grid">
+            <div *ngFor="let feat of features; let i = index" class="feature-card reveal"
+                [class]="'feature-card reveal reveal-delay-' + (i + 1)">
+                <div class="feature-icon-wrap">
+                    <span class="material-icons feature-icon">{{ feat.icon }}</span>
+                </div>
+                <h3 class="feature-title">{{ feat.title }}</h3>
+                <p class="feature-desc">{{ feat.description }}</p>
+            </div>
+        </div>
+    </div>
+</section>
