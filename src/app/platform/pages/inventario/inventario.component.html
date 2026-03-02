@@ -76,14 +76,14 @@
             <div class="inv-card-cat" *ngIf="p.categoria">{{ p.categoria.nombre }}</div>
 
             <div class="inv-card-stock">
-                <div class="inv-stock-number">{{ p.stock }}</div>
+                <div class="inv-stock-number">{{ p.stock | stock:p.tipo_stock }}</div>
                 <div class="inv-stock-unit">{{ p.tipo_stock || 'und' }}</div>
             </div>
 
             <div class="inv-card-meta">
                 <div class="inv-meta-row" *ngIf="p.stock_minimo">
                     <span class="inv-meta-label">Mín:</span>
-                    <span>{{ p.stock_minimo }}</span>
+                    <span>{{ p.stock_minimo | stock:p.tipo_stock }}</span>
                 </div>
                 <div class="inv-meta-row" *ngIf="p.ubicacion_almacen">
                     <mat-icon class="inv-meta-icon">place</mat-icon>
@@ -130,7 +130,8 @@
             <div class="alert-info">
                 <div class="alert-name">{{ p.nombre }}</div>
                 <div class="alert-detail">
-                    Stock: <strong>{{ p.stock }}</strong> / Mínimo: <strong>{{ p.stock_minimo }}</strong>
+                    Stock: <strong>{{ p.stock | stock:p.tipo_stock }}</strong> / Mínimo: <strong>{{ p.stock_minimo |
+                        stock:p.tipo_stock }}</strong>
                     {{ p.tipo_stock || 'und' }}
                 </div>
                 <div class="alert-cat" *ngIf="p.categoria">{{ p.categoria.nombre }}</div>
@@ -176,9 +177,11 @@
             <div class="mov-datos">
                 <div class="mov-cantidad" [class.positivo]="getTipoBadgeClass(m.tipo) === 'mov-entrada'"
                     [class.negativo]="getTipoBadgeClass(m.tipo) === 'mov-salida'">
-                    {{ getTipoBadgeClass(m.tipo) === 'mov-entrada' ? '+' : '-' }}{{ m.cantidad }}
+                    {{ getTipoBadgeClass(m.tipo) === 'mov-entrada' ? '+' : '-' }}{{ m.cantidad |
+                    stock:m.producto?.tipo_stock }}
                 </div>
-                <div class="mov-stock-change">{{ m.stock_anterior }} → {{ m.stock_nuevo }}</div>
+                <div class="mov-stock-change">{{ m.stock_anterior | stock:m.producto?.tipo_stock }} → {{ m.stock_nuevo |
+                    stock:m.producto?.tipo_stock }}</div>
             </div>
             <div class="mov-fecha">
                 {{ m.created_at | date:'dd/MM HH:mm' }}
@@ -232,7 +235,7 @@
                 <span class="toma-prod-nombre">{{ item.producto.nombre }}</span>
                 <span class="toma-prod-tipo">{{ item.producto.tipo_stock || 'und' }}</span>
             </div>
-            <div class="toma-col-sistema">{{ item.producto.stock }}</div>
+            <div class="toma-col-sistema">{{ item.producto.stock | stock:item.producto.tipo_stock }}</div>
             <div class="toma-col-conteo">
                 <input type="number" class="input-glass toma-input" [(ngModel)]="item.conteo"
                     [placeholder]="'' + item.producto.stock" min="0" step="0.01">

@@ -129,7 +129,7 @@
                     <span class="receta-producto-nombre">{{ item.producto?.nombre || 'Producto' }}</span>
                     <span class="receta-producto-tipo">{{ item.producto?.tipo_stock || 'und' }}</span>
                 </div>
-                <div class="receta-cantidad">{{ item.cantidad }}</div>
+                <div class="receta-cantidad">{{ item.cantidad | stock:item.producto?.tipo_stock }}</div>
                 <button class="btn-ghost btn-sm btn-mini-danger" type="button" (click)="eliminarInsumo(i)"
                     title="Quitar">
                     <mat-icon>close</mat-icon>
