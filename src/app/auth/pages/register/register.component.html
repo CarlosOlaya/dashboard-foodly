@@ -22,17 +22,8 @@
                 </div>
             </div>
 
-            <div class="login-field">
-                <label for="rol">Tu rol en el equipo</label>
-                <div class="input-wrapper">
-                    <mat-icon class="input-icon">badge</mat-icon>
-                    <select id="rol" class="input-glass has-icon" formControlName="rol">
-                        <option *ngFor="let r of roles" [value]="r.codigo">
-                            {{ r.nombre }}
-                        </option>
-                    </select>
-                </div>
-            </div>
+
+
 
             <div class="login-field">
                 <label for="reg-email">Correo electrónico</label>

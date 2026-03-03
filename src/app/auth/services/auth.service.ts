@@ -51,7 +51,7 @@ export class AuthService {
 
     register(tenant_id: string, email: string, password: string): Observable<boolean> {
         const url = `${this.baseUrl}/auth/new`;
-        return this.http.post<LoginResponse>(url, { tenant_id, email, password, rol: 'mesero' }).pipe(
+        return this.http.post<LoginResponse>(url, { tenant_id, email, password }).pipe(
             tap(resp => {
                 if (resp.ok) this.guardarToken(resp.token);
             }),
@@ -60,16 +60,6 @@ export class AuthService {
         );
     }
 
-    registerWithRole(tenant_id: string, email: string, password: string, rol: string): Observable<boolean> {
-        const url = `${this.baseUrl}/auth/new`;
-        return this.http.post<LoginResponse>(url, { tenant_id, email, password, rol }).pipe(
-            tap(resp => {
-                if (resp.ok) this.guardarToken(resp.token);
-            }),
-            map(resp => resp.ok),
-            catchError(() => of(false))
-        );
-    }
 
     onboard(data: {
         nombre_restaurante: string;
