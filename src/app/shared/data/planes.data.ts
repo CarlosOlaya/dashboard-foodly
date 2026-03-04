@@ -21,10 +21,13 @@ export const PLANES: Plan[] = [
         cta: 'Comienza gratis',
         icon: 'rocket_launch',
         features: [
-            'Hasta 5 mesas',
-            '1 usuario admin',
+            'Hasta 15 mesas',
+            '3 usuarios',
+            'Gestión de productos',
+            'Control de inventario',
+            'Reportes y estadísticas',
+            'Monitoreo de KPIs',
             'Facturación básica',
-            'Carta digital',
             'Soporte por email',
         ]
     },
@@ -37,13 +40,13 @@ export const PLANES: Plan[] = [
         cta: 'Elegir Profesional',
         icon: 'star',
         features: [
-            'Hasta 20 mesas',
+            'Todo lo del plan Básico',
+            'Hasta 30 mesas',
             'Usuarios ilimitados',
-            'Facturación electrónica',
             'Carta digital + QR',
-            'Inventario básico',
-            'Reportes y analytics',
-            'Soporte prioritario',
+            'Facturación electrónica',
+            'Reportes avanzados',
+            'Soporte por email',
         ]
     },
     {
@@ -55,14 +58,12 @@ export const PLANES: Plan[] = [
         cta: 'Contáctanos',
         icon: 'domain',
         features: [
+            'Todo lo del plan Profesional',
             'Mesas ilimitadas',
-            'Usuarios ilimitados',
-            'Facturación DIAN',
             'Multi-sede',
-            'Inventario avanzado',
-            'Nómina integrada',
+            'Facturación DIAN',
             'API abierta',
-            'Soporte 24/7 dedicado',
+            'Soporte prioritario 24/7',
         ]
     }
 ];
