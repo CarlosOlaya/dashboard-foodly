@@ -18,6 +18,37 @@ export class EmpresaComponent implements OnInit {
     subiendoLogo = false;
     logoPreview: string | null = null;
 
+    // Configuración de impresión
+    printConfig = {
+        rutas: {
+            comanda_cocina: 'cocina',
+            comanda_barra: 'bar',
+            precuenta: 'caja',
+            factura: 'caja',
+            cierre_caja: 'caja',
+        } as Record<string, string>,
+        auto_imprimir: {
+            comanda: true,
+            precuenta: true,
+            factura: true,
+            cierre_caja: true,
+        } as Record<string, boolean>,
+    };
+
+    readonly AREAS_DISPONIBLES = [
+        { value: 'cocina', label: '🔥 Cocina' },
+        { value: 'bar', label: '🍸 Bar' },
+        { value: 'caja', label: '💵 Caja' },
+    ];
+
+    readonly DOCUMENTOS_IMPRESION = [
+        { key: 'comanda_cocina', label: 'Comanda de cocina', icon: 'restaurant', desc: 'Pedidos de platos' },
+        { key: 'comanda_barra', label: 'Comanda de barra', icon: 'local_bar', desc: 'Pedidos de bebidas' },
+        { key: 'precuenta', label: 'Precuenta', icon: 'receipt', desc: 'Verificadora antes de cobrar' },
+        { key: 'factura', label: 'Factura / Ticket', icon: 'receipt_long', desc: 'Ticket de venta' },
+        { key: 'cierre_caja', label: 'Cierre de caja', icon: 'point_of_sale', desc: 'Resumen de turno' },
+    ];
+
     get isAdmin(): boolean {
         return this.authService.isAdmin;
     }
@@ -37,6 +68,13 @@ export class EmpresaComponent implements OnInit {
         this.platformService.getEmpresa().subscribe(empresa => {
             this.empresa = empresa;
             this.initForm(empresa);
+            // Cargar configuración de impresión
+            if (empresa.config_impresion) {
+                this.printConfig = {
+                    rutas: { ...this.printConfig.rutas, ...empresa.config_impresion.rutas },
+                    auto_imprimir: { ...this.printConfig.auto_imprimir, ...empresa.config_impresion.auto_imprimir },
+                };
+            }
         });
     }
 
@@ -182,5 +220,20 @@ export class EmpresaComponent implements OnInit {
                 }
             });
         }
+    }
+
+    // ══════════════════════════════════════════════
+    // CONFIGURACIÓN DE IMPRESIÓN
+    // ══════════════════════════════════════════════
+    guardarConfigImpresion(): void {
+        this.platformService.actualizarEmpresa({ config_impresion: this.printConfig } as any).subscribe({
+            next: (empresa) => {
+                this.empresa = empresa;
+                this.alert.success('Configuración de impresión guardada', 1500);
+            },
+            error: () => {
+                this.alert.error('Error al guardar la configuración');
+            },
+        });
     }
 }

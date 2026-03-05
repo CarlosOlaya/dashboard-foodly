@@ -45,6 +45,8 @@ export class MesasComponent implements OnInit, OnDestroy {
         if (mesa) {
           mesa.estado = data.estado;
           if (data.estado === 'libre') {
+            mesa.empleado = null as any;
+            mesa.empleado_id = null as any;
             this.comensalesMap[mesa.id] = 1;
           }
         } else {

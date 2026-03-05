@@ -222,6 +222,48 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- CONFIGURACIÓN DE IMPRESIÓN                 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="card-glass section-card" *ngIf="isAdmin">
+        <div class="card-body-custom">
+            <h2 class="section-title">
+                <mat-icon>print</mat-icon>
+                Configuración de Impresión
+            </h2>
+            <p class="section-desc">
+                Define a qué impresora se envía cada tipo de documento. Las impresoras se configuran en el Print Server
+                del restaurante.
+            </p>
+
+            <div class="print-routes-table">
+                <div class="print-route-header">
+                    <span>Documento</span>
+                    <span>Destino</span>
+                    <span>Auto-imprimir</span>
+                </div>
+                <div class="print-route-row" *ngFor="let doc of DOCUMENTOS_IMPRESION">
+                    <div class="print-route-doc">
+                        <mat-icon>{{ doc.icon }}</mat-icon>
+                        <div>
+                            <span class="print-route-label">{{ doc.label }}</span>
+                            <span class="print-route-desc">{{ doc.desc }}</span>
+                        </div>
+                    </div>
+                    <mat-select class="input-glass input-sm" [(value)]="printConfig.rutas[doc.key]"
+                        (selectionChange)="guardarConfigImpresion()">
+                        <mat-option *ngFor="let area of AREAS_DISPONIBLES" [value]="area.value">
+                            {{ area.label }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-slide-toggle [checked]="printConfig.auto_imprimir[doc.key] !== false"
+                        (change)="printConfig.auto_imprimir[doc.key] = $event.checked; guardarConfigImpresion()">
+                    </mat-slide-toggle>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </ng-container>
 
 <!-- ═══════════════════════════════════════════ -->

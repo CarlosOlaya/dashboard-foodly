@@ -318,3 +318,92 @@
     font-size: 13px;
     color: var(--text-secondary);
 }
+
+/* ══════════════════════════════════════════════
+   PRINT ROUTES TABLE
+   ══════════════════════════════════════════════ */
+.section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: -12px 0 20px;
+    line-height: 1.5;
+}
+
+.print-routes-table {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+}
+
+.print-route-header {
+    display: grid;
+    grid-template-columns: 1fr 140px 120px;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgba(var(--brand-rgb), 0.06);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.print-route-row {
+    display: grid;
+    grid-template-columns: 1fr 140px 120px;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-subtle);
+    transition: background 0.15s ease;
+}
+
+.print-route-row:hover {
+    background: rgba(var(--brand-rgb), 0.03);
+}
+
+.print-route-doc {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.print-route-doc mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--brand-primary);
+}
+
+.print-route-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.print-route-desc {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.input-sm {
+    font-size: 13px !important;
+    padding: 6px 10px !important;
+    min-height: 36px !important;
+}
+
+@media (max-width: 600px) {
+    .print-route-header {
+        display: none;
+    }
+    .print-route-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .print-route-doc {
+        grid-column: span 2;
+    }
+}

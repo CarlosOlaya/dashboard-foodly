@@ -21,6 +21,10 @@ export interface Tenant {
     rango_factura_inicio?: number;
     rango_factura_fin?: number;
     plan: string;
+    config_impresion?: {
+        rutas: Record<string, string>;
+        auto_imprimir: Record<string, boolean>;
+    };
     activo: boolean;
     created_at: string;
     updated_at: string;

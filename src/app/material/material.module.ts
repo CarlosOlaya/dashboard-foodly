@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // primero se instala ng add @angular/material y luego se cargan todos los modulos que vas a usar
 
@@ -37,7 +38,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSortModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSlideToggleModule,
   ]
 })
 export class MaterialModule { }
