@@ -5,6 +5,7 @@ import {
     ProductoVendido, VentaCategoria, MetodoPagoItem,
     EmpleadoRendimiento, DescuentosData, PropinasData
 } from '../../../shared/interfaces';
+import { AlertService } from '../../services/alert.service';
 
 import { CHART_COLORS } from '../../../shared/chart-colors';
 
@@ -72,7 +73,10 @@ export class ReportesComponent implements OnInit {
         { label: 'Mes anterior', value: 'mes_anterior' },
     ];
 
-    constructor(private analyticsService: AnalyticsApiService) { }
+    constructor(
+        private analyticsService: AnalyticsApiService,
+        private alert: AlertService,
+    ) { }
 
     ngOnInit(): void {
         this.applyPreset('mes');
@@ -224,5 +228,17 @@ export class ReportesComponent implements OnInit {
     // Utility
     private toISO(d: Date): string {
         return d.toISOString().slice(0, 10);
+    }
+    // ── Imprimir reporte en impresora térmica ──
+    imprimirReporte(): void {
+        this.analyticsService.imprimirVentas(this.desde, this.hasta).subscribe({
+            next: (resp) => {
+                if (resp.ok) this.alert.success('Reporte enviado a impresora', 1500);
+                else this.alert.info(resp.mensaje);
+            },
+            error: () => {
+                this.alert.error('Error al enviar reporte a impresora');
+            },
+        });
     }
 }

@@ -14,4 +14,12 @@ export class AnalyticsApiService extends ApiBaseService {
             params: { desde, hasta },
         });
     }
+
+    /** Send report to thermal printer via print server */
+    imprimirVentas(desde: string, hasta: string): Observable<{ ok: boolean; mensaje: string }> {
+        return this.http.post<{ ok: boolean; mensaje: string }>(
+            `${this.endpoint}/imprimir-ventas`,
+            { desde, hasta },
+        );
+    }
 }
