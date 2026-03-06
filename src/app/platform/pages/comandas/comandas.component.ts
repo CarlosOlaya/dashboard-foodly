@@ -151,7 +151,8 @@ export class ComandasComponent implements OnInit, OnDestroy {
             ? this.comandasPendientes
             : this.comandasCompletadas;
         if (!this.filtroArea) return lista;
-        return lista.filter(c => c.area_destino === this.filtroArea);
+        const filtro = this.filtroArea.toLowerCase();
+        return lista.filter(c => (c.area_destino || '').toLowerCase() === filtro);
     }
 
     getMinutos(created: string): number {
