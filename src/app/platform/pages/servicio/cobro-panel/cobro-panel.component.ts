@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { PlatformService } from '../../../services/platform.service';
-import { PdfService } from '../../../services/pdf.service';
 import { PedidoItem } from '../../../../shared/interfaces';
 import { AlertService } from '../../../services/alert.service';
 
@@ -37,7 +36,6 @@ export class CobroPanelComponent {
 
     constructor(
         private platformService: PlatformService,
-        private pdfService: PdfService,
         private alert: AlertService,
     ) { }
 
@@ -169,8 +167,7 @@ export class CobroPanelComponent {
     }
 
     private onCobroExitoso(text: string): void {
-        this.pdfService.imprimirFactura(this.facturaId)
-            .catch(err => console.error('Error al abrir PDF factura:', err));
+        // Factura se imprime automatico via print-server (WebSocket factura:cerrada)
         this.alert.success(`¡Cuenta cerrada! ${text}`, 2000);
         this.cobroExitoso.emit(this.facturaId);
     }

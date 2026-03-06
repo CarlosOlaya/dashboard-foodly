@@ -1,6 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { PlatformService } from '../../services/platform.service';
-import { PdfService } from '../../services/pdf.service';
 import { Plato, Categoria, PedidoItem, Mesa, FacturaActivaMesa, EnviarComandaResponse, DetalleAccionResponse, ApiResponse } from '../../../shared/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
@@ -63,7 +62,6 @@ export class ServicioComponent implements OnInit {
 
   constructor(
     private platformService: PlatformService,
-    private pdfService: PdfService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alert: AlertService,
@@ -338,7 +336,7 @@ export class ServicioComponent implements OnInit {
       next: (res: EnviarComandaResponse) => {
         const comandas = res.comandas || [];
         for (const comanda of comandas) {
-          this.imprimirComandaPdf(comanda.id);
+          // Comandas se imprimen automatico via print-server (WebSocket)
         }
 
         // Recargar factura desde el servidor para tener IDs reales
@@ -387,7 +385,7 @@ export class ServicioComponent implements OnInit {
             this.itemSeleccionado = null;
             this.alert.success(res.mensaje, 2000);
             if (res.comanda_id) {
-              this.imprimirComandaPdf(res.comanda_id);
+              // Comanda se imprime automatico via print-server
             }
           },
           error: (err) => {
@@ -457,7 +455,7 @@ export class ServicioComponent implements OnInit {
             this.itemSeleccionado = null;
             this.alert.success(res.mensaje, 2000);
             if (res.comanda_id) {
-              this.imprimirComandaPdf(res.comanda_id);
+              // Comanda se imprime automatico via print-server
             }
           },
           error: (err) => {
@@ -527,14 +525,7 @@ export class ServicioComponent implements OnInit {
     });
   }
 
-  // ══════════════════════════════════════════════════════
-  // Impresión PDF
-  // ══════════════════════════════════════════════════════
 
-  imprimirComandaPdf(comandaId: string): void {
-    this.pdfService.imprimirComanda(comandaId)
-      .catch(err => console.error('Error al abrir PDF comanda:', err));
-  }
 
   liberarMesa(): void {
     this.alert.fire({

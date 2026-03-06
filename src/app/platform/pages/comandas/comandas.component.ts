@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PlatformService } from '../../services/platform.service';
-import { PdfService } from '../../services/pdf.service';
 import { SocketService } from '../../services/socket.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Comanda } from '../../../shared/interfaces';
@@ -40,7 +39,6 @@ export class ComandasComponent implements OnInit, OnDestroy {
 
     constructor(
         private platformService: PlatformService,
-        private pdfService: PdfService,
         private socketService: SocketService,
         private authService: AuthService,
         private http: HttpClient,

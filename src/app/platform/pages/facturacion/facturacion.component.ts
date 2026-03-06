@@ -5,7 +5,8 @@ import { Factura, FacturaFiltros } from '../../../shared/interfaces';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { PdfService } from '../../services/pdf.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-facturacion',
@@ -39,7 +40,7 @@ export class FacturacionComponent implements OnInit, AfterViewInit {
 
   constructor(
     private platformService: PlatformService,
-    private pdfService: PdfService,
+    private http: HttpClient,
     private router: Router
   ) { }
 
@@ -150,8 +151,8 @@ export class FacturacionComponent implements OnInit, AfterViewInit {
 
   imprimirFactura(facturaId: string, event: Event): void {
     event.stopPropagation();
-    this.pdfService.imprimirFactura(facturaId)
-      .catch(err => console.error('Error al imprimir factura:', err));
+    this.http.post(`${environment.baseUrl}/facturacion/reimprimir/${facturaId}`, {})
+      .subscribe({ error: (err) => console.error('Error al reimprimir factura:', err) });
   }
 
   // ══════════════════════════════════════════════
