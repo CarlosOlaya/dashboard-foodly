@@ -7,6 +7,20 @@ import { Comanda } from '../../../shared/interfaces';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
+// Misma normalización que la API para matchear áreas
+const AREA_ALIASES: Record<string, string> = {
+    barra: 'bar',
+    bebidas: 'bar',
+    tragos: 'bar',
+    reposteria: 'pasteleria',
+    postres: 'pasteleria',
+};
+function normalizeArea(raw: string | undefined | null): string {
+    if (!raw) return 'cocina';
+    const key = raw.trim().toLowerCase();
+    return AREA_ALIASES[key] || key;
+}
+
 interface AreaOption {
     codigo: string;
     nombre: string;
@@ -151,8 +165,8 @@ export class ComandasComponent implements OnInit, OnDestroy {
             ? this.comandasPendientes
             : this.comandasCompletadas;
         if (!this.filtroArea) return lista;
-        const filtro = this.filtroArea.toLowerCase();
-        return lista.filter(c => (c.area_destino || '').toLowerCase() === filtro);
+        const filtro = normalizeArea(this.filtroArea);
+        return lista.filter(c => normalizeArea(c.area_destino) === filtro);
     }
 
     getMinutos(created: string): number {
@@ -247,7 +261,7 @@ export class ComandasComponent implements OnInit, OnDestroy {
     }
 
     get areasDisponibles(): string[] {
-        return [...new Set(this.comandasPendientes.map(c => c.area_destino))].sort();
+        return [...new Set(this.comandasPendientes.map(c => normalizeArea(c.area_destino)))].sort();
     }
 
     get contadorPendientes(): number {
