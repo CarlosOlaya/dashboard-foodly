@@ -220,8 +220,10 @@ export class ComandasComponent implements OnInit, OnDestroy {
 
     imprimirComanda(comandaId: string, event: Event): void {
         event.stopPropagation();
-        this.pdfService.imprimirComanda(comandaId)
-            .catch(err => console.error('Error al abrir comanda:', err));
+        this.http.post<{ ok: boolean }>(`${environment.baseUrl}/comandas/${comandaId}/reimprimir`, {})
+            .subscribe({
+                error: (err) => console.error('Error al reimprimir comanda:', err),
+            });
     }
 
     private playAlert(): void {
