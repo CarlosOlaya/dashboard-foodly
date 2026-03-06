@@ -891,11 +891,16 @@ export class ServicioComponent implements OnInit {
       allowOutsideClick: false,
     });
 
-    this.pdfService.imprimirPrecuenta(this.facturaId)
-      .then(() => this.alert.close())
-      .catch(err => {
-        this.alert.error(err?.message || 'No se pudo generar la precuenta');
-      });
+    // Llamar al endpoint que emite el evento WebSocket para impresion termica
+    this.platformService.getPrecuenta(this.facturaId).subscribe({
+      next: () => {
+        this.alert.close();
+        this.alert.success('Precuenta enviada a impresora', 2000);
+      },
+      error: (err) => {
+        this.alert.error(err?.error?.message || 'No se pudo generar la precuenta');
+      }
+    });
   }
 
   // ══════════════════════════════════════════════════════
