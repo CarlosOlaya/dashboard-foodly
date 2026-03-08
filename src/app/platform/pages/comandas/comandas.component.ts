@@ -157,7 +157,39 @@ export class ComandasComponent implements OnInit, OnDestroy {
 
     esAnulacion(c: Comanda): boolean {
         const p = c.payload as { tipo_comanda?: string } | null;
-        return p?.tipo_comanda === 'anulacion';
+        return p?.tipo_comanda === 'anulacion' || (c as any).tipo_comanda === 'anulacion' || c.estado === 'anulacion';
+    }
+
+    /**
+     * Retorna los items visibles de una comanda.
+     * Cuando la comanda llega vía WebSocket, `comanda.items` está vacío,
+     * así que extraemos del payload como fallback.
+     */
+    getItemsVisibles(c: Comanda): Array<{ nombre_producto: string; cantidad: number; comentario?: string }> {
+        // Prioridad 1: items de la relación (del modelo)
+        if (c.items && c.items.length > 0) {
+            return c.items;
+        }
+
+        // Prioridad 2: extraer del payload (WebSocket)
+        const p = c.payload as { items?: Array<{ nombre: string; cantidad: number; comentario?: string }> } | null;
+        if (p?.items && p.items.length > 0) {
+            return p.items.map(pi => ({
+                nombre_producto: pi.nombre || 'Item',
+                cantidad: pi.cantidad || 0,
+                comentario: pi.comentario,
+            }));
+        }
+
+        return [];
+    }
+
+    /**
+     * Retorna el motivo de anulación desde el payload.
+     */
+    getAnulacionMotivo(c: Comanda): string {
+        const p = c.payload as { motivo?: string } | null;
+        return p?.motivo || '';
     }
 
     get comandasVisibles(): Comanda[] {
@@ -197,6 +229,7 @@ export class ComandasComponent implements OnInit, OnDestroy {
         switch (estado) {
             case 'lista': return 'Lista';
             case 'entregada': return 'Entregada';
+            case 'anulacion': return 'Anulación';
             default: return estado;
         }
     }
@@ -205,6 +238,7 @@ export class ComandasComponent implements OnInit, OnDestroy {
         switch (estado) {
             case 'lista': return 'estado-lista';
             case 'entregada': return 'estado-entregada';
+            case 'anulacion': return 'estado-anulacion';
             default: return '';
         }
     }

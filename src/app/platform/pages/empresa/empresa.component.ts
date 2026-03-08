@@ -92,6 +92,7 @@ export class EmpresaComponent implements OnInit {
             moneda: [e.moneda],
             porcentaje_iva: [e.porcentaje_iva, [Validators.min(0), Validators.max(100)]],
             porcentaje_servicio: [e.porcentaje_servicio, [Validators.min(0), Validators.max(100)]],
+            porcentaje_propina_sugerida: [e.porcentaje_propina_sugerida ?? 10, [Validators.min(0), Validators.max(100)]],
             zona_horaria: [e.zona_horaria],
             prefijo_factura: [e.prefijo_factura],
             resolucion_dian: [e.resolucion_dian || ''],

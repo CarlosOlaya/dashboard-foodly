@@ -10,7 +10,7 @@ export interface ComandaItem {
     comentario?: string;
 }
 
-export type EstadoComanda = 'pendiente' | 'en_proceso' | 'impresa' | 'lista' | 'entregada' | 'completada' | 'anulada';
+export type EstadoComanda = 'pendiente' | 'en_proceso' | 'impresa' | 'lista' | 'entregada' | 'completada' | 'anulada' | 'anulacion';
 
 export interface Comanda {
     id: string;

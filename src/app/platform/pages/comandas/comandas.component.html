@@ -53,6 +53,12 @@
             [class.card-impresa]="comanda.estado === 'impresa'" [class.card-lista]="comanda.estado === 'lista'"
             [class.card-entregada]="comanda.estado === 'entregada'">
 
+            <!-- Anulación Banner -->
+            <div *ngIf="esAnulacion(comanda)" class="anulacion-banner">
+                <mat-icon>cancel</mat-icon>
+                <span>ANULACIÓN</span>
+            </div>
+
             <!-- Compact Header -->
             <div class="card-header-compact">
                 <div class="header-top">
@@ -62,10 +68,10 @@
                     </span>
 
                     <div class="timer-badge"
-                        [ngClass]="vistaActual === 'pendientes' ? getTimerClass(comanda.created_at) : 'timer-green'">
-                        <mat-icon>{{ vistaActual === 'pendientes' ? 'schedule' : 'check_circle' }}</mat-icon>
-                        {{ vistaActual === 'pendientes' ? getTimerLabel(comanda.created_at) :
-                        getEstadoLabel(comanda.estado) }}
+                        [ngClass]="esAnulacion(comanda) ? 'timer-danger' : (vistaActual === 'pendientes' ? getTimerClass(comanda.created_at) : 'timer-green')">
+                        <mat-icon>{{ esAnulacion(comanda) ? 'block' : (vistaActual === 'pendientes' ? 'schedule' : 'check_circle') }}</mat-icon>
+                        {{ esAnulacion(comanda) ? 'Anulación' : (vistaActual === 'pendientes' ? getTimerLabel(comanda.created_at) :
+                        getEstadoLabel(comanda.estado)) }}
                     </div>
                 </div>
 
@@ -76,19 +82,24 @@
                     <span *ngIf="comanda.area_destino" class="separator">•</span>
                     <span *ngIf="comanda.area_destino" class="area-name">{{ comanda.area_destino }}</span>
                 </div>
+
+                <!-- Motivo de anulación -->
+                <div *ngIf="esAnulacion(comanda) && getAnulacionMotivo(comanda)" class="anulacion-motivo">
+                    <mat-icon>info_outline</mat-icon>
+                    <span>{{ getAnulacionMotivo(comanda) }}</span>
+                </div>
             </div>
 
-            <!-- Items -->
+            <!-- Items (uses getItemsVisibles for fallback to payload.items) -->
             <div class="card-items">
                 <div class="items-header">
                     <span>Item</span>
                     <span>Cant.</span>
                 </div>
-                <div *ngFor="let item of comanda.items" class="item-block">
+                <div *ngFor="let item of getItemsVisibles(comanda)" class="item-block">
                     <div class="item-row">
-                        <span class="item-name">{{ item.nombre_producto }}</span>
-                        <span class="item-qty" [class.qty-anulacion]="esAnulacion(comanda)">{{ esAnulacion(comanda) ?
-                            '-' : '' }}{{ item.cantidad }}</span>
+                        <span class="item-name" [class.item-name-anulacion]="esAnulacion(comanda)">{{ item.nombre_producto }}</span>
+                        <span class="item-qty" [class.qty-anulacion]="esAnulacion(comanda)">{{ esAnulacion(comanda) ? '-' : '' }}{{ esAnulacion(comanda) ? (item.cantidad < 0 ? (-item.cantidad) : item.cantidad) : item.cantidad }}</span>
                     </div>
                     <div *ngIf="item.comentario" class="item-comment">
                         <mat-icon>chat_bubble_outline</mat-icon>

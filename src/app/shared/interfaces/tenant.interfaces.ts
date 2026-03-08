@@ -14,6 +14,7 @@ export interface Tenant {
     moneda: string;
     porcentaje_iva: number;
     porcentaje_servicio: number;
+    porcentaje_propina_sugerida: number;
     zona_horaria: string;
     prefijo_factura: string;
     siguiente_num_factura: number;
