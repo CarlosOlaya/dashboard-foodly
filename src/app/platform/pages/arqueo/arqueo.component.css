@@ -1031,3 +1031,45 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   FACTURA ELECTRÓNICA TOGGLE
+   ══════════════════════════════════════════════════════════ */
+.fe-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 116, 139, 0.15);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.fe-toggle mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.fe-toggle:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+    background: var(--brand-tint-05);
+}
+
+.fe-toggle.fe-active {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+    background: var(--brand-tint-08);
+}
+
+.fe-toggle.fe-active mat-icon {
+    color: var(--brand-primary) !important;
+}

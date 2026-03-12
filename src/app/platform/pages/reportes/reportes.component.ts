@@ -57,7 +57,7 @@ export class ReportesComponent implements OnInit {
     tabs: Tab[] = [
         { id: 'resumen', label: 'Resumen', icon: 'dashboard' },
         { id: 'productos', label: 'Productos', icon: 'restaurant_menu' },
-        { id: 'propinas', label: 'Propinas', icon: 'volunteer_activism' },
+        { id: 'propinas', label: 'Servicio', icon: 'volunteer_activism' },
         { id: 'empleados', label: 'Empleados', icon: 'badge' },
         { id: 'pagos', label: 'Pagos', icon: 'payments' },
         { id: 'descuentos', label: 'Descuentos', icon: 'sell' },
@@ -227,7 +227,10 @@ export class ReportesComponent implements OnInit {
 
     // Utility
     private toISO(d: Date): string {
-        return d.toISOString().slice(0, 10);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
     }
     // ── Imprimir reporte en impresora térmica ──
     imprimirReporte(): void {

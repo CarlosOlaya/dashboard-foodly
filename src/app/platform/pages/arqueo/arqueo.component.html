@@ -85,20 +85,20 @@
                 <div class="caja-resumen resumen-ventas">
                     <h4><mat-icon>trending_up</mat-icon> Ventas</h4>
                     <div class="caja-row">
-                        <span>Ventas netas</span>
-                        <span><b>${{ formatMoney(resumen.total_ventas - resumen.total_propinas) }}</b></span>
+                        <span>Total cobrado</span>
+                        <span><b>${{ formatMoney(resumen.total_ventas) }}</b></span>
                     </div>
                     <div class="caja-row">
                         <span>Servicio</span>
                         <span><b>${{ formatMoney(resumen.total_propinas) }}</b></span>
                     </div>
-                    <div class="caja-row">
-                        <span>Descuentos</span>
-                        <span class="pay-negative">-${{ formatMoney(resumen.total_descuentos) }}</span>
+                    <div class="caja-row" *ngIf="resumen.total_descuentos > 0">
+                        <span>Dcto mesa aplicados</span>
+                        <span class="pay-negative">${{ formatMoney(resumen.total_descuentos) }}</span>
                     </div>
                     <div class="caja-row caja-subtotal">
                         <span><b>Ingreso total</b></span>
-                        <span><b>${{ formatMoney(resumen.total_ventas - resumen.total_descuentos) }}</b></span>
+                        <span><b>${{ formatMoney(resumen.total_ventas + resumen.total_propinas) }}</b></span>
                     </div>
                 </div>
                 <div class="caja-resumen resumen-facturas">
@@ -219,6 +219,13 @@
                             </div>
                         </div>
                         <div class="reciente-right">
+                            <button class="fe-toggle"
+                                [class.fe-active]="f.es_factura_electronica"
+                                (click)="toggleFacturaElectronica(f.id, !f.es_factura_electronica, $event)"
+                                [title]="f.es_factura_electronica ? 'Desmarcar factura electrónica' : 'Marcar como factura electrónica'">
+                                <mat-icon>{{ f.es_factura_electronica ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+                                <small>FE</small>
+                            </button>
                             <span class="reciente-total">${{ formatMoney(f.total) }}</span>
                             <span class="reciente-metodo">{{ f.metodo_pago }}</span>
                         </div>

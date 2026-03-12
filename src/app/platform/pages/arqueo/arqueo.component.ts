@@ -364,4 +364,20 @@ export class ArqueoComponent implements OnInit, OnDestroy {
       default: return 'payment';
     }
   }
+
+  toggleFacturaElectronica(facturaId: string, value: boolean, event: Event): void {
+    event.stopPropagation();
+    this.platformService.toggleFacturaElectronica(facturaId, value).subscribe({
+      next: () => {
+        // Update local state immediately
+        if (this.resumen?.recientes) {
+          const f = this.resumen.recientes.find((r: any) => r.id === facturaId);
+          if (f) (f as any).es_factura_electronica = value;
+        }
+      },
+      error: (err: any) => {
+        this.alert.error(err?.error?.message || 'Error al marcar factura electrónica');
+      }
+    });
+  }
 }

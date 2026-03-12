@@ -6,15 +6,18 @@ import { MaterialModule } from '../../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ReportesComponent } from '../pages/reportes/reportes.component';
+import { MonitorComponent } from '../pages/monitor/monitor.component';
 import { adminGuard } from '../../guards/admin.guard';
 
 const routes: Routes = [
     { path: 'reportes', component: ReportesComponent, canActivate: [adminGuard] },
+    { path: 'monitor', component: MonitorComponent, canActivate: [adminGuard] },
 ];
 
 @NgModule({
     declarations: [
         ReportesComponent,
+        MonitorComponent,
     ],
     imports: [
         CommonModule,

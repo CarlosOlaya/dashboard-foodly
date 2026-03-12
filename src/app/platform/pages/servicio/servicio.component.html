@@ -189,13 +189,13 @@
           <div *ngIf="itemsFactura.length > 0" class="cuenta-items">
             <div class="cuenta-row" *ngFor="let item of itemsFactura"
               [class.cuenta-row-selected]="itemSeleccionado?.id === item.id"
-              [class.cuenta-row-cortesia]="(item.descuento_porcentaje || 0) >= 100"
+              [class.cuenta-row-cortesia]="item.es_cortesia"
               (click)="seleccionarItemCuenta(item)">
               <div class="cuenta-item-info">
                 <span class="cuenta-item-nombre">{{ item.plato_nombre }}</span>
-                <span *ngIf="(item.descuento_porcentaje || 0) >= 100" class="cuenta-cortesia-tag"><mat-icon
+                <span *ngIf="item.es_cortesia" class="cuenta-cortesia-tag"><mat-icon
                     class="cuenta-tag-icon">card_giftcard</mat-icon> Cortesía</span>
-                <span *ngIf="(item.descuento_porcentaje || 0) > 0 && (item.descuento_porcentaje || 0) < 100"
+                <span *ngIf="!item.es_cortesia && (item.descuento_porcentaje || 0) > 0"
                   class="cuenta-desc-tag">-{{ item.descuento_porcentaje }}%</span>
               </div>
               <span class="qty-badge">x{{ item.cantidad }}</span>
@@ -204,9 +204,15 @@
               </div>
               <div class="cuenta-item-subtotal" *ngIf="(item.descuento_monto || 0) > 0">
                 <span style="text-decoration:line-through; font-size:11px; color:#aaa; margin-right:4px;">{{ item.precio * item.cantidad | moneda }}</span>
-                <span style="color:#16a34a; font-weight:700;">{{ (item.precio * item.cantidad) - (item.descuento_monto || 0) | moneda }}</span>
+                <span [style.color]="item.es_cortesia ? '#0891B2' : '#16a34a'" style="font-weight:700;">{{ item.es_cortesia ? '$0' : ((item.precio * item.cantidad) - (item.descuento_monto || 0) | moneda) }}</span>
               </div>
             </div>
+          </div>
+
+          <!-- Banner descuento de mesa -->
+          <div *ngIf="facturaDescuento > 0" class="mesa-descuento-banner">
+            <mat-icon>discount</mat-icon>
+            <span>Descuento mesa: -${{ facturaDescuento | number:'1.0-0' }}</span>
           </div>
 
           <div *ngIf="itemsFactura.length === 0" class="empty-state" style="padding: 40px 0;">

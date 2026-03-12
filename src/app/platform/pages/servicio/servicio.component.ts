@@ -122,6 +122,7 @@ export class ServicioComponent implements OnInit {
               hora_pedido: d.hora_pedido || d.created_at || '',
               descuento_porcentaje: Number(d.descuento_porcentaje) || 0,
               descuento_monto: Number(d.descuento_monto) || 0,
+              es_cortesia: Boolean(d.es_cortesia),
             }))
             .sort((a: PedidoItem, b: PedidoItem) => new Date(b.hora_pedido!).getTime() - new Date(a.hora_pedido!).getTime());
         }
@@ -710,7 +711,7 @@ export class ServicioComponent implements OnInit {
     });
 
     if (!result.isConfirmed) return;
-    this.platformService.descuentoItem(item.id!, 'porcentaje', 100).subscribe({
+    this.platformService.descuentoItem(item.id!, 'porcentaje', 100, true).subscribe({
       next: () => {
         this.alert.success(`¡Cortesía aplicada! ${item.plato_nombre}`);
         this.cargarFactura();
@@ -751,7 +752,7 @@ export class ServicioComponent implements OnInit {
     });
 
     if (!result.isConfirmed) return;
-    this.platformService.descuentoMesa(this.facturaId, 'porcentaje', 100).subscribe({
+    this.platformService.descuentoMesa(this.facturaId, 'porcentaje', 100, true).subscribe({
       next: () => {
         this.alert.success(`¡Cortesía de mesa aplicada! Mesa ${this.mesaNumero} — 100% descuento`);
         this.cargarFactura();

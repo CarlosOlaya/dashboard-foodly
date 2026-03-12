@@ -1,0 +1,283 @@
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE HEADER                          -->
+<!-- ══════════════════════════════════════ -->
+<div class="page-header monitor-header">
+    <div>
+        <h1 class="page-title"><mat-icon>monitoring</mat-icon>Monitor en Vivo</h1>
+        <p class="page-subtitle">Vista del administrador · Rendimiento del restaurante</p>
+    </div>
+
+    <div class="header-controls">
+        <!-- Select turno -->
+        <div class="turno-select-wrap">
+            <mat-icon>swap_vert</mat-icon>
+            <select class="turno-select" [(ngModel)]="turnoSeleccionado" (change)="onTurnoChange()">
+                <option value="actual">Turno Actual</option>
+                <optgroup label="Turnos anteriores" *ngIf="historial.length > 0">
+                    <option *ngFor="let t of historial" [value]="t.id">
+                        {{ t.fecha | date:'dd/MM' }} · {{ t.hora_apertura | date:'HH:mm' }}
+                        {{ t.hora_cierre ? '— ' + (t.hora_cierre | date:'HH:mm') : '' }}
+                        · ${{ fmt(t.total_ventas) }}
+                    </option>
+                </optgroup>
+            </select>
+        </div>
+
+        <button class="btn-ghost" (click)="refrescar()" title="Refrescar">
+            <mat-icon>refresh</mat-icon>
+        </button>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div *ngIf="loading">
+    <app-loading message="Cargando monitor..."></app-loading>
+</div>
+
+<!-- ═══ NO HAY TURNO ═══ -->
+<div class="empty-state" *ngIf="!loading && !turnoActivo && !turnoCerrado">
+    <div class="empty-icon-wrap">
+        <mat-icon>monitoring</mat-icon>
+    </div>
+    <h3>No hay turno abierto</h3>
+    <p>Cuando se abra un turno de caja, verás aquí toda la actividad en tiempo real</p>
+    <a class="btn-outline" routerLink="../reportes">
+        <mat-icon>analytics</mat-icon>
+        Ir a Reportes Históricos
+    </a>
+</div>
+
+<!-- ═══ HAY TURNO (activo o histórico) ═══ -->
+<ng-container *ngIf="!loading && (turnoActivo || turnoCerrado)">
+
+    <!-- ── Barra de estado ── -->
+    <div class="status-bar" [class.status-live]="turnoActivo" [class.status-closed]="turnoCerrado">
+        <div class="status-left">
+            <span class="status-badge" *ngIf="turnoActivo">
+                <span class="pulse-dot"></span> EN VIVO
+            </span>
+            <span class="status-badge status-cerrado" *ngIf="turnoCerrado">
+                <mat-icon>lock</mat-icon> CERRADO
+            </span>
+            <span class="status-meta" *ngIf="data?.turno?.empleado">
+                <mat-icon>person</mat-icon> {{ data.turno.empleado }}
+            </span>
+            <span class="status-meta" *ngIf="data?.turno?.hora_apertura">
+                <mat-icon>schedule</mat-icon> {{ data.turno.hora_apertura | date:'HH:mm' }}
+                <ng-container *ngIf="turnoActivo"> · {{ tiempoActivo }}</ng-container>
+                <ng-container *ngIf="data?.turno?.hora_cierre"> — {{ data.turno.hora_cierre | date:'HH:mm' }}</ng-container>
+            </span>
+        </div>
+        <span class="status-refresh" *ngIf="turnoActivo">
+            Auto-refresh 30s
+        </span>
+    </div>
+
+    <!-- ═══ KPIs ROW ═══ -->
+    <div class="kpi-row">
+        <div class="kpi-card kpi-primary">
+            <div class="kpi-icon"><mat-icon>attach_money</mat-icon></div>
+            <div class="kpi-content">
+                <span class="kpi-value">${{ fmt(data.kpis.total_ventas) }}</span>
+                <span class="kpi-label">Ventas del Turno</span>
+            </div>
+        </div>
+        <div class="kpi-card kpi-info">
+            <div class="kpi-icon"><mat-icon>receipt_long</mat-icon></div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ data.kpis.num_facturas }}</span>
+                <span class="kpi-label">Facturas</span>
+            </div>
+        </div>
+        <div class="kpi-card kpi-purple" *ngIf="turnoActivo">
+            <div class="kpi-icon"><mat-icon>table_bar</mat-icon></div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ data.kpis.mesas_activas }} / {{ data.kpis.mesas_totales }}</span>
+                <span class="kpi-label">Mesas Activas</span>
+            </div>
+        </div>
+        <div class="kpi-card kpi-teal">
+            <div class="kpi-icon"><mat-icon>confirmation_number</mat-icon></div>
+            <div class="kpi-content">
+                <span class="kpi-value">${{ fmt(data.kpis.ticket_promedio) }}</span>
+                <span class="kpi-label">Ticket Promedio</span>
+            </div>
+        </div>
+        <div class="kpi-card kpi-green">
+            <div class="kpi-icon"><mat-icon>volunteer_activism</mat-icon></div>
+            <div class="kpi-content">
+                <span class="kpi-value">${{ fmt(data.kpis.total_propinas) }}</span>
+                <span class="kpi-label">Servicio</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ GRID PRINCIPAL ═══ -->
+    <div class="monitor-grid">
+
+        <!-- ── COL 1: Métodos de Pago + Servicio ── -->
+        <div class="monitor-col">
+            <!-- Métodos Pago PIE -->
+            <div class="card-glass monitor-card">
+                <h3 class="card-title"><mat-icon>pie_chart</mat-icon> Ventas por Método</h3>
+                <div class="chart-wrap" *ngIf="chartMetodos.length > 0">
+                    <ngx-charts-pie-chart
+                        [results]="chartMetodos"
+                        [scheme]="pieColors"
+                        [labels]="true"
+                        [doughnut]="true"
+                        [arcWidth]="0.4"
+                        [tooltipDisabled]="false"
+                        [view]="[280, 220]">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div class="method-list">
+                    <div class="method-row" *ngIf="data.metodos_pago.efectivo > 0">
+                        <span><mat-icon>payments</mat-icon> Efectivo</span>
+                        <b>${{ fmt(data.metodos_pago.efectivo) }}</b>
+                    </div>
+                    <div class="method-row" *ngIf="data.metodos_pago.datafono > 0">
+                        <span><mat-icon>credit_card</mat-icon> Datáfono</span>
+                        <b>${{ fmt(data.metodos_pago.datafono) }}</b>
+                    </div>
+                    <div class="method-row" *ngIf="data.metodos_pago.transferencia > 0">
+                        <span><mat-icon>account_balance</mat-icon> Transferencia</span>
+                        <b>${{ fmt(data.metodos_pago.transferencia) }}</b>
+                    </div>
+                    <div class="method-row" *ngIf="data.metodos_pago.credito > 0">
+                        <span><mat-icon>schedule</mat-icon> Crédito</span>
+                        <b>${{ fmt(data.metodos_pago.credito) }}</b>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Servicio PIE -->
+            <div class="card-glass monitor-card" *ngIf="data.propinas.total > 0">
+                <h3 class="card-title"><mat-icon>volunteer_activism</mat-icon> Servicio por Método</h3>
+                <div class="chart-wrap" *ngIf="chartPropinas.length > 0">
+                    <ngx-charts-pie-chart
+                        [results]="chartPropinas"
+                        [scheme]="pieColors"
+                        [labels]="true"
+                        [doughnut]="true"
+                        [arcWidth]="0.4"
+                        [view]="[280, 200]">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div class="method-row propina-total">
+                    <span>Total Servicio</span>
+                    <b>${{ fmt(data.propinas.total) }}</b>
+                </div>
+            </div>
+
+            <!-- Info boxes -->
+            <div class="card-glass monitor-card info-boxes">
+                <div class="info-box" *ngIf="data.descuentos_cortesias.total_descuentos > 0 || data.descuentos_cortesias.total_cortesias > 0">
+                    <h4><mat-icon>sell</mat-icon> Descuentos & Cortesías</h4>
+                    <div class="info-row" *ngIf="data.descuentos_cortesias.descuento_mesa > 0">
+                        <span>Dcto Mesa</span><span class="val-negative">-${{ fmt(data.descuentos_cortesias.descuento_mesa) }}</span>
+                    </div>
+                    <div class="info-row" *ngIf="data.descuentos_cortesias.descuento_items > 0">
+                        <span>Dcto Items</span><span class="val-negative">-${{ fmt(data.descuentos_cortesias.descuento_items) }}</span>
+                    </div>
+                    <div class="info-row" *ngIf="data.descuentos_cortesias.total_cortesias > 0">
+                        <span>Cortesías</span><span class="val-cortesia">-${{ fmt(data.descuentos_cortesias.total_cortesias) }}</span>
+                    </div>
+                </div>
+                <div class="info-box" *ngIf="data.anulaciones.num_facturas > 0 || data.anulaciones.items_anulados > 0">
+                    <h4><mat-icon>block</mat-icon> Anulaciones</h4>
+                    <div class="info-row">
+                        <span>Facturas</span><span class="val-negative">{{ data.anulaciones.num_facturas }}</span>
+                    </div>
+                    <div class="info-row" *ngIf="data.anulaciones.monto > 0">
+                        <span>Monto</span><span class="val-negative">${{ fmt(data.anulaciones.monto) }}</span>
+                    </div>
+                </div>
+                <div class="info-box" *ngIf="data.factura_electronica.cantidad > 0">
+                    <h4><mat-icon>verified</mat-icon> Fact. Electrónicas</h4>
+                    <div class="info-row">
+                        <span>Cantidad</span><b>{{ data.factura_electronica.cantidad }}</b>
+                    </div>
+                    <div class="info-row">
+                        <span>Total FE</span><b>${{ fmt(data.factura_electronica.total) }}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── COL 2: Productos (Top PLU) ── -->
+        <div class="monitor-col">
+            <div class="card-glass monitor-card plu-card">
+                <h3 class="card-title">
+                    <mat-icon>restaurant_menu</mat-icon> Productos Vendidos
+                    <small class="plu-total-badge">{{ pluTotal }} items · ${{ fmt(pluTotalValor) }}</small>
+                </h3>
+                <!-- Bar chart top 10 -->
+                <div class="chart-wrap" *ngIf="chartProductos.length > 0">
+                    <ngx-charts-bar-horizontal
+                        [results]="chartProductos"
+                        [scheme]="barColors"
+                        [xAxisLabel]="'Cantidad'"
+                        [showXAxisLabel]="false"
+                        [showYAxisLabel]="false"
+                        [gradient]="true"
+                        [view]="[380, Math.min(chartProductos.length * 32 + 20, 340)]">
+                    </ngx-charts-bar-horizontal>
+                </div>
+                <!-- List completa -->
+                <div class="plu-list">
+                    <div class="plu-header">
+                        <span>Producto</span>
+                        <span>Cant.</span>
+                        <span>Valor</span>
+                    </div>
+                    <div class="plu-row" *ngFor="let p of pluItems; let i = index">
+                        <span class="plu-name">
+                            <span class="plu-rank">{{ i + 1 }}</span>
+                            {{ p.nombre }}
+                        </span>
+                        <span class="plu-cant">{{ p.cantidad }}</span>
+                        <span class="plu-val">${{ fmt(p.valor) }}</span>
+                    </div>
+                    <button class="btn-expand" *ngIf="(data?.productos || []).length > pluDisplayLimit"
+                            (click)="showAllPlu = !showAllPlu">
+                        <mat-icon>{{ showAllPlu ? 'expand_less' : 'expand_more' }}</mat-icon>
+                        {{ showAllPlu ? 'Ver menos' : 'Ver todos (' + (data?.productos?.length || 0) + ')' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── COL 3: Facturas recientes ── -->
+        <div class="monitor-col">
+            <div class="card-glass monitor-card facturas-card">
+                <h3 class="card-title">
+                    <mat-icon>receipt</mat-icon> Facturas del Turno
+                    <small class="facturas-count">{{ (data?.facturas || []).length }}</small>
+                </h3>
+                <div class="facturas-scroll">
+                    <div class="factura-item" *ngFor="let f of data?.facturas || []">
+                        <div class="factura-left">
+                            <span class="factura-num">#{{ f.numero_factura }}</span>
+                            <span class="factura-meta">
+                                <ng-container *ngIf="f.mesa_numero">Mesa {{ f.mesa_numero }} · </ng-container>
+                                {{ f.mesero }}
+                                <ng-container *ngIf="f.fecha_cierre"> · {{ f.fecha_cierre | date:'HH:mm' }}</ng-container>
+                            </span>
+                        </div>
+                        <div class="factura-right">
+                            <span class="fe-badge" *ngIf="f.es_factura_electronica">FE</span>
+                            <span class="factura-total">${{ fmt(f.total) }}</span>
+                            <span class="factura-metodo">{{ f.metodo_pago }}</span>
+                        </div>
+                    </div>
+                    <div class="facturas-empty" *ngIf="(data?.facturas || []).length === 0">
+                        <mat-icon>receipt_long</mat-icon>
+                        <p>Sin facturas en este turno</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-container>

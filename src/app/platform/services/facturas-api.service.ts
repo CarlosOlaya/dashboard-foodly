@@ -54,12 +54,12 @@ export class FacturasApiService extends ApiBaseService {
         return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/transferir-items`, { detalle_ids: detalleIds, mesa_destino_id: mesaDestinoId, motivo });
     }
 
-    descuentoItem(detalleId: string, tipo: 'porcentaje' | 'valor', valor: number): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/detalle/${detalleId}/descuento`, { tipo, valor });
+    descuentoItem(detalleId: string, tipo: 'porcentaje' | 'valor', valor: number, esCortesia = false): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/detalle/${detalleId}/descuento`, { tipo, valor, es_cortesia: esCortesia });
     }
 
-    descuentoMesa(facturaId: string, tipo: 'porcentaje' | 'valor', valor: number): Observable<ApiResponse> {
-        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/${facturaId}/descuento`, { tipo, valor });
+    descuentoMesa(facturaId: string, tipo: 'porcentaje' | 'valor', valor: number, esCortesia = false): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/${facturaId}/descuento`, { tipo, valor, es_cortesia: esCortesia });
     }
 
     getPrecuenta(facturaId: string, servicioPct = 0): Observable<PrecuentaResponse> {
@@ -72,5 +72,61 @@ export class FacturasApiService extends ApiBaseService {
 
     getDashboard(): Observable<DashboardResponse> {
         return this.http.get<DashboardResponse>(`${this.baseUrl}/facturacion/dashboard`);
+    }
+
+    toggleFacturaElectronica(facturaId: string, value: boolean): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/${facturaId}/factura-electronica`, { es_factura_electronica: value });
+    }
+
+    corregirFactura(facturaId: string, datos: { metodo_pago?: string; propina?: number; motivo: string }): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/${facturaId}/corregir`, datos);
+    }
+
+    getCorrecciones(facturaId: string): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/facturacion/${facturaId}/correcciones`);
+    }
+
+    reimprimir(facturaId: string): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${this.baseUrl}/facturacion/reimprimir/${facturaId}`, {});
+    }
+
+    emitirNotaCredito(facturaId: string, datos: { motivo: string; mesa_id: string; tipo?: string }): Observable<ApiResponse> {
+        return this.http.put<ApiResponse>(`${this.baseUrl}/facturacion/${facturaId}/nota-credito`, datos);
+    }
+
+    getNotasCredito(facturaId?: string): Observable<any[]> {
+        const query = facturaId ? `?factura_id=${facturaId}` : '';
+        return this.http.get<any[]>(`${this.baseUrl}/facturacion/notas-credito${query}`);
+    }
+
+    // ── AUDITORÍA ──
+    getAuditLog(filtros: Record<string, string> = {}): Observable<any> {
+        const params = new URLSearchParams(filtros).toString();
+        return this.http.get<any>(`${this.baseUrl}/facturacion/audit-log?${params}`);
+    }
+
+    validarConsecutivos(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/facturacion/audit-consecutivos`);
+    }
+
+    getAuditResumen(desde?: string, hasta?: string): Observable<any> {
+        const params = new URLSearchParams();
+        if (desde) params.set('desde', desde);
+        if (hasta) params.set('hasta', hasta);
+        return this.http.get<any>(`${this.baseUrl}/facturacion/audit-resumen?${params}`);
+    }
+
+    getAuditNC(desde?: string, hasta?: string): Observable<any[]> {
+        const params = new URLSearchParams();
+        if (desde) params.set('desde', desde);
+        if (hasta) params.set('hasta', hasta);
+        return this.http.get<any[]>(`${this.baseUrl}/facturacion/audit-notas-credito?${params}`);
+    }
+
+    getAuditCorrecciones(desde?: string, hasta?: string): Observable<any[]> {
+        const params = new URLSearchParams();
+        if (desde) params.set('desde', desde);
+        if (hasta) params.set('hasta', hasta);
+        return this.http.get<any[]>(`${this.baseUrl}/facturacion/audit-correcciones?${params}`);
     }
 }

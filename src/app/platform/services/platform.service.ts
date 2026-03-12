@@ -100,11 +100,24 @@ export class PlatformService {
   cerrarFacturaDividida(id: string, pagos: Array<{ metodo: string; monto: number; propina?: number; ref?: string; pagado_por?: string }>, propina = 0, descuentoPct = 0): Observable<ApiResponse> { return this.facturasSvc.cerrarFacturaDividida(id, pagos, propina, descuentoPct); }
   reabrirFactura(id: string, mesaId: string): Observable<ApiResponse> { return this.facturasSvc.reabrirFactura(id, mesaId); }
   anularFactura(id: string, motivo: string): Observable<ApiResponse> { return this.facturasSvc.anularFactura(id, motivo); }
-  descuentoItem(detalleId: string, tipo: 'porcentaje' | 'valor', valor: number): Observable<ApiResponse> { return this.facturasSvc.descuentoItem(detalleId, tipo, valor); }
-  descuentoMesa(facturaId: string, tipo: 'porcentaje' | 'valor', valor: number): Observable<ApiResponse> { return this.facturasSvc.descuentoMesa(facturaId, tipo, valor); }
+  descuentoItem(detalleId: string, tipo: 'porcentaje' | 'valor', valor: number, esCortesia = false): Observable<ApiResponse> { return this.facturasSvc.descuentoItem(detalleId, tipo, valor, esCortesia); }
+  descuentoMesa(facturaId: string, tipo: 'porcentaje' | 'valor', valor: number, esCortesia = false): Observable<ApiResponse> { return this.facturasSvc.descuentoMesa(facturaId, tipo, valor, esCortesia); }
   getPrecuenta(facturaId: string, servicioPct = 0): Observable<PrecuentaResponse> { return this.facturasSvc.getPrecuenta(facturaId, servicioPct); }
   getVentasDiarias(): Observable<VentaDiaria[]> { return this.facturasSvc.getVentasDiarias(); }
   getDashboard(): Observable<DashboardResponse> { return this.facturasSvc.getDashboard(); }
+  toggleFacturaElectronica(facturaId: string, value: boolean): Observable<ApiResponse> { return this.facturasSvc.toggleFacturaElectronica(facturaId, value); }
+  corregirFactura(facturaId: string, datos: { metodo_pago?: string; propina?: number; motivo: string }): Observable<ApiResponse> { return this.facturasSvc.corregirFactura(facturaId, datos); }
+  getCorrecciones(facturaId: string): Observable<any[]> { return this.facturasSvc.getCorrecciones(facturaId); }
+  reimprimirFactura(facturaId: string): Observable<ApiResponse> { return this.facturasSvc.reimprimir(facturaId); }
+  emitirNotaCredito(facturaId: string, datos: { motivo: string; mesa_id: string; tipo?: string }): Observable<ApiResponse> { return this.facturasSvc.emitirNotaCredito(facturaId, datos); }
+  getNotasCredito(facturaId?: string): Observable<any[]> { return this.facturasSvc.getNotasCredito(facturaId); }
+
+  // ── AUDITORÍA ──────────────────────────────────────────
+  getAuditLog(filtros: Record<string, string> = {}): Observable<any> { return this.facturasSvc.getAuditLog(filtros); }
+  validarConsecutivos(): Observable<any> { return this.facturasSvc.validarConsecutivos(); }
+  getAuditResumen(desde?: string, hasta?: string): Observable<any> { return this.facturasSvc.getAuditResumen(desde, hasta); }
+  getAuditNC(desde?: string, hasta?: string): Observable<any[]> { return this.facturasSvc.getAuditNC(desde, hasta); }
+  getAuditCorrecciones(desde?: string, hasta?: string): Observable<any[]> { return this.facturasSvc.getAuditCorrecciones(desde, hasta); }
 
   // ── COMANDAS ──────────────────────────────────────────
   generarComanda(facturaId: string, items: ComandaItemRequest[]): Observable<ApiResponse> { return this.comandasSvc.generarComanda(facturaId, items); }
@@ -121,6 +134,8 @@ export class PlatformService {
   getHistorialTurnos(): Observable<TurnoCaja[]> { return this.turnosSvc.getHistorialTurnos(); }
   getTurno(id: string): Observable<TurnoCaja> { return this.turnosSvc.getTurno(id); }
   getResumenTurnoEnVivo(): Observable<ResumenTurnoEnVivo> { return this.turnosSvc.getResumenTurnoEnVivo(); }
+  getMonitorData(): Observable<any> { return this.turnosSvc.getMonitorData(); }
+  getMonitorTurno(turnoId: string): Observable<any> { return this.turnosSvc.getMonitorTurno(turnoId); }
 
   // ── PROVEEDORES ───────────────────────────────────────
   getProveedores(): Observable<Proveedor[]> { return this.proveedoresSvc.getProveedores(); }

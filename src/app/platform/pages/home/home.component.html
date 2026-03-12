@@ -241,6 +241,14 @@
         <div class="more-sheet-title">Menú</div>
 
         <div class="more-sheet-grid">
+            <!-- Monitor (admin) -->
+            <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./monitor" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: rgba(6,249,249,0.1);">
+                    <mat-icon style="color: var(--brand-primary);">monitoring</mat-icon>
+                </div>
+                <span>Monitor</span>
+            </a>
+
             <!-- Reportes (admin) -->
             <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./reportes" (click)="showMoreMenu = false">
                 <div class="more-sheet-icon" style="background: var(--bg-info-tint);">

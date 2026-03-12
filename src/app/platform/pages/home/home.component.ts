@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   // ── Hero item (admin only) ──
-  navDashboard: NavItem = { label: 'Reportes', icon: 'analytics', route: './reportes' };
+  navDashboard: NavItem = { label: 'Monitor', icon: 'monitoring', route: './monitor' };
 
   // ── Operaciones — mesero, bartender, cocinero, cajero, admin ──
   navOperaciones: NavItem[] = [
@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   navFinanzas: NavItem[] = [
     { label: 'Facturación', icon: 'receipt_long', route: './facturacion' },
     { label: 'Arqueo', icon: 'point_of_sale', route: './arqueo' },
+    { label: 'Reportes', icon: 'analytics', route: './reportes' },
   ];
 
   // ── Gestión — admin only ──
@@ -157,6 +158,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       '/carta': 'Carta',
       '/facturacion': 'Cobros',
       '/arqueo': 'Arqueo',
+      '/monitor': 'Monitor',
+      '/reportes': 'Reportes',
       '/finanzas': 'Dashboard',
       '/clientes': 'Clientes',
       '/proveedores': 'Proveedores',

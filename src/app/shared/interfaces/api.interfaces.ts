@@ -109,6 +109,7 @@ export interface ResumenTurnoEnVivo {
         total: number;
         metodo_pago: string;
         fecha_cierre: string;
+        es_factura_electronica: boolean;
     }>;
 }
 

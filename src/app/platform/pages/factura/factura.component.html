@@ -106,7 +106,7 @@
                 <span>-{{ factura.descuento_monto | currency:'COP':'$ ':'1.0-0' }}</span>
             </div>
             <div class="total-row" *ngIf="(factura.propina || 0) > 0">
-                <span>Propina</span>
+                <span>Servicio</span>
                 <span>{{ factura.propina | currency:'COP':'$ ':'1.0-0' }}</span>
             </div>
             <div class="total-row grand">
@@ -126,14 +126,53 @@
 
         <!-- Acciones sobre factura cerrada -->
         <div *ngIf="factura.estado === 'cerrada'" class="factura-actions">
-            <button class="btn-warning" (click)="reabrirFactura()">
-                <mat-icon>replay</mat-icon>
-                Reabrir Cuenta
+            <button class="btn-primary" (click)="corregirFactura()">
+                <mat-icon>edit_note</mat-icon>
+                Corregir
             </button>
-            <button class="btn-danger" (click)="anularFactura()">
-                <mat-icon>cancel</mat-icon>
-                Anular Factura
+            <button class="btn-ghost" (click)="reimprimirFactura()">
+                <mat-icon>print</mat-icon>
+                Reimprimir
             </button>
+            <button class="btn-nc" (click)="emitirNotaCredito()">
+                <mat-icon>receipt_long</mat-icon>
+                Nota Crédito
+            </button>
+        </div>
+
+        <!-- Info NC que anuló esta factura -->
+        <div *ngIf="factura.nota_credito_id" class="nc-info">
+            <mat-icon>description</mat-icon>
+            <div>
+                <strong>Anulada por Nota Crédito</strong>
+                <p>{{ factura.motivo_anulacion }}</p>
+            </div>
+        </div>
+
+        <!-- Info si esta factura fue creada como reemplazo -->
+        <div *ngIf="factura.factura_origen_nc_id" class="nc-reemplazo-info">
+            <mat-icon>info</mat-icon>
+            <span>Esta factura fue creada como refacturación por Nota Crédito</span>
+        </div>
+
+        <!-- Historial de correcciones -->
+        <div *ngIf="correcciones.length > 0" class="correcciones-section">
+            <h4 class="section-title" style="margin-top: 24px;"><mat-icon style="vertical-align: middle;">history</mat-icon> Historial de Correcciones</h4>
+            <div *ngFor="let c of correcciones" class="correccion-item">
+                <div class="correccion-header">
+                    <span class="correccion-fecha">{{ c.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+                    <span class="correccion-tipo">{{ c.tipo === 'metodo_pago' ? 'Método de pago' : c.tipo === 'servicio' ? 'Servicio' : 'Método + Servicio' }}</span>
+                </div>
+                <div class="correccion-cambios">
+                    <div *ngFor="let ch of c.cambios" class="correccion-cambio">
+                        <span class="campo">{{ ch.campo === 'metodo_pago' ? 'Método' : ch.campo === 'servicio' ? 'Servicio' : 'Total' }}:</span>
+                        <span class="anterior">{{ ch.campo === 'metodo_pago' ? (ch.anterior | titlecase) : ('$' + formatMoney(ch.anterior)) }}</span>
+                        <mat-icon style="font-size: 14px; width: 14px; height: 14px;">arrow_forward</mat-icon>
+                        <span class="nuevo">{{ ch.campo === 'metodo_pago' ? (ch.nuevo | titlecase) : ('$' + formatMoney(ch.nuevo)) }}</span>
+                    </div>
+                </div>
+                <div class="correccion-motivo"><strong>Motivo:</strong> {{ c.motivo }}</div>
+            </div>
         </div>
     </div>
 </div>

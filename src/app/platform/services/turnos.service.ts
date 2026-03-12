@@ -33,4 +33,12 @@ export class TurnosService extends ApiBaseService {
     getResumenTurnoEnVivo(): Observable<ResumenTurnoEnVivo> {
         return this.http.get<ResumenTurnoEnVivo>(`${this.baseUrl}/arqueo/activo/resumen`);
     }
+
+    getMonitorData(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/arqueo/monitor`);
+    }
+
+    getMonitorTurno(turnoId: string): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/arqueo/monitor/${turnoId}`);
+    }
 }

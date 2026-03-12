@@ -14,6 +14,7 @@ export interface DetalleFactura {
     comentario?: string;
     descuento_porcentaje?: number;
     descuento_monto?: number;
+    es_cortesia?: boolean;
     estado_pedido?: string;
     hora_pedido?: string;
     hora_entrega?: string;
@@ -57,7 +58,11 @@ export interface Factura {
     total: number;
     metodo_pago?: string;
     es_pago_dividido?: boolean;
+    es_factura_electronica?: boolean;
     motivo_anulacion?: string;
+    nota_credito_id?: string;
+    factura_origen_nc_id?: string;
+    notas?: string;
     detalles?: DetalleFactura[];
     pagos?: FacturaPago[];
 }
@@ -75,6 +80,7 @@ export interface PedidoItem {
     hora_pedido?: string;
     descuento_porcentaje?: number;
     descuento_monto?: number;
+    es_cortesia?: boolean;
 }
 
 /* ── Factura activa de mesa (respuesta GET /mesas/:id/factura) ── */
@@ -100,6 +106,7 @@ export interface FacturaActivaMesa {
         created_at?: string;
         descuento_porcentaje?: number;
         descuento_monto?: number;
+        es_cortesia?: boolean;
     }>;
 }
 

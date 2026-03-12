@@ -1327,7 +1327,35 @@
 }
 
 .cuenta-row-cortesia {
-  background: var(--bg-success-tint) !important;
+  background: rgba(8, 145, 178, 0.06) !important;
+  border-left-color: #0891B2 !important;
+}
+
+/* Banner descuento de mesa */
+.mesa-descuento-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: 8px 6px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(168, 85, 247, 0.04));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  color: #a855f7;
+  animation: bannerSlideIn 0.3s ease;
+}
+
+.mesa-descuento-banner mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes bannerSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* breakdown-row and text-red also used in descuento modals */
