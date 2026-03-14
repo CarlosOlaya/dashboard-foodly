@@ -2,7 +2,7 @@
 <div class="page-header">
     <div>
         <h1 class="page-title"><mat-icon>analytics</mat-icon>Reportes</h1>
-        <p class="page-subtitle">Análisis detallado de ventas, propinas, productos y empleados</p>
+        <p class="page-subtitle">Análisis detallado de ventas, servicio, productos y empleados</p>
     </div>
     <div class="flex items-center gap-12">
         <button class="btn-ghost" (click)="imprimirReporte()" title="Imprimir reporte de ventas">
@@ -78,7 +78,7 @@
             <div class="metrica-card">
                 <div class="metrica-icon propinas"><mat-icon>volunteer_activism</mat-icon></div>
                 <div class="metrica-info">
-                    <span class="metrica-label">Propinas</span>
+                    <span class="metrica-label">Servicio</span>
                     <span class="metrica-valor">{{ formatCurrency(resumen.total_propinas) }}</span>
                 </div>
             </div>
@@ -204,7 +204,7 @@
             <div class="metrica-card">
                 <div class="metrica-icon propinas"><mat-icon>volunteer_activism</mat-icon></div>
                 <div class="metrica-info">
-                    <span class="metrica-label">Total Propinas</span>
+                    <span class="metrica-label">Total Servicio</span>
                     <span class="metrica-valor">{{ formatCurrency(resumen.total_propinas) }}</span>
                 </div>
             </div>
@@ -228,7 +228,7 @@
         <!-- Charts: Propinas Día + Propinas por Empleado -->
         <div class="charts-row">
             <div class="chart-card card-glass">
-                <h3><mat-icon>trending_up</mat-icon> Propinas por Día</h3>
+                <h3><mat-icon>trending_up</mat-icon> Servicio por Día</h3>
                 <div class="chart-wrapper">
                     <ngx-charts-line-chart [results]="chartPropinasDia" [scheme]="$any(colorScheme)" [xAxis]="true"
                         [yAxis]="true" [yAxisTickFormatting]="axisFormat" [autoScale]="true" [animations]="false"
@@ -255,7 +255,6 @@
                             <th>Empleado</th>
                             <th class="th-num">Facturas</th>
                             <th class="th-num">Ventas</th>
-                            <th class="th-num">Propinas</th>
                             <th class="th-num">Servicio</th>
                         </tr>
                     </thead>
@@ -264,8 +263,7 @@
                             <td class="td-name">{{ e.empleado }}</td>
                             <td class="td-num">{{ e.facturas }}</td>
                             <td class="td-num">{{ formatCurrency(e.ventas) }}</td>
-                            <td class="td-num td-success">{{ formatCurrency(e.propinas) }}</td>
-                            <td class="td-num">{{ formatCurrency(e.servicio) }}</td>
+                            <td class="td-num td-success">{{ formatCurrency((e.propinas || 0) + (e.servicio || 0)) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -286,7 +284,7 @@
                             <th class="th-num">Ventas</th>
                             <th class="th-num">Ticket Prom.</th>
                             <th class="th-num">Comensales</th>
-                            <th class="th-num">Propinas</th>
+                            <th class="th-num">Servicio</th>
                             <th class="th-num">Descuentos</th>
                         </tr>
                     </thead>
@@ -327,7 +325,7 @@
                                 <th>Método</th>
                                 <th class="th-num">Transacciones</th>
                                 <th class="th-num">Total</th>
-                                <th class="th-num">Propinas</th>
+                                <th class="th-num">Servicio</th>
                             </tr>
                         </thead>
                         <tbody>

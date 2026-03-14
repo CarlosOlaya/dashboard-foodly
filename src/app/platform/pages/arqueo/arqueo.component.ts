@@ -195,7 +195,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
           <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#0891B2; margin-bottom:6px;">💵 Efectivo esperado en caja</div>
           <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Inicial</span><span>$${this.formatMoney(this.turnoActivo?.efectivo_inicial)}</span></div>
           <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Venta</span><span>$${this.formatMoney(r?.total_efectivo)}</span></div>
-          <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Propina</span><span>$${this.formatMoney(r?.propina_efectivo)}</span></div>
+          <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Servicio</span><span>$${this.formatMoney(r?.propina_efectivo)}</span></div>
           <div style="display:flex; justify-content:space-between; padding:6px 0 0; border-top:1px solid rgba(8,145,178,0.15); margin-top:4px;">
             <b>= Esperado</b><b style="color:#0891B2; font-size:15px;">$${this.formatMoney(esperado)}</b>
           </div>
@@ -243,7 +243,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
                     </div>
                     <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e2e8f0;">
                       <span>Facturas: ${r.num_facturas} &nbsp;|&nbsp; Anulaciones: ${r.num_anulaciones}</span>
-                      <span>Propinas: <b>$${this.formatMoney(r.total_propinas)}</b></span>
+                      <span>Servicio: <b>$${this.formatMoney(r.total_propinas)}</b></span>
                     </div>
 
                     <!-- Efectivo -->
@@ -251,7 +251,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
                       <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#0891B2; margin-bottom:6px;">💵 Efectivo en caja</div>
                       <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Efectivo inicial</span><span>$${this.formatMoney(r.efectivo_inicial)}</span></div>
                       <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Venta</span><span>$${this.formatMoney(r.total_efectivo)}</span></div>
-                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Propina</span><span>$${this.formatMoney(r.propina_efectivo)}</span></div>
+                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>+ Servicio</span><span>$${this.formatMoney(r.propina_efectivo)}</span></div>
                       <div style="display:flex; justify-content:space-between; padding:6px 0 2px; border-top:1px solid rgba(8,145,178,0.15); margin-top:4px;">
                         <b>= Esperado</b><b style="color:#0891B2;">$${this.formatMoney(r.efectivo_esperado)}</b>
                       </div>
@@ -265,7 +265,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
                     <div style="margin-top:8px; padding:10px; background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.12); border-radius:8px;">
                       <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#3b82f6; margin-bottom:6px;">💳 Tarjetas / Datáfono</div>
                       <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Venta</span><span>$${this.formatMoney(r.total_datafono)}</span></div>
-                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Propina</span><span>$${this.formatMoney(r.propina_datafono)}</span></div>
+                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Servicio</span><span>$${this.formatMoney(r.propina_datafono)}</span></div>
                       <div style="display:flex; justify-content:space-between; padding:4px 0 0; border-top:1px solid rgba(59,130,246,0.15); margin-top:4px;">
                         <b>Total</b><b style="color:#3b82f6;">$${this.formatMoney(r.total_datafono + r.propina_datafono)}</b>
                       </div>
@@ -275,7 +275,7 @@ export class ArqueoComponent implements OnInit, OnDestroy {
                     <div style="margin-top:8px; padding:10px; background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.12); border-radius:8px;">
                       <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#8b5cf6; margin-bottom:6px;">🏦 Transferencias</div>
                       <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Venta</span><span>$${this.formatMoney(r.total_transferencia)}</span></div>
-                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Propina</span><span>$${this.formatMoney(r.propina_transferencia)}</span></div>
+                      <div style="display:flex; justify-content:space-between; padding:2px 0;"><span>Servicio</span><span>$${this.formatMoney(r.propina_transferencia)}</span></div>
                       <div style="display:flex; justify-content:space-between; padding:4px 0 0; border-top:1px solid rgba(139,92,246,0.15); margin-top:4px;">
                         <b>Total</b><b style="color:#8b5cf6;">$${this.formatMoney(r.total_transferencia + r.propina_transferencia)}</b>
                       </div>

@@ -185,18 +185,17 @@ export class ReportesComponent implements OnInit {
             .map(m => ({ name: this.capitalizarMetodo(m.metodo), value: Number(m.total) || 0 }))
             .filter(m => m.value > 0);
 
-        // Propinas por día (line)
+        // Servicio por día (line)
         this.chartPropinasDia = [{
-            name: 'Propinas',
+            name: 'Servicio',
             series: (this.propinas?.por_dia || []).map(p => ({
-                name: this.formatFecha(p.fecha),
-                value: Number(p.propinas) || 0,
+                name: p.fecha,
+                value: (Number(p.propinas) || 0) + (Number(p.servicio) || 0),
             })),
         }];
-
-        // Propinas por empleado (pie)
+        // Servicio por empleado (pie)
         this.chartPropinasEmpleado = (this.propinas?.por_empleado || [])
-            .map(e => ({ name: e.empleado, value: Number(e.propinas) || 0 }))
+            .map(e => ({ name: e.empleado, value: (Number(e.propinas) || 0) + (Number(e.servicio) || 0) }))
             .filter(e => e.value > 0);
     }
 
