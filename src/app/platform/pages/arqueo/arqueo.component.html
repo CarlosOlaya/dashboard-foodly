@@ -85,12 +85,12 @@
                 <div class="caja-resumen resumen-ventas">
                     <h4><mat-icon>trending_up</mat-icon> Ventas</h4>
                     <div class="caja-row">
-                        <span>Total cobrado</span>
+                        <span>Total venta</span>
                         <span><b>${{ formatMoney(resumen.total_ventas) }}</b></span>
                     </div>
                     <div class="caja-row">
                         <span>Servicio</span>
-                        <span><b>${{ formatMoney(resumen.total_propinas) }}</b></span>
+                        <span><b>${{ formatMoney(resumen.total_servicio || resumen.total_propinas) }}</b></span>
                     </div>
                     <div class="caja-row" *ngIf="resumen.total_descuentos > 0">
                         <span>Dcto mesa aplicados</span>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="caja-row caja-subtotal">
                         <span><b>Ingreso total</b></span>
-                        <span><b>${{ formatMoney(resumen.total_ventas + resumen.total_propinas) }}</b></span>
+                        <span><b>${{ formatMoney(resumen.total_ingreso || (resumen.total_ventas + (resumen.total_servicio || resumen.total_propinas))) }}</b></span>
                     </div>
                 </div>
                 <div class="caja-resumen resumen-facturas">

@@ -129,9 +129,9 @@
                 <span>{{ item.label }}</span>
             </a>
 
-            <!-- Finanzas — cajero + admin -->
+            <!-- Administración — admin -->
             <ng-container *ngIf="canSeeFinanzas">
-                <div class="nav-section-title">Finanzas</div>
+                <div class="nav-section-title">Administración</div>
                 <a *ngFor="let item of navFinanzas" [routerLink]="item.route" class="nav-item"
                     [class.active]="isActive(item.route)">
                     <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
@@ -249,12 +249,19 @@
                 <span>Monitor</span>
             </a>
 
-            <!-- Reportes (admin) -->
             <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./reportes" (click)="showMoreMenu = false">
                 <div class="more-sheet-icon" style="background: var(--bg-info-tint);">
                     <mat-icon style="color: var(--info);">analytics</mat-icon>
                 </div>
                 <span>Reportes</span>
+            </a>
+
+            <!-- Auditoría (admin) -->
+            <a *ngIf="isAdmin" class="more-sheet-item" routerLink="./auditoria" (click)="showMoreMenu = false">
+                <div class="more-sheet-icon" style="background: rgba(245,158,11,0.12);">
+                    <mat-icon style="color: #f59e0b;">policy</mat-icon>
+                </div>
+                <span>Auditoría</span>
             </a>
 
             <!-- Carta -->

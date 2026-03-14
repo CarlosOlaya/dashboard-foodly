@@ -12,13 +12,17 @@
         <div class="turno-select-wrap">
             <mat-icon>swap_vert</mat-icon>
             <select class="turno-select" [(ngModel)]="turnoSeleccionado" (change)="onTurnoChange()">
-                <option value="actual">Turno Actual</option>
+                <option value="actual">🔴 Turno Actual</option>
                 <optgroup label="Turnos anteriores" *ngIf="historial.length > 0">
                     <option *ngFor="let t of historial" [value]="t.id">
-                        {{ t.fecha | date:'dd/MM' }} · {{ t.hora_apertura | date:'HH:mm' }}
-                        {{ t.hora_cierre ? '— ' + (t.hora_cierre | date:'HH:mm') : '' }}
+                        {{ t.fecha | date:'dd/MM/yy' }} · {{ t.hora_apertura | date:'HH:mm' }}–{{ t.hora_cierre |
+                        date:'HH:mm' }}
+                        · {{ t.empleado ? t.empleado.nombre : '' }}
                         · ${{ fmt(t.total_ventas) }}
                     </option>
+                </optgroup>
+                <optgroup label="Sin turnos anteriores" *ngIf="historial.length === 0">
+                    <option disabled>No hay turnos cerrados aún</option>
                 </optgroup>
             </select>
         </div>
@@ -65,7 +69,8 @@
             <span class="status-meta" *ngIf="data?.turno?.hora_apertura">
                 <mat-icon>schedule</mat-icon> {{ data.turno.hora_apertura | date:'HH:mm' }}
                 <ng-container *ngIf="turnoActivo"> · {{ tiempoActivo }}</ng-container>
-                <ng-container *ngIf="data?.turno?.hora_cierre"> — {{ data.turno.hora_cierre | date:'HH:mm' }}</ng-container>
+                <ng-container *ngIf="data?.turno?.hora_cierre"> — {{ data.turno.hora_cierre | date:'HH:mm'
+                    }}</ng-container>
             </span>
         </div>
         <span class="status-refresh" *ngIf="turnoActivo">
@@ -121,14 +126,8 @@
             <div class="card-glass monitor-card">
                 <h3 class="card-title"><mat-icon>pie_chart</mat-icon> Ventas por Método</h3>
                 <div class="chart-wrap" *ngIf="chartMetodos.length > 0">
-                    <ngx-charts-pie-chart
-                        [results]="chartMetodos"
-                        [scheme]="pieColors"
-                        [labels]="true"
-                        [doughnut]="true"
-                        [arcWidth]="0.4"
-                        [tooltipDisabled]="false"
-                        [view]="[280, 220]">
+                    <ngx-charts-pie-chart [results]="chartMetodos" [scheme]="pieColors" [labels]="true"
+                        [doughnut]="true" [arcWidth]="0.4" [tooltipDisabled]="false" [view]="[280, 220]">
                     </ngx-charts-pie-chart>
                 </div>
                 <div class="method-list">
@@ -155,13 +154,8 @@
             <div class="card-glass monitor-card" *ngIf="data.propinas.total > 0">
                 <h3 class="card-title"><mat-icon>volunteer_activism</mat-icon> Servicio por Método</h3>
                 <div class="chart-wrap" *ngIf="chartPropinas.length > 0">
-                    <ngx-charts-pie-chart
-                        [results]="chartPropinas"
-                        [scheme]="pieColors"
-                        [labels]="true"
-                        [doughnut]="true"
-                        [arcWidth]="0.4"
-                        [view]="[280, 200]">
+                    <ngx-charts-pie-chart [results]="chartPropinas" [scheme]="pieColors" [labels]="true"
+                        [doughnut]="true" [arcWidth]="0.4" [view]="[280, 200]">
                     </ngx-charts-pie-chart>
                 </div>
                 <div class="method-row propina-total">
@@ -172,16 +166,20 @@
 
             <!-- Info boxes -->
             <div class="card-glass monitor-card info-boxes">
-                <div class="info-box" *ngIf="data.descuentos_cortesias.total_descuentos > 0 || data.descuentos_cortesias.total_cortesias > 0">
+                <div class="info-box"
+                    *ngIf="data.descuentos_cortesias.total_descuentos > 0 || data.descuentos_cortesias.total_cortesias > 0">
                     <h4><mat-icon>sell</mat-icon> Descuentos & Cortesías</h4>
                     <div class="info-row" *ngIf="data.descuentos_cortesias.descuento_mesa > 0">
-                        <span>Dcto Mesa</span><span class="val-negative">-${{ fmt(data.descuentos_cortesias.descuento_mesa) }}</span>
+                        <span>Dcto Mesa</span><span class="val-negative">-${{
+                            fmt(data.descuentos_cortesias.descuento_mesa) }}</span>
                     </div>
                     <div class="info-row" *ngIf="data.descuentos_cortesias.descuento_items > 0">
-                        <span>Dcto Items</span><span class="val-negative">-${{ fmt(data.descuentos_cortesias.descuento_items) }}</span>
+                        <span>Dcto Items</span><span class="val-negative">-${{
+                            fmt(data.descuentos_cortesias.descuento_items) }}</span>
                     </div>
                     <div class="info-row" *ngIf="data.descuentos_cortesias.total_cortesias > 0">
-                        <span>Cortesías</span><span class="val-cortesia">-${{ fmt(data.descuentos_cortesias.total_cortesias) }}</span>
+                        <span>Cortesías</span><span class="val-cortesia">-${{
+                            fmt(data.descuentos_cortesias.total_cortesias) }}</span>
                     </div>
                 </div>
                 <div class="info-box" *ngIf="data.anulaciones.num_facturas > 0 || data.anulaciones.items_anulados > 0">
@@ -214,13 +212,8 @@
                 </h3>
                 <!-- Bar chart top 10 -->
                 <div class="chart-wrap" *ngIf="chartProductos.length > 0">
-                    <ngx-charts-bar-horizontal
-                        [results]="chartProductos"
-                        [scheme]="barColors"
-                        [xAxisLabel]="'Cantidad'"
-                        [showXAxisLabel]="false"
-                        [showYAxisLabel]="false"
-                        [gradient]="true"
+                    <ngx-charts-bar-horizontal [results]="chartProductos" [scheme]="barColors" [xAxisLabel]="'Cantidad'"
+                        [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true"
                         [view]="[380, Math.min(chartProductos.length * 32 + 20, 340)]">
                     </ngx-charts-bar-horizontal>
                 </div>
@@ -240,7 +233,7 @@
                         <span class="plu-val">${{ fmt(p.valor) }}</span>
                     </div>
                     <button class="btn-expand" *ngIf="(data?.productos || []).length > pluDisplayLimit"
-                            (click)="showAllPlu = !showAllPlu">
+                        (click)="showAllPlu = !showAllPlu">
                         <mat-icon>{{ showAllPlu ? 'expand_less' : 'expand_more' }}</mat-icon>
                         {{ showAllPlu ? 'Ver menos' : 'Ver todos (' + (data?.productos?.length || 0) + ')' }}
                     </button>
@@ -262,7 +255,8 @@
                             <span class="factura-meta">
                                 <ng-container *ngIf="f.mesa_numero">Mesa {{ f.mesa_numero }} · </ng-container>
                                 {{ f.mesero }}
-                                <ng-container *ngIf="f.fecha_cierre"> · {{ f.fecha_cierre | date:'HH:mm' }}</ng-container>
+                                <ng-container *ngIf="f.fecha_cierre"> · {{ f.fecha_cierre | date:'HH:mm'
+                                    }}</ng-container>
                             </span>
                         </div>
                         <div class="factura-right">

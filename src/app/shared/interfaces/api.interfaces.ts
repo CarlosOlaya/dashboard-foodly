@@ -85,6 +85,8 @@ export interface DashboardResponse {
 export interface ResumenTurnoEnVivo {
     turno: TurnoCaja;
     total_ventas: number;
+    total_servicio: number;
+    total_ingreso: number;
     total_efectivo: number;
     total_datafono: number;
     total_transferencia: number;

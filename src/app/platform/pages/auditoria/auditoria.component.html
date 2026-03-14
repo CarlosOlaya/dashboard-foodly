@@ -1,0 +1,194 @@
+<div class="page-header">
+    <h1 class="page-title">Auditoría</h1>
+    <p class="page-subtitle">Control fiscal y trazabilidad del sistema</p>
+</div>
+
+<!-- Tabs -->
+<div class="audit-tabs">
+    <button class="audit-tab" [class.active]="activeTab === 'log'" (click)="onTabChange('log')">
+        <mat-icon>list_alt</mat-icon> Historial
+    </button>
+    <button class="audit-tab" [class.active]="activeTab === 'consecutivos'" (click)="onTabChange('consecutivos')">
+        <mat-icon>verified</mat-icon> Consecutivos
+    </button>
+    <button class="audit-tab" [class.active]="activeTab === 'nc'" (click)="onTabChange('nc')">
+        <mat-icon>receipt_long</mat-icon> Notas Crédito
+    </button>
+    <button class="audit-tab" [class.active]="activeTab === 'correcciones'" (click)="onTabChange('correcciones')">
+        <mat-icon>edit_note</mat-icon> Correcciones
+    </button>
+</div>
+
+<!-- Filtros de fecha (compartidos) -->
+<div class="audit-filters" *ngIf="activeTab !== 'consecutivos'">
+    <div class="filter-group">
+        <label>Desde</label>
+        <input type="date" [(ngModel)]="filtroDesde">
+    </div>
+    <div class="filter-group">
+        <label>Hasta</label>
+        <input type="date" [(ngModel)]="filtroHasta">
+    </div>
+    <div class="filter-group" *ngIf="activeTab === 'log'">
+        <label>Acción</label>
+        <select [(ngModel)]="filtroAccion">
+            <option *ngFor="let a of accionesDisponibles" [value]="a.value">{{ a.label }}</option>
+        </select>
+    </div>
+    <button class="btn-filtrar" (click)="aplicarFiltros()">
+        <mat-icon>filter_list</mat-icon> Filtrar
+    </button>
+</div>
+
+<!-- Resumen rápido -->
+<div class="resumen-cards" *ngIf="resumen && activeTab === 'log'">
+    <div class="resumen-card" *ngFor="let r of resumen.acciones">
+        <mat-icon [style.color]="getAccionColor(r.accion)">{{ getAccionIcon(r.accion) }}</mat-icon>
+        <div>
+            <span class="resumen-label">{{ getAccionLabel(r.accion) }}</span>
+            <span class="resumen-count">{{ r.cantidad }}</span>
+            <span class="resumen-monto" *ngIf="r.monto_total > 0">${{ formatMoney(r.monto_total) }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: HISTORIAL ══════════════ -->
+<div *ngIf="activeTab === 'log'" class="audit-content">
+    <div class="card-glass card-body-custom">
+        <div *ngIf="loading" class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && auditLog.length === 0" class="empty-state">
+            <mat-icon class="empty-state-icon">history</mat-icon>
+            <p class="empty-state-text">Sin registros en este periodo</p>
+        </div>
+
+        <div *ngFor="let entry of auditLog" class="log-entry">
+            <div class="log-icon" [style.color]="getAccionColor(entry.accion)">
+                <mat-icon>{{ getAccionIcon(entry.accion) }}</mat-icon>
+            </div>
+            <div class="log-body">
+                <div class="log-header">
+                    <span class="log-accion-badge" [style.background]="getAccionColor(entry.accion) + '20'" [style.color]="getAccionColor(entry.accion)">
+                        {{ getAccionLabel(entry.accion) }}
+                    </span>
+                    <span class="log-ref" *ngIf="entry.referencia">{{ entry.referencia }}</span>
+                    <span class="log-monto" *ngIf="entry.monto">${{ formatMoney(entry.monto) }}</span>
+                </div>
+                <p class="log-desc">{{ entry.descripcion }}</p>
+                <div class="log-meta">
+                    <span *ngIf="entry.usuario_nombre"><mat-icon style="font-size:12px;width:12px;height:12px;">person</mat-icon> {{ entry.usuario_nombre }}</span>
+                    <span>{{ entry.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div *ngIf="auditTotal > auditLimit" class="pagination">
+            <button class="btn-page" [disabled]="auditOffset <= 0" (click)="paginaAnterior()">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span class="page-info">{{ paginaActual }} / {{ totalPaginas }}</span>
+            <button class="btn-page" [disabled]="auditOffset + auditLimit >= auditTotal" (click)="paginaSiguiente()">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            <span class="page-total">{{ auditTotal }} registros</span>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: CONSECUTIVOS ══════════════ -->
+<div *ngIf="activeTab === 'consecutivos'" class="audit-content">
+    <div class="card-glass card-body-custom">
+        <div *ngIf="loading" class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="consecutivosResult" class="consecutivos-result">
+            <div class="consecutivos-status" [class.status-ok]="consecutivosResult.ok" [class.status-error]="!consecutivosResult.ok">
+                <mat-icon>{{ consecutivosResult.ok ? 'check_circle' : 'error' }}</mat-icon>
+                <span>{{ consecutivosResult.ok ? 'Todos los consecutivos están en orden' : 'Se detectaron huecos en la numeración' }}</span>
+            </div>
+
+            <div *ngFor="let r of consecutivosResult.resultados" class="consecutivo-detalle">
+                <h4>{{ r.tipo }}</h4>
+                <div class="consecutivo-stats">
+                    <span>Total emitidos: <strong>{{ r.total }}</strong></span>
+                    <span>Último número: <strong>{{ r.ultimoNum }}</strong></span>
+                    <span [class.hueco-ok]="r.huecos.length === 0" [class.hueco-error]="r.huecos.length > 0">
+                        Huecos: <strong>{{ r.huecos.length }}</strong>
+                    </span>
+                </div>
+                <div *ngIf="r.huecos.length > 0" class="huecos-list">
+                    <div *ngFor="let h of r.huecos" class="hueco-item">
+                        <mat-icon>warning</mat-icon>
+                        <span>Número <strong>{{ h.esperado }}</strong> faltante — {{ h.encontrado }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="validacion-fecha">Última validación: {{ consecutivosResult.fecha_validacion | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: NOTAS CRÉDITO ══════════════ -->
+<div *ngIf="activeTab === 'nc'" class="audit-content">
+    <div class="card-glass card-body-custom">
+        <div *ngIf="loading" class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && notasCredito.length === 0" class="empty-state">
+            <mat-icon class="empty-state-icon">receipt_long</mat-icon>
+            <p class="empty-state-text">Sin notas crédito en este periodo</p>
+        </div>
+
+        <div *ngFor="let nc of notasCredito" class="nc-entry">
+            <div class="nc-header">
+                <span class="nc-numero">{{ nc.numero_nota }}</span>
+                <span class="nc-estado" [class.estado-emitida]="nc.estado === 'emitida'">{{ nc.estado | uppercase }}</span>
+                <span class="nc-monto">${{ formatMoney(nc.monto_anulado) }}</span>
+            </div>
+            <div class="nc-body">
+                <span><mat-icon style="font-size:13px;width:13px;height:13px;">description</mat-icon> Anula: {{ nc.factura_original?.numero_factura || 'N/A' }}</span>
+                <span *ngIf="nc.factura_reemplazo"><mat-icon style="font-size:13px;width:13px;height:13px;">swap_horiz</mat-icon> Reemplazada por: {{ nc.factura_reemplazo?.numero_factura || 'Pendiente' }}</span>
+                <span><mat-icon style="font-size:13px;width:13px;height:13px;">person</mat-icon> {{ nc.usuario?.nombre || '' }} {{ nc.usuario?.apellido1 || '' }}</span>
+            </div>
+            <p class="nc-motivo">{{ nc.motivo }}</p>
+            <span class="nc-fecha">{{ nc.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: CORRECCIONES ══════════════ -->
+<div *ngIf="activeTab === 'correcciones'" class="audit-content">
+    <div class="card-glass card-body-custom">
+        <div *ngIf="loading" class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && correcciones.length === 0" class="empty-state">
+            <mat-icon class="empty-state-icon">edit_note</mat-icon>
+            <p class="empty-state-text">Sin correcciones en este periodo</p>
+        </div>
+
+        <div *ngFor="let c of correcciones" class="correccion-entry">
+            <div class="correccion-header">
+                <span class="correccion-factura">{{ c.factura?.numero_factura || 'N/A' }}</span>
+                <span class="correccion-tipo-badge">{{ c.tipo }}</span>
+                <span class="correccion-fecha">{{ c.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="correccion-cambios">
+                <div *ngFor="let ch of c.cambios" class="cambio-item">
+                    <span class="cambio-campo">{{ ch.campo }}:</span>
+                    <span class="cambio-anterior">{{ ch.anterior }}</span>
+                    <mat-icon style="font-size:12px;width:12px;height:12px;">arrow_forward</mat-icon>
+                    <span class="cambio-nuevo">{{ ch.nuevo }}</span>
+                </div>
+            </div>
+            <p class="correccion-motivo">{{ c.motivo }}</p>
+        </div>
+    </div>
+</div>

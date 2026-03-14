@@ -59,6 +59,13 @@ const routes: Routes = [
         loadChildren: () => import('./modules/reportes.module').then(m => m.ReportesModule),
       },
 
+      // ── Auditoría (lazy) ──────────────────────────────
+      {
+        path: '',
+        canActivate: [adminGuard],
+        loadChildren: () => import('./modules/auditoria.module').then(m => m.AuditoriaModule),
+      },
+
       { path: '**', redirectTo: 'mesas' },
     ]
   },
